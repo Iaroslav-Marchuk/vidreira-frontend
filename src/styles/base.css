@@ -1,0 +1,31 @@
+body {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  min-width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main);
+  font-size: var(--font-size);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--color-text);
+  background-color: var(--color-theme);
+}
+
+html {
+  height: 100%;
+}
+
+main {
+  flex-grow: 1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+main:has(.back-link) {
+  text-align: center;
+}

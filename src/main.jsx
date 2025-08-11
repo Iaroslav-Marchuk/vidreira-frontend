@@ -6,7 +6,7 @@ import App from '../src/components/App/App.jsx';
 
 import 'modern-normalize';
 
-// import '../src/styles/styles.css';            треба перевірити основні стилі і підключити сюди
+import '../src/styles/styles.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

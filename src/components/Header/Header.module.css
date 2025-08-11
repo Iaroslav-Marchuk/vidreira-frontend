@@ -1,0 +1,11 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-radius: var(--border-radius);
+  user-select: none;
+  background-color: var(--color-header-bg);
+  box-shadow: var(--box-shadow);
+}
