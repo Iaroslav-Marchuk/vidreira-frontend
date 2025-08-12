@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 
 import logo from '../../assets/logo.png';
 
+import Navigation from '../Navigation/Navigation.jsx';
 import UserMenu from '../UserMenu/UserMenu.jsx';
 
 import css from './Header.module.css';
@@ -13,9 +14,10 @@ const Header = () => {
         <img src={logo} alt="logo" height="85px" width="120px" />
       </NavLink>
 
+      <Navigation />
       <UserMenu />
 
-      <button>AUTH</button>
+      <NavLink to="/auth">Sign Up</NavLink>
     </header>
   );
 };

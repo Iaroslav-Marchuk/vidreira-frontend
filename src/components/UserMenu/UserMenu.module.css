@@ -1,0 +1,98 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  width: 48px;
+  font-size: 28px;
+  color: var(--color-btn-txt);
+  background-color: var(--color-btn-bg);
+  border: 3px solid var(--color-btn-hover-bg);
+  border-radius: 100%;
+}
+
+.popoverContent {
+  background-color: var(--color-theme);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: var(--box-shadow);
+  width: 250px;
+  right: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.userBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0 0 12px;
+  padding-bottom: 12px;
+  border-bottom: solid 1px;
+}
+
+.avatarMini {
+  background-color: var(--color-btn-bg);
+  color: var(--color-btn-txt);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.text {
+  font-weight: 700;
+}
+
+.link {
+  text-decoration: none;
+  transition: text-decoration 0.2s ease;
+  margin-bottom: 24px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.btn {
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 8px 16px;
+  border: none;
+  text-align: center;
+  border-radius: var(--border-radius);
+  background-color: var(--color-btn-bg);
+  color: var(--color-btn-txt);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin: 0 auto;
+}
+
+.btn:hover {
+  background-color: var(--color-btn-hover-bg);
+}
+
+.svg {
+  margin-right: 8px;
+}

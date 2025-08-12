@@ -14,10 +14,24 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        <Route path="auth" element={<AuthPage />} />
-        <Route path="orders" element={<OrdersPage />} />
-        <Route path="profile" element={<ProfilePage />} />
-        <Route path="statistics" element={<StatisticsPage />} />
+        <Route
+          path="auth"
+          element={
+            <RestrictedRoute redirectTo="/orders" element={<AuthPage />} />
+          }
+        />
+        <Route
+          path="orders"
+          element={<PrivateRoute element={<OrdersPage />} />}
+        />
+        <Route
+          path="profile"
+          element={<PrivateRoute element={<ProfilePage />} />}
+        />
+        <Route
+          path="statistics"
+          element={<PrivateRoute element={<StatisticsPage />} />}
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
