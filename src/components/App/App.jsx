@@ -5,9 +5,12 @@ import OrdersPage from '../../pages/OrdersPage/OrdersPage.jsx';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage.jsx';
 import AuthPage from '../../pages/AuthPage/AuthPage.jsx';
 import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage.jsx';
+import StatisticsPage from '../../pages/StatisticsPage/StatisticsPage.jsx';
 
 import Layout from '../Layout/Layout.jsx';
-import StatisticsPage from '../../pages/StatisticsPage/StatisticsPage.jsx';
+
+import PrivateRoute from '../PrivateRoute.jsx';
+import RestrictedRoute from '../RestrictedRoute.jsx';
 
 const App = () => {
   return (

@@ -6,13 +6,16 @@ import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 
 import css from './UserMenu.module.css';
+import { logout } from '../../redux/auth/operations.js';
+import { useDispatch } from 'react-redux';
 
 const UserMenu = () => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const handleLogout = () => {
     setOpen(false);
-    // dispatch(logout());
+    dispatch(logout());
   };
 
   return (
