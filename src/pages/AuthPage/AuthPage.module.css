@@ -1,0 +1,31 @@
+.btnWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  margin: 40px auto;
+}
+
+.passiveTab,
+.activeTab {
+  width: 200px;
+  padding: 12px 0;
+  text-align: center;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--color-btn-txt);
+  background-color: var(--color-btn-bg);
+}
+
+.activeTab {
+  background-color: var(--color-btn-hover-bg);
+  color: var(--color-btn-txt);
+  font-weight: 600;
+  transform: scale(1.05);
+}
+
+.passiveTab:hover {
+  background-color: #2563eb;
+}

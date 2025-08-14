@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
 import HomePage from '../../pages/HomePage/HomePage.jsx';
 import OrdersPage from '../../pages/OrdersPage/OrdersPage.jsx';
@@ -14,30 +15,33 @@ import RestrictedRoute from '../RestrictedRoute.jsx';
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route
-          path="auth"
-          element={
-            <RestrictedRoute redirectTo="/orders" element={<AuthPage />} />
-          }
-        />
-        <Route
-          path="orders"
-          element={<PrivateRoute element={<OrdersPage />} />}
-        />
-        <Route
-          path="profile"
-          element={<PrivateRoute element={<ProfilePage />} />}
-        />
-        <Route
-          path="statistics"
-          element={<PrivateRoute element={<StatisticsPage />} />}
-        />
-        <Route path="*" element={<NotFoundPage />} />
-      </Route>
-    </Routes>
+    <>
+      <Toaster position="top-right" reverseOrder={false} />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route
+            path="auth"
+            element={
+              <RestrictedRoute redirectTo="/orders" element={<AuthPage />} />
+            }
+          />
+          <Route
+            path="orders"
+            element={<PrivateRoute element={<OrdersPage />} />}
+          />
+          <Route
+            path="profile"
+            element={<PrivateRoute element={<ProfilePage />} />}
+          />
+          <Route
+            path="statistics"
+            element={<PrivateRoute element={<StatisticsPage />} />}
+          />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </>
   );
 };
 

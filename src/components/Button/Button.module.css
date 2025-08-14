@@ -1,0 +1,33 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--border-radius);
+  padding: 8px 16px;
+  border: none;
+
+  background-color: var(--color-btn-bg, #60a5fa);
+  color: var(--color-btn-txt, #ffffff);
+  font-weight: 500;
+
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn:hover:not(:disabled),
+.btn:focus {
+  background-color: var(--color-btn-hover-bg, #3b82f6);
+  outline: none;
+}
+
+.btn:disabled {
+  background-color: var(--color-btn-disabled-bg, #a1a1aa);
+  color: var(--color-btn-disabled-txt, #e4e4e7);
+  cursor: not-allowed;
+}
+
+.btn--delete {
+  --color-btn-bg: #dc3545;
+  --color-btn-hover-bg: #b02a37;
+  --color-btn-txt: #fff;
+}

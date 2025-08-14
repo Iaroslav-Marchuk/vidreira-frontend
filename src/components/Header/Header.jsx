@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import clsx from 'clsx';
 
 import logo from '../../assets/logo.png';
 
@@ -24,7 +25,14 @@ const Header = () => {
           <UserMenu />
         </>
       )}
-      {!isLoggedIn && <NavLink to="/auth">Sign Up</NavLink>}
+      {!isLoggedIn && (
+        <NavLink
+          to="/auth"
+          className={({ isActive }) => clsx(css.link, isActive && css.active)}
+        >
+          Sign Up
+        </NavLink>
+      )}
     </header>
   );
 };
