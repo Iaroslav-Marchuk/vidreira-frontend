@@ -2,7 +2,6 @@ import clsx from 'clsx';
 
 import { useState } from 'react';
 
-import Button from '../../components/Button/Button.jsx';
 import LoginForm from '../../components/LoginForm/LoginForm.jsx';
 import RegisterForm from '../../components/RegistrationForm/RegistrationForm.jsx';
 

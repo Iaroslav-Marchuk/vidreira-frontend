@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { login, logout, register } from './operations.js';
+import { login, logout, register, refreshUser } from './operations.js';
 
 const handlePending = state => {
   state.isLoading = true;
@@ -28,38 +28,51 @@ const authSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(register.pending, handlePending)
-
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload;
-
-        state.isLoggedIn = true;
+        state.isLoggedIn = false;
       })
-
       .addCase(register.rejected, handleRejected)
 
       .addCase(login.pending, handlePending)
-
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload;
-        state.token = action.payload.accessToken;
         state.isLoggedIn = true;
+        state.token = action.payload.accessToken;
+        state.user = action.payload.user;
       })
-
       .addCase(login.rejected, handleRejected)
 
       .addCase(logout.pending, handlePending)
-
       .addCase(logout.fulfilled, state => {
         state.isLoading = false;
         state.user = { name: null, role: null };
         // state.items = [];                   -------- додати, коли буде стан для ордерс
         state.token = null;
         state.isLoggedIn = false;
+        state.error = null;
       })
 
-      .addCase(logout.rejected, handleRejected);
+      .addCase(logout.rejected, handleRejected)
+
+      .addCase(refreshUser.pending, state => {
+        state.isLoading = true;
+        state.isRefreshing = true;
+        state.error = null;
+      })
+      .addCase(refreshUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isRefreshing = false;
+        state.isLoggedIn = true;
+        state.user = action.payload;
+      })
+      .addCase(refreshUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isRefreshing = false;
+        state.error = action.payload;
+        state.error = null;
+      });
   },
 });
 

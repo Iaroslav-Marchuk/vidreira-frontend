@@ -1,5 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import HomePage from '../../pages/HomePage/HomePage.jsx';
 import OrdersPage from '../../pages/OrdersPage/OrdersPage.jsx';
@@ -12,9 +14,20 @@ import Layout from '../Layout/Layout.jsx';
 
 import PrivateRoute from '../PrivateRoute.jsx';
 import RestrictedRoute from '../RestrictedRoute.jsx';
+import { selectIsRefreshing } from '../../redux/auth/selectors.js';
+import { refreshUser } from '../../redux/auth/operations.js';
 
 const App = () => {
-  return (
+  const dispatch = useDispatch();
+  const isRefreshing = useSelector(selectIsRefreshing);
+
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+
+  return isRefreshing ? (
+    <strong>Refreshing user...</strong>
+  ) : (
     <>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
@@ -22,9 +35,7 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route
             path="auth"
-            element={
-              <RestrictedRoute redirectTo="/orders" element={<AuthPage />} />
-            }
+            element={<RestrictedRoute redirectTo="/" element={<AuthPage />} />}
           />
           <Route
             path="orders"

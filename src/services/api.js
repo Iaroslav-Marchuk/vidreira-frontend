@@ -1,5 +1,8 @@
-import axiosAPI from 'axios';
+import axios from 'axios';
 
-axiosAPI.defaults.baseURL = 'https://vidreira-backend.onrender.com';
+const axiosAPI = axios.create({
+  baseURL: 'https://vidreira-backend.onrender.com',
+  withCredentials: true,
+});
 
 export default axiosAPI;
