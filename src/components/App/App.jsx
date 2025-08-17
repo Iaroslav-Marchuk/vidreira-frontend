@@ -49,8 +49,8 @@ const App = () => {
             path="statistics"
             element={<PrivateRoute element={<StatisticsPage />} />}
           />
-          <Route path="*" element={<NotFoundPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

@@ -7,9 +7,12 @@ import { useState } from 'react';
 
 import css from './UserMenu.module.css';
 import { logout } from '../../redux/auth/operations.js';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from '../../redux/auth/selectors.js';
 
 const UserMenu = () => {
+  const user = useSelector(selectUser);
+
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
@@ -20,7 +23,7 @@ const UserMenu = () => {
 
   return (
     <div className={css.wrapper}>
-      <p className={css.avatar}>S</p>
+      <p className={css.avatar}>{user.name[0]}</p>
       <Popover.Root open={open} onOpenChange={setOpen}>
         <Popover.Trigger>
           <FaAngleDown />
@@ -34,8 +37,8 @@ const UserMenu = () => {
           >
             <div className={css.menu}>
               <div className={css.userBlock}>
-                <p className={css.avatarMini}>S</p>
-                <p className={css.text}>UserName</p>
+                <p className={css.avatarMini}>{user.name[0]}</p>
+                <p className={css.text}>{user.name}</p>
               </div>
 
               <NavLink className={css.link} to="/profile" onClick={handleClose}>

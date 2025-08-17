@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: auto;
+}
+
+.title {
+  font-size: 72px;
+  margin-bottom: 48px;
+}
+
+.text {
+  font-size: 20px;
+  margin-bottom: 48px;
+}
+
+.link {
+  background-color: var(--color-btn-bg);
+  color: var(--color-btn-txt);
+  padding: 8px 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: var(--border-radius);
+}
+
+.link:hover {
+  background-color: var(--color-btn-hover-bg);
+}

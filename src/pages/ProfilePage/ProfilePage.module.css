@@ -1,0 +1,75 @@
+.wrapper {
+  margin-top: 100px;
+  display: flex;
+  gap: 20px;
+}
+
+.profileWrapper {
+  padding: 16px;
+  border: solid var(--color-border) 1px;
+  border-radius: var(--border-radius);
+  width: 360px;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  width: 48px;
+  font-size: 28px;
+  color: var(--color-btn-txt);
+  background-color: var(--color-btn-bg);
+  border: 3px solid var(--color-btn-hover-bg);
+  border-radius: 100%;
+  margin-bottom: 36px;
+}
+
+.list {
+  padding-left: 24px;
+  margin-bottom: 36px;
+}
+
+.item {
+  padding-bottom: 12px;
+}
+
+.span {
+  font-weight: 700;
+}
+
+.btn {
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 8px 16px;
+  border: none;
+  text-align: center;
+  border-radius: var(--border-radius);
+  background-color: var(--color-btn-bg);
+  color: var(--color-btn-txt);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin: 0 auto;
+}
+
+.btn:hover {
+  background-color: var(--color-btn-hover-bg);
+}
+
+.svg {
+  margin-right: 8px;
+}
+
+.activityWrapper {
+  width: calc(100% - 380px);
+  padding: 16px;
+  border: solid var(--color-border) 1px;
+  border-radius: var(--border-radius);
+}
+
+.title {
+  /* display: block; */
+  font-size: 18px;
+  margin: 0 auto 24px;
+  text-align: center;
+}
