@@ -1,0 +1,20 @@
+.wrapper {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrappвівer {
+  position: fixed; /* накладення поверх всього */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* вся висота вікна */
+  display: flex;
+  justify-content: center; /* горизонтальне центрування */
+  align-items: center; /* вертикальне центрування */
+  background: rgba(255, 255, 255, 0.5); /* опційно */
+  z-index: 1000; /* поверх всіх елементів */
+}

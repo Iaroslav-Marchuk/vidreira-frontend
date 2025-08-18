@@ -12,6 +12,7 @@ import StatisticsPage from '../../pages/StatisticsPage/StatisticsPage.jsx';
 
 import Layout from '../Layout/Layout.jsx';
 
+import Loader from '../Loader/Loader.jsx';
 import PrivateRoute from '../PrivateRoute.jsx';
 import RestrictedRoute from '../RestrictedRoute.jsx';
 import { selectIsRefreshing } from '../../redux/auth/selectors.js';
@@ -26,10 +27,11 @@ const App = () => {
   }, [dispatch]);
 
   return isRefreshing ? (
-    <strong>Refreshing user...</strong>
+    <Loader loadingState={isRefreshing} />
   ) : (
     <>
       <Toaster position="top-right" reverseOrder={false} />
+
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
