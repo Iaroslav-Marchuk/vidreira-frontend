@@ -1,10 +1,14 @@
-import { Formik, Form, Field, FieldArray } from 'formik';
+import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+
+import { glassOptions } from '../../constants/glassOptions.js';
 
 import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
 
-import css from './OrderForm.module.css';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/auth/selectors.js';
+
+import css from './OrderForm.module.css';
 
 const initialValues = {
   EP: '',
@@ -27,6 +31,45 @@ const initialValues = {
   ],
 };
 
+const OrderSchema = Yup.object().shape({
+  EP: Yup.number()
+    .positive('O valor deve ser um número positivo.')
+    .integer('Valida se um número é um inteiro.')
+    .required('Campo obrigatório'),
+  cliente: Yup.string()
+    .min(3, 'Mínimo 3 caracteres')
+    .max(40, 'Máximo de 40 caracteres')
+    .required('Campo obrigatório'),
+  items: Yup.array().of(
+    Yup.object().shape({
+      category: Yup.string().required('Selecione uma categoria'),
+      type: Yup.string().required('Selecione um tipo'),
+      sizeX: Yup.number()
+        .transform(value => (value === '' ? undefined : Number(value)))
+        .typeError('Deve ser um número')
+        .positive('Deve ser positivo')
+        .integer('Deve ser inteiro')
+        .required('Campo obrigatório'),
+      sizeY: Yup.number()
+        .transform(value => (value === '' ? undefined : Number(value)))
+        .typeError('Deve ser um número')
+        .positive('Deve ser positivo')
+        .integer('Deve ser inteiro')
+        .required('Campo obrigatório'),
+      quantity: Yup.number()
+        .transform(value => (value === '' ? undefined : Number(value)))
+        .typeError('Deve ser um número')
+        .positive('Deve ser positivo')
+        .integer('Deve ser inteiro')
+        .required('Campo obrigatório'),
+      reason: Yup.string()
+        .min(3, 'Mínimo 3 caracteres')
+        .max(40, 'Máximo de 40 caracteres')
+        .required('Campo obrigatório'),
+    })
+  ),
+});
+
 const OrderForm = ({ isOpen, onClose }) => {
   const user = useSelector(selectUser);
 
@@ -34,9 +77,12 @@ const OrderForm = ({ isOpen, onClose }) => {
     <ModalOverlay isOpen={isOpen} onClose={onClose}>
       <Formik
         initialValues={initialValues}
+        validationSchema={OrderSchema}
+        validateOnBlur={true}
+        validateOnChange={false}
         // onSubmit={values => console.log(values)} ----------------- треба відредагувати
       >
-        {({ values }) => (
+        {({ values, setFieldValue }) => (
           <Form className={css.form}>
             <div className={css.wrapper}>
               <fieldset className={css.fieldset}>
@@ -60,10 +106,10 @@ const OrderForm = ({ isOpen, onClose }) => {
                 <label className={css.label}>
                   Operador
                   <Field
-                    className={css.inputLocal}
+                    className={css.inputLocalOperator}
                     name="local.operator"
                     value={user.name}
-                    // disabled/readOnly
+                    readOnly
                   />
                 </label>
               </fieldset>
@@ -73,6 +119,11 @@ const OrderForm = ({ isOpen, onClose }) => {
                 <label className={css.label}>
                   EP
                   <Field className={css.inputEncomenda} type="text" name="EP" />
+                  <ErrorMessage
+                    className={css.error}
+                    name="EP"
+                    component="span"
+                  />
                 </label>
 
                 <label className={css.label}>
@@ -82,12 +133,18 @@ const OrderForm = ({ isOpen, onClose }) => {
                     type="text"
                     name="cliente"
                   />
+                  <ErrorMessage
+                    className={css.error}
+                    name="cliente"
+                    component="span"
+                  />
                 </label>
               </fieldset>
             </div>
+
             <fieldset className={css.fieldsetArray}>
               <legend className={css.legend}>Vidro</legend>
-              <FieldArray name="order.units">
+              <FieldArray name="items">
                 {({ remove, push }) => (
                   <>
                     {values.items.map((item, index) => (
@@ -98,15 +155,36 @@ const OrderForm = ({ isOpen, onClose }) => {
                             className={css.selectUnit}
                             as="select"
                             name={`items[${index}].category`}
+                            onChange={e => {
+                              const newCategory = e.target.value;
+
+                              setFieldValue(
+                                `items[${index}].category`,
+                                newCategory
+                              );
+                              setFieldValue(`items[${index}].type`, '');
+                              setFieldValue(`items[${index}].sizeZ`, '');
+                              setFieldValue(`items[${index}].temper`, false);
+                            }}
                           >
                             <option value="" disabled>
                               --
                             </option>
-                            <option value="simple">Liso</option>
-                            <option value="capped">Capa</option>
-                            <option value="laminated">Laminado</option>
+                            {Object.entries(glassOptions).map(
+                              ([key, category]) => (
+                                <option key={key} value={key}>
+                                  {category.label}
+                                </option>
+                              )
+                            )}
                           </Field>
+                          <ErrorMessage
+                            className={css.error}
+                            name={`items[${index}].category`}
+                            component="span"
+                          />
                         </label>
+
                         <label className={css.label}>
                           Tipo
                           <Field
@@ -114,41 +192,43 @@ const OrderForm = ({ isOpen, onClose }) => {
                             as="select"
                             name={`items[${index}].type`}
                             disabled={!item.category}
+                            onChange={e => {
+                              const newType = e.target.value;
+                              setFieldValue(`items[${index}].type`, newType);
+
+                              const typeCfg =
+                                glassOptions[item.category].types[newType];
+
+                              if (typeCfg.temper === 'yes') {
+                                setFieldValue(`items[${index}].temper`, true);
+                              } else if (typeCfg.temper === 'no') {
+                                setFieldValue(`items[${index}].temper`, false);
+                              } else {
+                                setFieldValue(`items[${index}].temper`, false);
+                              }
+
+                              setFieldValue(`items[${index}].sizeZ`, '');
+                            }}
                           >
-                            {item.category === 'simple' && (
-                              <>
-                                <option value="" disabled>
-                                  --
+                            <option value="" disabled>
+                              --
+                            </option>
+                            {item.category &&
+                              Object.entries(
+                                glassOptions[item.category].types
+                              ).map(([key, type]) => (
+                                <option key={key} value={key}>
+                                  {type.label}
                                 </option>
-                                <option value="vfc">Incolor</option>
-                                <option value="vfb">Bronze</option>
-                                <option value="vfg">Gris</option>
-                              </>
-                            )}
-
-                            {item.category === 'capped' && (
-                              <>
-                                <option value="" disabled>
-                                  --
-                                </option>
-                                <option value="144">SKN144</option>
-                                <option value="154">SKN154</option>
-                                <option value="183">SKN183</option>
-                              </>
-                            )}
-
-                            {item.category === 'laminated' && (
-                              <>
-                                <option value="" disabled>
-                                  --
-                                </option>
-                                <option value="lamc">Lamanado Claro</option>
-                                <option value="lamopal">Opalino</option>
-                                <option value="lamcapa">Lam Capa</option>
-                              </>
-                            )}
+                              ))}
                           </Field>
+                          <ErrorMessage
+                            className={css.error}
+                            name={`items[${index}].type`}
+                            component="span"
+                          />
                         </label>
+
                         <label className={css.label}>
                           Espressura
                           <Field
@@ -157,31 +237,18 @@ const OrderForm = ({ isOpen, onClose }) => {
                             name={`items[${index}].sizeZ`}
                             disabled={!item.category}
                           >
-                            {(item.category === 'simple' ||
-                              item.category === 'capped') && (
-                              <>
-                                <option value="" disabled>
-                                  --
+                            <option value="" disabled>
+                              --
+                            </option>
+                            {item.category &&
+                              item.type &&
+                              glassOptions[item.category].types[
+                                item.type
+                              ].thickness.map(t => (
+                                <option key={t} value={t}>
+                                  {t}
                                 </option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="8">8</option>
-                                <option value="10">10</option>
-                              </>
-                            )}
-
-                            {item.category === 'laminated' && (
-                              <>
-                                <option value="" disabled>
-                                  --
-                                </option>
-                                <option value="3.3">3.3</option>
-                                <option value="4.4">4.4</option>
-                                <option value="5.5">5.5</option>
-                                <option value="6.6">6.6</option>
-                              </>
-                            )}
+                              ))}
                           </Field>
                         </label>
 
@@ -190,16 +257,28 @@ const OrderForm = ({ isOpen, onClose }) => {
                           <div className={css.inlineInputs}>
                             <Field
                               className={css.inputSize}
-                              type="number"
+                              type="text"
                               name={`items[${index}].sizeX`}
                             />
+
                             <span className={css.multiply}>×</span>
+
                             <Field
                               className={css.inputSize}
-                              type="number"
+                              type="text"
                               name={`items[${index}].sizeY`}
                             />
                           </div>
+                          <ErrorMessage
+                            className={css.error}
+                            name={`items[${index}].sizeX`}
+                            component="span"
+                          />
+                          <ErrorMessage
+                            className={css.error}
+                            name={`items[${index}].sizeY`}
+                            component="span"
+                          />
                         </label>
 
                         <label
@@ -212,6 +291,12 @@ const OrderForm = ({ isOpen, onClose }) => {
                             id={`temper-${index}`}
                             type="checkbox"
                             name={`items[${index}].temper`}
+                            disabled={
+                              item.category &&
+                              item.type &&
+                              glassOptions[item.category].types[item.type]
+                                .temper !== 'both'
+                            }
                           />
                         </label>
 
@@ -219,8 +304,13 @@ const OrderForm = ({ isOpen, onClose }) => {
                           Quantidade
                           <Field
                             className={css.inputQuantity}
-                            type="number"
+                            type="text"
                             name={`items[${index}].quantity`}
+                          />
+                          <ErrorMessage
+                            className={css.error}
+                            name={`items[${index}].quantity`}
+                            component="span"
                           />
                         </label>
 
@@ -230,6 +320,11 @@ const OrderForm = ({ isOpen, onClose }) => {
                             className={css.textarea}
                             type="text"
                             name={`items[${index}].reason`}
+                          />
+                          <ErrorMessage
+                            className={css.error}
+                            name={`items[${index}].reason`}
+                            component="span"
                           />
                         </label>
 

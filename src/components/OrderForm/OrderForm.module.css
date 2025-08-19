@@ -178,3 +178,12 @@
   background-color: #4336f4;
   color: white;
 }
+
+.error {
+  color: var(--color-error);
+  font-size: 12px;
+  margin-top: -8px;
+  margin-bottom: 8px;
+  padding-left: 4px;
+  font-weight: 500;
+}
