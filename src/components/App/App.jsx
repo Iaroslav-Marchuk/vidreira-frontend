@@ -15,16 +15,19 @@ import Layout from '../Layout/Layout.jsx';
 import Loader from '../Loader/Loader.jsx';
 import PrivateRoute from '../PrivateRoute.jsx';
 import RestrictedRoute from '../RestrictedRoute.jsx';
-import { selectIsRefreshing } from '../../redux/auth/selectors.js';
-import { refreshUser } from '../../redux/auth/operations.js';
+import { selectIsRefreshing, selectUser } from '../../redux/auth/selectors.js';
+import { getUser } from '../../redux/auth/operations.js';
 
 const App = () => {
   const dispatch = useDispatch();
   const isRefreshing = useSelector(selectIsRefreshing);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
-    dispatch(refreshUser());
-  }, [dispatch]);
+    if (!user.name) {
+      dispatch(getUser());
+    }
+  }, [user, dispatch]);
 
   return isRefreshing ? (
     <Loader loadingState={isRefreshing} />

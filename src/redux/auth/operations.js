@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
       const loginResponse = await axiosAPI.post('/auth/login', values);
       setAuthHeader(loginResponse.data.data.accessToken);
 
-      const profileResponse = await axiosAPI.get('/auth/profile', {
+      const profileResponse = await axiosAPI.get('/auth/currentUser', {
         withCredentials: true,
       });
 
@@ -52,11 +52,11 @@ export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   }
 });
 
-export const refreshUser = createAsyncThunk(
-  'auth/profile',
+export const getUser = createAsyncThunk(
+  'auth/currentUser',
   async (_, thunkAPI) => {
     try {
-      const response = await axiosAPI.get('/auth/profile', {
+      const response = await axiosAPI.get('/auth/currentUser', {
         withCredentials: true,
       });
 
