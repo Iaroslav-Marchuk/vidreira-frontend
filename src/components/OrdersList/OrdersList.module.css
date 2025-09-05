@@ -1,0 +1,13 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.header th {
+  background-color: #60a5fa;
+  color: #ffffff;
+  text-align: center;
+  padding: 8px;
+  border-radius: 4px;
+  border-bottom: 2px solid #ccc;
+}

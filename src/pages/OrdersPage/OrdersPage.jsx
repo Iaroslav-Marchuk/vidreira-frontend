@@ -18,6 +18,7 @@ const OrdersPage = () => {
         <input type="text" />
         <input type="text" />
       </div>
+
       <Button className={css.btn} onClick={openModal}>
         ➕ Novo Pedido
       </Button>

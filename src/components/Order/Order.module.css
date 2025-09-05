@@ -1,0 +1,6 @@
+.row td {
+  background-color: #f0f4f8;
+  color: var(--color-text);
+  padding: 4px;
+  text-align: center;
+}

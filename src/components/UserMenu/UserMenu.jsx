@@ -4,6 +4,7 @@ import { Popover } from 'radix-ui';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
 
 import Loader from '../Loader/Loader.jsx';
 
@@ -19,9 +20,14 @@ const UserMenu = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
-  const handleLogout = () => {
-    setOpen(false);
-    dispatch(logout());
+  const handleLogout = async () => {
+    try {
+      setOpen(false);
+      await dispatch(logout()).unwrap();
+      toast.success('Logged out successfully!');
+    } catch (error) {
+      toast.error('Failed to log out. ' + error);
+    }
   };
 
   return (

@@ -1,0 +1,13 @@
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-header-bg);
+  border-radius: var(--border-radius);
+  height: 80px;
+}
+
+.text {
+  font-size: var(--font-size-sm);
+  color: var(--color-tx);
+}
