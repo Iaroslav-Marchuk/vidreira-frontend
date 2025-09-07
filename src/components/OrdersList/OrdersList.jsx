@@ -9,6 +9,20 @@ import css from './OrdersList.module.css';
 const OrdersList = () => {
   const allOrders = useSelector(selectAllOrders);
 
+  const flattenedRows = allOrders.flatMap(order =>
+    order.items.map(item => ({
+      ...item,
+      itemId: item._id,
+      orderId: order._id,
+      EP: order.EP,
+      cliente: order.cliente,
+      status: order.status,
+      createdAt: order.createdAt,
+      zona: order.local.zona,
+      operator: order.local.operator,
+    }))
+  );
+
   return (
     <table className={css.table}>
       <thead className={css.header}>
@@ -26,8 +40,14 @@ const OrdersList = () => {
         </tr>
       </thead>
       <tbody>
-        {allOrders.map((order, index) => (
-          <Order key={order._id} order={order} index={index} />
+        {flattenedRows.map((row, index) => (
+          <Order
+            key={`${row.itemId}-${index}`}
+            row={row}
+            index={index}
+            itemId={row.itemId}
+            orderId={row.orderId}
+          />
         ))}
       </tbody>
     </table>
@@ -35,27 +55,3 @@ const OrdersList = () => {
 };
 
 export default OrdersList;
-
-[
-  {
-    EP: 101,
-    cliente: 'João Silva',
-    local: {
-      zona: 'L1',
-      operator: 'OperatorA',
-    },
-    status: 'created',
-    items: [
-      {
-        category: 'Vidro',
-        type: 'Temperado',
-        temper: true,
-        sizeX: 100,
-        sizeY: 50,
-        sizeZ: '8mm',
-        quantity: 2,
-        reason: 'Janela sala',
-      },
-    ],
-  },
-];

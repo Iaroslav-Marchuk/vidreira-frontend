@@ -24,3 +24,16 @@ export const getOrderById = createAsyncThunk(
     }
   }
 );
+
+export const addOrder = createAsyncThunk(
+  'orders/addOrder',
+  async (values, thunkAPI) => {
+    try {
+      const response = await axiosAPI.post('/orders', values);
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

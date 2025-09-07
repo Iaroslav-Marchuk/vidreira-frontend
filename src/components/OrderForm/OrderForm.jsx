@@ -1,14 +1,16 @@
 import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import toast from 'react-hot-toast';
 
 import { glassOptions } from '../../constants/glassOptions.js';
 
 import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/auth/selectors.js';
 
 import css from './OrderForm.module.css';
+import { addOrder } from '../../redux/orders/operations.js';
 
 const initialValues = {
   EP: '',
@@ -56,6 +58,10 @@ const OrderSchema = Yup.object().shape({
         .positive('Deve ser positivo')
         .integer('Deve ser inteiro')
         .required('Campo obrigatório'),
+      sizeZ: Yup.string()
+        .required('Selecione uma espessura')
+        .min(1, 'Mínimo 1 caractere')
+        .max(20, 'Máximo 20 caracteres'),
       quantity: Yup.number()
         .transform(value => (value === '' ? undefined : Number(value)))
         .typeError('Deve ser um número')
@@ -72,26 +78,36 @@ const OrderSchema = Yup.object().shape({
 
 const OrderForm = ({ isOpen, onClose }) => {
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
-  // const handleSubmit = async (values, actions) => {};
+  const handleSubmit = async (values, actions) => {
+    const payload = {
+      EP: Number(values.EP),
+      cliente: values.cliente,
+      local: {
+        zona: values.local.zona,
+      },
+      items: values.items.map(item => ({
+        category: item.category,
+        type: item.type,
+        temper: Boolean(item.temper),
+        sizeX: Number(item.sizeX),
+        sizeY: Number(item.sizeY),
+        sizeZ: String(item.sizeZ),
+        quantity: Number(item.quantity),
+        reason: item.reason,
+      })),
+    };
 
-  // const handleSubmit = async (values, actions) => {
-
-  //   try {
-  //     await dispatch(
-  //       addContact({
-  //         name: values.name,
-  //         number: values.number,
-  //       })
-  //     ).unwrap();
-
-  //     toast.success('Contact added succesfully!');
-  //     actions.resetForm();
-  //     onClose();
-  //   } catch (error) {
-  //     toast.error('Failed to add contact.' + error);
-  //   }
-  // };
+    try {
+      await dispatch(addOrder(payload)).unwrap();
+      toast.success('Order added successfully!');
+      actions.resetForm();
+      onClose();
+    } catch (error) {
+      toast.error('Failed to add new order: ' + error);
+    }
+  };
 
   return (
     <ModalOverlay isOpen={isOpen} onClose={onClose}>
@@ -100,7 +116,7 @@ const OrderForm = ({ isOpen, onClose }) => {
         validationSchema={OrderSchema}
         validateOnBlur={true}
         validateOnChange={false}
-        // onSubmit={handleSubmit}
+        onSubmit={handleSubmit}
       >
         {({ values, setFieldValue }) => (
           <Form className={css.form}>
@@ -125,9 +141,8 @@ const OrderForm = ({ isOpen, onClose }) => {
 
                 <label className={css.label}>
                   Operador
-                  <Field
+                  <input
                     className={css.inputLocalOperator}
-                    name="local.operator"
                     value={user.name}
                     readOnly
                   />

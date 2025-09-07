@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllOrders, getOrderById } from './operations.js';
+import { addOrder, getAllOrders, getOrderById } from './operations.js';
 import { logout } from '../auth/operations.js';
 
 const handlePending = state => {
@@ -46,7 +46,15 @@ const ordersSlice = createSlice({
 
       .addCase(logout.fulfilled, state => {
         (state.allOrders = []), (state.currentOrder = null);
-      });
+      })
+
+      .addCase(addOrder.pending, handlePending)
+      .addCase(addOrder.fulfilled, (state, action) => {
+        state.isOrdersLoading = false;
+        state.error = null;
+        state.allOrders.push(action.payload.newOrder);
+      })
+      .addCase(addOrder.rejected, handleRejected);
   },
 });
 

@@ -11,6 +11,7 @@ import {
   selectIsOrdersLoading,
 } from '../../redux/orders/selectors.js';
 import { getAllOrders } from '../../redux/orders/operations.js';
+import Loader from '../../components/Loader/Loader.jsx';
 
 const OrdersPage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -32,15 +33,14 @@ const OrdersPage = () => {
         <input type="text" />
         <input type="text" />
       </div>
-
       <Button className={css.btn} onClick={openModal}>
         ➕ Novo Pedido
       </Button>
-
       {modalIsOpen && <OrderForm isOpen={modalIsOpen} onClose={closeModal} />}
 
-      {allOrders.length > 0 && <OrdersList />}
+      {isLoading && <Loader loadingState={isLoading} />}
 
+      {allOrders.length > 0 && <OrdersList />}
       {!isLoading && allOrders.length === 0 && (
         <p className={css.noResults}>Não existe nenhum pedido!</p>
       )}

@@ -78,6 +78,17 @@
   border-radius: 6px;
 }
 
+.inputLocalOperator {
+  width: 200px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background-color: #e0e0e0; /* світло-сірий фон */
+  color: #555; /* трохи темніший текст для контрасту */
+  cursor: not-allowed; /* курсор показує, що поле недоступне */
+}
+
 .fieldsetArray {
   display: flex;
   flex-direction: column;
