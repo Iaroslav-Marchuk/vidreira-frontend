@@ -1,6 +1,7 @@
 .table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 4px 0px;
 }
 
 .header th {

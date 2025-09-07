@@ -21,7 +21,8 @@ axios.interceptors.response.use(
           {},
           { withCredentials: true }
         );
-        const { accessToken } = refreshResponse.data.data;
+        const { accessToken } = refreshResponse.data;
+
         setAuthHeader(accessToken);
         return axiosAPI(originalRequest);
       } catch (error) {

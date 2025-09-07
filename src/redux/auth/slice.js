@@ -10,6 +10,7 @@ const handleRejected = (state, action) => {
   state.isLoading = false;
   state.error = action.payload;
 };
+
 const authSlice = createSlice({
   name: 'auth',
 
@@ -48,7 +49,6 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, state => {
         state.isLoading = false;
         state.user = { name: null, role: null };
-        // state.items = [];                   -------- додати, коли буде стан для ордерс
         state.token = null;
         state.isLoggedIn = false;
         state.error = null;

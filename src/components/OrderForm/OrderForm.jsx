@@ -73,6 +73,26 @@ const OrderSchema = Yup.object().shape({
 const OrderForm = ({ isOpen, onClose }) => {
   const user = useSelector(selectUser);
 
+  // const handleSubmit = async (values, actions) => {};
+
+  // const handleSubmit = async (values, actions) => {
+
+  //   try {
+  //     await dispatch(
+  //       addContact({
+  //         name: values.name,
+  //         number: values.number,
+  //       })
+  //     ).unwrap();
+
+  //     toast.success('Contact added succesfully!');
+  //     actions.resetForm();
+  //     onClose();
+  //   } catch (error) {
+  //     toast.error('Failed to add contact.' + error);
+  //   }
+  // };
+
   return (
     <ModalOverlay isOpen={isOpen} onClose={onClose}>
       <Formik
@@ -80,7 +100,7 @@ const OrderForm = ({ isOpen, onClose }) => {
         validationSchema={OrderSchema}
         validateOnBlur={true}
         validateOnChange={false}
-        // onSubmit={values => console.log(values)} ----------------- треба відредагувати
+        // onSubmit={handleSubmit}
       >
         {({ values, setFieldValue }) => (
           <Form className={css.form}>

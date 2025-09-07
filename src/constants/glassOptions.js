@@ -22,7 +22,7 @@ export const glassOptions = {
   },
 
   coolLite: {
-    label: 'Cool Lite',
+    label: 'Cool-Lite',
     types: {
       ST120: {
         label: 'ST 120',

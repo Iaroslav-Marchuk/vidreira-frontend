@@ -26,15 +26,15 @@ export const login = createAsyncThunk(
   async (values, thunkAPI) => {
     try {
       const loginResponse = await axiosAPI.post('/auth/login', values);
-      setAuthHeader(loginResponse.data.data.accessToken);
+      setAuthHeader(loginResponse.data.accessToken);
 
       const profileResponse = await axiosAPI.get('/auth/currentUser', {
         withCredentials: true,
       });
 
       return {
-        accessToken: loginResponse.data.data.accessToken,
-        user: profileResponse.data.data,
+        accessToken: loginResponse.data.accessToken,
+        user: profileResponse.data.user,
       };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
@@ -60,7 +60,10 @@ export const getUser = createAsyncThunk(
         withCredentials: true,
       });
 
-      return response.data.data;
+      const { accessToken } = response.data;
+      if (accessToken) setAuthHeader(accessToken);
+
+      return response.data.user;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
     }

@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
 
-import { CgClose } from 'react-icons/cg';
+import { CircleX } from 'lucide-react';
 
 import css from './ModalOverlay.module.css';
 
@@ -13,7 +13,7 @@ const ModalOverlay = ({ children, isOpen, onClose }) => {
       overlayClassName={css.overlay}
     >
       <button type="button" onClick={onClose} className={css.btn}>
-        <CgClose />
+        <CircleX size={26} strokeWidth={1} />
       </button>
       {children}
     </Modal>
