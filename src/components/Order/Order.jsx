@@ -7,11 +7,15 @@ import css from './Order.module.css';
 import { useDispatch } from 'react-redux';
 import { getOrderById } from '../../redux/orders/operations.js';
 import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
+import { clearCurrentOrder } from '../../redux/orders/slice.js';
 
 const Order = ({ row, index, itemId, orderId }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
+  const closeModal = () => {
+    setModalIsOpen(false);
+    dispatch(clearCurrentOrder());
+  };
 
   const dispatch = useDispatch();
 
