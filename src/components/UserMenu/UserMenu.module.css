@@ -10,13 +10,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   height: 48px;
   width: 48px;
   font-size: 28px;
+  line-height: 1;
+  box-sizing: border-box;
   color: var(--color-btn-txt);
   background-color: var(--color-btn-bg);
   border: 3px solid var(--color-btn-hover-bg);
   border-radius: 100%;
+  /* padding-bottom: 5px; */
 }
 
 .popoverContent {

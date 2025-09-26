@@ -1,6 +1,7 @@
 import { Field, Form, Formik, ErrorMessage } from 'formik';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
+import { UserRound, KeyRound } from 'lucide-react';
 
 import Button from '../Button/Button.jsx';
 import Loader from '../Loader/Loader.jsx';
@@ -39,16 +40,20 @@ const RegistrationForm = () => {
       >
         <Form className={css.form}>
           <div className={css.formGroup}>
-            <Field
-              className={css.formInput}
-              type="text"
-              name="name"
-              id="name"
-              placeholder=" "
-            />
-            <label className={css.formLabel} htmlFor="name">
-              Nome
-            </label>
+            <div className={css.input}>
+              <Field
+                className={css.formInput}
+                type="text"
+                name="name"
+                id="name"
+                placeholder=" "
+              />
+              <label className={css.formLabel} htmlFor="name">
+                Nome
+              </label>
+              <UserRound className={css.inputIcon} />
+            </div>
+
             <ErrorMessage name="name" component="div" className={css.error} />
           </div>
 
@@ -64,16 +69,20 @@ const RegistrationForm = () => {
           </div>
 
           <div className={css.formGroup}>
-            <Field
-              className={css.formInput}
-              type="password"
-              name="password"
-              id="password"
-              placeholder=" "
-            />
-            <label className={css.formLabel} htmlFor="password">
-              Palvra passe
-            </label>
+            <div className={css.input}>
+              <Field
+                className={css.formInput}
+                type="password"
+                name="password"
+                id="password"
+                placeholder=" "
+              />
+              <label className={css.formLabel} htmlFor="password">
+                Palvra passe
+              </label>
+              <KeyRound className={css.inputIcon} />
+            </div>
+
             <ErrorMessage
               name="password"
               component="div"

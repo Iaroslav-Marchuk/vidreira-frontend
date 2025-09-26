@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/auth/selectors.js';
 
 import css from './OrderForm.module.css';
-import { addOrder } from '../../redux/orders/operations.js';
+import { createOrMergeOrder } from '../../redux/orders/operations.js';
 
 const initialValues = {
   EP: '',
@@ -34,6 +34,9 @@ const initialValues = {
 };
 
 const OrderSchema = Yup.object().shape({
+  local: Yup.object().shape({
+    zona: Yup.string().required('Escolha uma opção.'),
+  }),
   EP: Yup.number()
     .positive('O valor deve ser um número positivo.')
     .integer('Valida se um número é um inteiro.')
@@ -44,8 +47,8 @@ const OrderSchema = Yup.object().shape({
     .required('Campo obrigatório'),
   items: Yup.array().of(
     Yup.object().shape({
-      category: Yup.string().required('Selecione uma categoria'),
-      type: Yup.string().required('Selecione um tipo'),
+      category: Yup.string().required('Escolha uma opção.'),
+      type: Yup.string().required('Escolha uma opção.'),
       sizeX: Yup.number()
         .transform(value => (value === '' ? undefined : Number(value)))
         .typeError('Deve ser um número')
@@ -59,7 +62,7 @@ const OrderSchema = Yup.object().shape({
         .integer('Deve ser inteiro')
         .required('Campo obrigatório'),
       sizeZ: Yup.string()
-        .required('Selecione uma espessura')
+        .required('Escolha uma opção.')
         .min(1, 'Mínimo 1 caractere')
         .max(20, 'Máximo 20 caracteres'),
       quantity: Yup.number()
@@ -100,7 +103,7 @@ const OrderForm = ({ isOpen, onClose }) => {
     };
 
     try {
-      await dispatch(addOrder(payload)).unwrap();
+      await dispatch(createOrMergeOrder(payload)).unwrap();
       toast.success('Order added successfully!');
       actions.resetForm();
       onClose();
@@ -137,6 +140,11 @@ const OrderForm = ({ isOpen, onClose }) => {
                     <option value="L2">L2</option>
                     <option value="L3">L3</option>
                   </Field>
+                  <ErrorMessage
+                    className={css.error}
+                    name="local.zona"
+                    component="span"
+                  />
                 </label>
 
                 <label className={css.label}>
@@ -285,35 +293,43 @@ const OrderForm = ({ isOpen, onClose }) => {
                                 </option>
                               ))}
                           </Field>
+                          <ErrorMessage
+                            className={css.error}
+                            name={`items[${index}].sizeZ`}
+                            component="span"
+                          />
                         </label>
 
                         <label className={css.label}>
                           Medida
                           <div className={css.inlineInputs}>
-                            <Field
-                              className={css.inputSize}
-                              type="text"
-                              name={`items[${index}].sizeX`}
-                            />
+                            <div className={css.inputWrapper}>
+                              <Field
+                                className={css.inputSize}
+                                type="text"
+                                name={`items[${index}].sizeX`}
+                              />
+                              <ErrorMessage
+                                className={css.error}
+                                name={`items[${index}].sizeX`}
+                                component="span"
+                              />
+                            </div>
 
                             <span className={css.multiply}>×</span>
-
-                            <Field
-                              className={css.inputSize}
-                              type="text"
-                              name={`items[${index}].sizeY`}
-                            />
+                            <div className={css.inputWrapper}>
+                              <Field
+                                className={css.inputSize}
+                                type="text"
+                                name={`items[${index}].sizeY`}
+                              />
+                              <ErrorMessage
+                                className={css.error}
+                                name={`items[${index}].sizeY`}
+                                component="span"
+                              />
+                            </div>
                           </div>
-                          <ErrorMessage
-                            className={css.error}
-                            name={`items[${index}].sizeX`}
-                            component="span"
-                          />
-                          <ErrorMessage
-                            className={css.error}
-                            name={`items[${index}].sizeY`}
-                            component="span"
-                          />
                         </label>
 
                         <label

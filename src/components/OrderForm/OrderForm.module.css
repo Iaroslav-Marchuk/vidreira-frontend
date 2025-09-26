@@ -23,11 +23,9 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   margin-bottom: 24px;
-  font-family: Arial, sans-serif;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   width: 50%;
 }
-
 .legend {
   font-size: 16px;
   font-weight: 600;
@@ -37,11 +35,13 @@
 .label {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 6px;
   font-size: 14px;
   font-weight: 600;
   color: #333;
   white-space: nowrap;
+  position: relative;
 }
 
 .selectLocal {
@@ -84,9 +84,9 @@
   font-size: 14px;
   border: 1px solid #bbb;
   border-radius: 6px;
-  background-color: #e0e0e0; /* світло-сірий фон */
-  color: #555; /* трохи темніший текст для контрасту */
-  cursor: not-allowed; /* курсор показує, що поле недоступне */
+  background-color: #e0e0e0;
+  color: #555;
+  cursor: not-allowed;
 }
 
 .fieldsetArray {
@@ -102,9 +102,8 @@
 
 .row {
   display: flex;
-  align-items: flex-end;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 36px;
   border-bottom: 1px solid #eee;
 }
 
@@ -142,12 +141,33 @@
   cursor: pointer;
 }
 
+.inlineInputs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .inputQuantity {
   width: 40px;
   padding: 6px 10px;
   font-size: 14px;
   border: 1px solid #bbb;
   border-radius: 6px;
+}
+
+.checkbox {
+  width: 28px;
+  height: 28px;
+  border-color: #333;
+  margin-top: 0;
+  outline: none;
+  border: none;
 }
 
 .textarea {
@@ -177,6 +197,9 @@
 .buttonDelete {
   background-color: #f44336;
   color: white;
+
+  align-self: flex-start;
+  margin-top: 22px;
 }
 
 .buttonAdd {
@@ -190,11 +213,19 @@
   color: white;
 }
 
+.errorWrapper {
+  min-height: 16px;
+}
+
 .error {
   color: var(--color-error);
   font-size: 12px;
-  margin-top: -8px;
-  margin-bottom: 8px;
+  margin: 2px 0 0 0;
   padding-left: 4px;
   font-weight: 500;
+  display: block;
+  max-width: 70px;
+  word-wrap: break-word;
+  white-space: normal;
+  display: block;
 }

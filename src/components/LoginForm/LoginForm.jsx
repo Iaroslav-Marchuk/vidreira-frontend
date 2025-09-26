@@ -10,6 +10,8 @@ import { selectIsLoading } from '../../redux/auth/selectors.js';
 import css from './LoginForm.module.css';
 import Loader from '../Loader/Loader.jsx';
 
+import { UserRound, KeyRound } from 'lucide-react';
+
 const LoginForm = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
@@ -39,30 +41,37 @@ const LoginForm = () => {
       >
         <Form className={css.form}>
           <div className={css.formGroup}>
-            <Field
-              className={css.formInput}
-              type="text"
-              name="name"
-              id="name"
-              placeholder=" "
-            />
-            <label className={css.formLabel} htmlFor="name">
-              Nome
-            </label>
+            <div className={css.input}>
+              <Field
+                className={css.formInput}
+                type="text"
+                name="name"
+                id="name"
+                placeholder=" "
+              />
+              <label className={css.formLabel} htmlFor="name">
+                Nome
+              </label>
+              <UserRound className={css.inputIcon} />
+            </div>
+
             <ErrorMessage name="name" component="div" className={css.error} />
           </div>
 
           <div className={css.formGroup}>
-            <Field
-              className={css.formInput}
-              type="password"
-              name="password"
-              id="password"
-              placeholder=" "
-            />
-            <label className={css.formLabel} htmlFor="password">
-              Palvra passe
-            </label>
+            <div className={css.input}>
+              <Field
+                className={css.formInput}
+                type="password"
+                name="password"
+                id="password"
+                placeholder=" "
+              />
+              <label className={css.formLabel} htmlFor="password">
+                Palvra passe
+              </label>
+              <KeyRound className={css.inputIcon} />
+            </div>
             <ErrorMessage
               name="password"
               component="div"

@@ -1,5 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addOrder, getAllOrders, getOrderById } from './operations.js';
+import {
+  createOrMergeOrder,
+  deleteOrder,
+  deleteOrderItem,
+  getAllOrders,
+  getOrderById,
+  updateItemStatus,
+  updateOrder,
+  updateOrderItem,
+} from './operations.js';
 import { logout } from '../auth/operations.js';
 
 const handlePending = state => {
@@ -48,13 +57,114 @@ const ordersSlice = createSlice({
         (state.allOrders = []), (state.currentOrder = null);
       })
 
-      .addCase(addOrder.pending, handlePending)
-      .addCase(addOrder.fulfilled, (state, action) => {
+      .addCase(createOrMergeOrder.pending, handlePending)
+      .addCase(createOrMergeOrder.fulfilled, (state, action) => {
         state.isOrdersLoading = false;
         state.error = null;
-        state.allOrders.push(action.payload.newOrder);
+        const newOrder = action.payload;
+        const index = state.allOrders.findIndex(
+          order => order._id === newOrder._id
+        );
+        if (index !== -1) {
+          state.allOrders[index] = newOrder;
+        } else {
+          state.allOrders.push(newOrder);
+        }
+
+        state.currentOrder = newOrder;
       })
-      .addCase(addOrder.rejected, handleRejected);
+      .addCase(createOrMergeOrder.rejected, handleRejected)
+
+      .addCase(updateOrder.pending, handlePending)
+      .addCase(updateOrder.fulfilled, (state, action) => {
+        state.isOrdersLoading = false;
+        state.error = null;
+        const updatedOrder = action.payload;
+        const index = state.allOrders.findIndex(
+          order => order._id === updatedOrder._id
+        );
+        if (index !== -1) {
+          state.allOrders[index] = updatedOrder;
+        }
+        if (state.currentOrder?._id === updatedOrder._id) {
+          state.currentOrder = updatedOrder;
+        }
+      })
+      .addCase(updateOrder.rejected, handleRejected)
+
+      .addCase(updateOrderItem.pending, handlePending)
+      .addCase(updateOrderItem.fulfilled, (state, action) => {
+        state.isOrdersLoading = false;
+        state.error = null;
+        const updatedOrder = action.payload;
+        const index = state.allOrders.findIndex(
+          order => order._id === updatedOrder._id
+        );
+        if (index !== -1) {
+          state.allOrders[index] = updatedOrder;
+        }
+
+        if (state.currentOrder?._id === updatedOrder._id) {
+          state.currentOrder = updatedOrder;
+        }
+      })
+      .addCase(updateOrderItem.rejected, handleRejected)
+
+      .addCase(updateItemStatus.pending, handlePending)
+      .addCase(updateItemStatus.fulfilled, (state, action) => {
+        state.isOrdersLoading = false;
+        state.error = null;
+        const updatedOrder = action.payload;
+        const index = state.allOrders.findIndex(
+          order => order._id === updatedOrder._id
+        );
+        if (index !== -1) {
+          state.allOrders[index] = updatedOrder;
+        }
+        if (state.currentOrder?._id === updatedOrder._id) {
+          state.currentOrder = updatedOrder;
+        }
+      })
+      .addCase(updateItemStatus.rejected, handleRejected)
+
+      .addCase(deleteOrder.pending, handlePending)
+      .addCase(deleteOrder.fulfilled, (state, action) => {
+        state.isOrdersLoading = false;
+        state.error = null;
+        state.allOrders = state.allOrders.filter(
+          order => order._id != action.payload
+        );
+      })
+      .addCase(deleteOrder.rejected, handleRejected)
+
+      .addCase(deleteOrderItem.pending, handlePending)
+      .addCase(deleteOrderItem.fulfilled, (state, action) => {
+        state.isOrdersLoading = false;
+        state.error = null;
+        const updatedOrder = action.payload;
+        if (updatedOrder) {
+          const index = state.allOrders.findIndex(
+            order => order._id === updatedOrder._id
+          );
+          if (index !== -1) {
+            state.allOrders[index] = updatedOrder;
+          } else {
+            state.allOrders.push(updatedOrder);
+          }
+
+          if (state.currentOrder?._id === updatedOrder._id) {
+            state.currentOrder = updatedOrder;
+          }
+        } else {
+          state.allOrders = state.allOrders.filter(
+            order => order._id !== action.meta.arg.orderId
+          );
+          if (state.currentOrder?._id === action.meta.arg.orderId) {
+            state.currentOrder = null;
+          }
+        }
+      })
+      .addCase(deleteOrderItem.rejected, handleRejected);
   },
 });
 

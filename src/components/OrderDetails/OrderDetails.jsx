@@ -43,7 +43,14 @@ const OrderDetails = ({ itemId, onClose }) => {
             {currentOrder.local.operator}
           </li>
           <li className={css.headerItem}>
-            <span className={css.span}>Data:</span> {item.data}
+            <span className={css.span}>Data:</span>{' '}
+            {new Date(currentOrder.createdAt).toLocaleString('pt-PT', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
           </li>
         </ul>
       </div>
