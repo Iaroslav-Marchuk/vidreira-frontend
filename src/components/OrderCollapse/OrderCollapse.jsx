@@ -14,22 +14,25 @@ import {
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { Pencil, Trash2, NotepadText } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 
 import OrderRow from '../OrderRow/OrderRow.jsx';
+import OrderDetails from '../OrderDetails/OrderDetails.jsx';
+import ConfirmDelete from '../ConfirmDelete/ConfirmDelete.jsx';
+import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
+
+import { deleteOrder, getOrderById } from '../../redux/orders/operations.js';
+import { clearCurrentOrder } from '../../redux/orders/slice.js';
 
 import css from './OrderCollapse.module.css';
-import { useDispatch } from 'react-redux';
-import { deleteOrder, getOrderById } from '../../redux/orders/operations.js';
-import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
-import OrderDetails from '../OrderDetails/OrderDetails.jsx';
-import { clearCurrentOrder } from '../../redux/orders/slice.js';
-import toast from 'react-hot-toast';
-import ConfirmDelete from '../ConfirmDelete/ConfirmDelete.jsx';
+import OrderSummary from '../OrderSummary/OrderSummary.jsx';
 
 const OrderCollapse = ({ order, orderId }) => {
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(false);
+  const [collapseIsOpen, setCollapseIsOpen] = useState(false);
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => {
@@ -37,16 +40,21 @@ const OrderCollapse = ({ order, orderId }) => {
     dispatch(clearCurrentOrder());
   };
 
-  const [confirm, setConfirm] = useState(false);
-  const openConfirm = () => setConfirm(true);
-  const closeConfirm = () => setConfirm(false);
+  const [confirmIsOpen, setConfirmIsOpen] = useState(false);
+  const openConfirm = () => setConfirmIsOpen(true);
+  const closeConfirm = () => setConfirmIsOpen(false);
 
   const handleMore = async () => {
     try {
-      await dispatch(getOrderById(orderId)).unwrap();
+      const order = await dispatch(getOrderById(orderId)).unwrap();
+      if (!order) {
+        toast.error('Order not found!');
+        return;
+      }
       openModal();
     } catch (error) {
       console.error('Failed to fetch order:', error);
+      toast.error('Failed to load order');
     }
   };
 
@@ -76,13 +84,25 @@ const OrderCollapse = ({ order, orderId }) => {
         }}
       >
         <TableCell>
-          <IconButton size="small" onClick={() => setOpen(!open)}>
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          <IconButton
+            size="small"
+            onClick={() => setCollapseIsOpen(!collapseIsOpen)}
+          >
+            {collapseIsOpen ? (
+              <KeyboardArrowUpIcon />
+            ) : (
+              <KeyboardArrowDownIcon />
+            )}
           </IconButton>
         </TableCell>
         <TableCell>{order.EP}</TableCell>
         <TableCell>{order.cliente}</TableCell>
-        <TableCell>{order.items.length}</TableCell>
+        <TableCell>
+          {order.items
+            .filter(item => item.status !== 'Concluído')
+            .reduce((total, item) => total + item.quantity, 0)}
+        </TableCell>
+
         <TableCell>{order.status}</TableCell>
         <TableCell>{order.local.zona}</TableCell>
         <TableCell>
@@ -122,7 +142,7 @@ const OrderCollapse = ({ order, orderId }) => {
       </TableRow>
       <TableRow>
         <TableCell colSpan={8} sx={{ paddingBottom: 0, paddingTop: 0 }}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
+          <Collapse in={collapseIsOpen} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Table size="small" aria-label="items">
                 <TableHead>
@@ -162,16 +182,12 @@ const OrderCollapse = ({ order, orderId }) => {
         </TableCell>
       </TableRow>
       <ModalOverlay isOpen={modalIsOpen} onClose={closeModal}>
-        <OrderDetails orderId={orderId} onClose={closeModal} />
+        <OrderSummary onClose={closeModal} />
       </ModalOverlay>
 
-      {confirm && (
-        <ConfirmDelete
-          onDelete={handleDelete}
-          onClose={closeConfirm}
-          isOpen={confirm}
-        />
-      )}
+      <ModalOverlay isOpen={confirmIsOpen} onClose={closeConfirm}>
+        <ConfirmDelete onDelete={handleDelete} onClose={closeConfirm} />
+      </ModalOverlay>
     </>
   );
 };

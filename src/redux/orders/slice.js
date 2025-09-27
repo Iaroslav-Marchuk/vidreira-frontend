@@ -131,9 +131,13 @@ const ordersSlice = createSlice({
       .addCase(deleteOrder.fulfilled, (state, action) => {
         state.isOrdersLoading = false;
         state.error = null;
+        const deletedId = action.payload;
         state.allOrders = state.allOrders.filter(
-          order => order._id != action.payload
+          order => order._id != deletedId
         );
+        if (state.currentOrder?._id === deletedId) {
+          state.currentOrder = null;
+        }
       })
       .addCase(deleteOrder.rejected, handleRejected)
 

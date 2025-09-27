@@ -6,8 +6,10 @@
   top: 100px;
   left: 50%;
   transform: translateX(-50%);
-  width: 1000px;
+  /* width: 1000px; */
   max-height: calc(100vh - 200px);
+  width: fit-content;
+  max-width: 90vw;
   overflow-y: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   z-index: 1001;

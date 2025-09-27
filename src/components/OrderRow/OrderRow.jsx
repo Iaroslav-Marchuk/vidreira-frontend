@@ -5,26 +5,18 @@ import css from './OrderRow.module.css';
 import { Pencil, Trash2, NotepadText } from 'lucide-react';
 
 import { TableCell, TableRow } from '@mui/material';
-import { getOrderById } from '../../redux/orders/operations.js';
 import { useState } from 'react';
 import OrderDetails from '../OrderDetails/OrderDetails.jsx';
 
-const OrderRow = ({ row, itemId, orderId }) => {
+import OrderItemSummary from '../OrderItemSummary/OrderItemSummary.jsx';
+
+const OrderRow = ({ row }) => {
   const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => {
     setModalIsOpen(false);
     dispatch(clearCurrentOrder());
-  };
-
-  const handleMore = async () => {
-    try {
-      await dispatch(getOrderById(orderId)).unwrap();
-      openModal();
-    } catch (error) {
-      console.error('Failed to fetch order:', error);
-    }
   };
 
   const handleEdit = () => {};
@@ -46,7 +38,13 @@ const OrderRow = ({ row, itemId, orderId }) => {
         <TableCell>{row.quantity}</TableCell>
         <TableCell>{row.status}</TableCell>
         <TableCell>
-          {new Date(row.createdAt).toLocaleDateString('pt-PT')}
+          {new Date(row.createdAt).toLocaleString('pt-PT', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
         </TableCell>
         <TableCell>
           <div className={css.actions}>
@@ -55,7 +53,7 @@ const OrderRow = ({ row, itemId, orderId }) => {
                 size={20}
                 color="#163259"
                 strokeWidth={1}
-                onClick={handleMore}
+                onClick={openModal}
               />
             </button>
             <button className={css.btn}>
@@ -78,7 +76,7 @@ const OrderRow = ({ row, itemId, orderId }) => {
         </TableCell>
       </TableRow>
       <ModalOverlay isOpen={modalIsOpen} onClose={closeModal}>
-        <OrderDetails itemId={itemId} onClose={closeModal} />
+        <OrderItemSummary item={row} onClose={closeModal} />
       </ModalOverlay>
     </>
   );

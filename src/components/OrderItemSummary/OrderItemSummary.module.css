@@ -1,0 +1,31 @@
+.container {
+  padding: 32px;
+}
+
+.history {
+  border: var(--color-border) 1px solid;
+  border-radius: var(--border-radius);
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.history {
+  margin-bottom: 0px;
+}
+
+.span {
+  font-weight: var(--font-weight-bold);
+}
+
+.historyList {
+  padding: 10px 16px;
+}
+
+.historyItem {
+  padding: 0 0 8px;
+}
+
+.historyItem:last-child {
+  border-bottom: none;
+}

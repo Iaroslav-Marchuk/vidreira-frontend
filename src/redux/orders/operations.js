@@ -84,7 +84,7 @@ export const deleteOrder = createAsyncThunk(
   async (orderId, thunkAPI) => {
     try {
       const response = await axiosAPI.delete(`/orders/${orderId}`);
-      return response.data;
+      return response.data.orderId;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
