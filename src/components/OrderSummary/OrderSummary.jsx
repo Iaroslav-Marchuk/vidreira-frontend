@@ -30,11 +30,26 @@ const OrderSummary = () => {
             <span className={css.span}>Zona:</span> {currentOrder.local.zona}
           </li>
           <li className={css.infoItem}>
-            <span className={css.span}>Em falta</span>{' '}
+            <span className={css.span}>Faltas total:</span>{' '}
+            {currentOrder.items.length}
+          </li>
+          <li className={css.infoItem}>
+            <span className={css.span}>- em espera:</span>{' '}
             {currentOrder.items
-              .filter(item => item.status !== 'Concluído')
-              .reduce((total, item) => total + item.quantity, 0)}{' '}
-            unidades
+              .filter(item => item.status === 'Criado')
+              .reduce((sum, item) => sum + item.quantity, 0)}
+          </li>
+          <li className={css.infoItem}>
+            <span className={css.span}>- em produção:</span>{' '}
+            {currentOrder.items
+              .filter(item => item.status === 'Em produção')
+              .reduce((sum, item) => sum + item.quantity, 0)}
+          </li>
+          <li className={css.infoItem}>
+            <span className={css.span}>- concluído</span>{' '}
+            {currentOrder.items
+              .filter(item => item.status === 'Concluído')
+              .reduce((sum, item) => sum + item.quantity, 0)}
           </li>
         </ul>
       </div>

@@ -1,0 +1,145 @@
+.fieldsetArray {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.legend {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.fieldset {
+  display: flex;
+  gap: 24px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 50%;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 36px;
+  border-bottom: 1px solid #eee;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+  position: relative;
+}
+
+.selectUnit {
+  width: 100px;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.error {
+  color: var(--color-error);
+  font-size: 12px;
+  margin: 2px 0 0 0;
+  padding-left: 4px;
+  font-weight: 500;
+  display: block;
+  max-width: 70px;
+  word-wrap: break-word;
+  white-space: normal;
+  display: block;
+}
+
+.selectSizeZ {
+  width: 80px;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.inlineInputs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputSize {
+  width: 60px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+
+.checkbox {
+  width: 28px;
+  height: 28px;
+  border-color: #333;
+  margin-top: 0;
+  outline: none;
+  border: none;
+}
+
+.inputQuantity {
+  width: 40px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+
+.textarea {
+  width: 140px;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  resize: vertical;
+}
+
+.addWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.buttonDelete {
+  align-self: flex-start;
+  margin-top: 28px;
+}
+
+.button {
+  transition: transform 0.2s ease;
+}
+
+.button:hover {
+  transform: scale(1.2);
+}

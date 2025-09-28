@@ -6,7 +6,6 @@
   top: 100px;
   left: 50%;
   transform: translateX(-50%);
-  /* width: 1000px; */
   max-height: calc(100vh - 200px);
   width: fit-content;
   max-width: 90vw;
@@ -33,4 +32,9 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.2);
 }

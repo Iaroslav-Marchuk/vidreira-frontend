@@ -1,14 +1,3 @@
-.form {
-  max-width: 1000px;
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  padding: 32px;
-  background-color: #f8f9fa;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
 .wrapper {
   display: flex;
   flex-direction: row;
@@ -25,6 +14,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   width: 50%;
 }
+
 .legend {
   font-size: 16px;
   font-weight: 600;
@@ -53,12 +43,28 @@
   cursor: pointer;
 }
 
-.inputLocal {
+.error {
+  color: var(--color-error);
+  font-size: 12px;
+  margin: 2px 0 0 0;
+  padding-left: 4px;
+  font-weight: 500;
+  display: block;
+  max-width: 70px;
+  word-wrap: break-word;
+  white-space: normal;
+  display: block;
+}
+
+.inputLocalOperator {
   width: 200px;
   padding: 6px 10px;
   font-size: 14px;
   border: 1px solid #bbb;
   border-radius: 6px;
+  background-color: #e0e0e0;
+  color: #555;
+  cursor: not-allowed;
 }
 
 .inputEncomenda {
@@ -75,156 +81,4 @@
   font-size: 14px;
   border: 1px solid #bbb;
   border-radius: 6px;
-}
-
-.inputLocalOperator {
-  width: 200px;
-  padding: 6px 10px;
-  font-size: 14px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  background-color: #e0e0e0;
-  color: #555;
-  cursor: not-allowed;
-}
-
-.fieldsetArray {
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 24px;
-  background-color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.row {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 36px;
-  border-bottom: 1px solid #eee;
-}
-
-.selectUnit {
-  width: 100px;
-  padding: 6px 8px;
-  font-size: 14px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  background: #fff;
-  cursor: pointer;
-}
-
-.checkbox {
-  width: 22px;
-  height: 28px;
-  margin-top: 6px;
-}
-
-.inputSize {
-  width: 60px;
-  padding: 6px 10px;
-  font-size: 14px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-}
-
-.selectSizeZ {
-  width: 80px;
-  padding: 6px 8px;
-  font-size: 14px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  background: #fff;
-  cursor: pointer;
-}
-
-.inlineInputs {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.inputWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.inputQuantity {
-  width: 40px;
-  padding: 6px 10px;
-  font-size: 14px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-}
-
-.checkbox {
-  width: 28px;
-  height: 28px;
-  border-color: #333;
-  margin-top: 0;
-  outline: none;
-  border: none;
-}
-
-.textarea {
-  width: 140px;
-  padding: 6px 8px;
-  font-size: 14px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  resize: vertical;
-}
-
-.addWrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 8px;
-  width: 100%;
-}
-
-.button {
-  padding: 6px 12px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-}
-
-.buttonDelete {
-  background-color: #f44336;
-  color: white;
-
-  align-self: flex-start;
-  margin-top: 22px;
-}
-
-.buttonAdd {
-  background-color: #4caf50;
-  color: white;
-}
-
-.buttonSubmit {
-  margin: 0 auto;
-  background-color: #4336f4;
-  color: white;
-}
-
-.errorWrapper {
-  min-height: 16px;
-}
-
-.error {
-  color: var(--color-error);
-  font-size: 12px;
-  margin: 2px 0 0 0;
-  padding-left: 4px;
-  font-weight: 500;
-  display: block;
-  max-width: 70px;
-  word-wrap: break-word;
-  white-space: normal;
-  display: block;
 }

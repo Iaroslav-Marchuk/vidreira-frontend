@@ -15,7 +15,7 @@ export const glassOptions = {
     types: {
       lamC: {
         label: 'Laminado Incolor',
-        thickness: [3 + 3, 4 + 4, 5 + 5, 6 + 6],
+        thickness: ['3 + 3', '4 + 4', '5 + 5', '6 + 6'],
         temper: 'no',
       },
     },

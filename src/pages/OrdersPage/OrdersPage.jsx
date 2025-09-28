@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '../../components/Button/Button.jsx';
-import OrderForm from '../../components/OrderForm/OrderForm.jsx';
+import OrdersTable from '../../components/OrdersTable/OrdersTable.jsx';
+import FormContainer from '../../components/FormContainer/FormContainer.jsx';
+import Loader from '../../components/Loader/Loader.jsx';
 
-import css from './OrdersPage.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { selectRole } from '../../redux/auth/selectors.js';
 import {
   selectAllOrders,
   selectIsOrdersLoading,
 } from '../../redux/orders/selectors.js';
 import { getAllOrders } from '../../redux/orders/operations.js';
-import Loader from '../../components/Loader/Loader.jsx';
-import { selectRole } from '../../redux/auth/selectors.js';
-import OrdersTable from '../../components/OrdersTable/OrdersTable.jsx';
+
+import css from './OrdersPage.module.css';
+import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
 
 const OrdersPage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -42,7 +44,11 @@ const OrdersPage = () => {
         </Button>
       )}
 
-      {modalIsOpen && <OrderForm isOpen={modalIsOpen} onClose={closeModal} />}
+      {modalIsOpen && (
+        <ModalOverlay isOpen={modalIsOpen} onClose={closeModal}>
+          <FormContainer onClose={closeModal} />
+        </ModalOverlay>
+      )}
 
       {isLoading && <Loader loadingState={isLoading} />}
 

@@ -3,3 +3,11 @@
   gap: 20px;
   justify-content: center;
 }
+
+.btn {
+  transition: transform 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.2);
+}
