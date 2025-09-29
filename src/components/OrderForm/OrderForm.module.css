@@ -82,3 +82,26 @@
   border: 1px solid #bbb;
   border-radius: 6px;
 }
+
+.dropdown {
+  position: absolute;
+  width: 200px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.dropdownItem {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdownItem:hover {
+  background-color: #f0f0f0;
+}
