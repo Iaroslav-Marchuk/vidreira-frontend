@@ -29,11 +29,19 @@ const ordersSlice = createSlice({
     currentOrder: null,
     isOrdersLoading: false,
     error: null,
+    currentPage: 1,
+    perPage: 10,
+    hasNextPage: false,
+    totalPages: 1,
   },
 
   reducers: {
     clearCurrentOrder: state => {
       state.currentOrder = null;
+    },
+
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
     },
   },
 
@@ -42,7 +50,19 @@ const ordersSlice = createSlice({
       .addCase(getAllOrders.pending, handlePending)
       .addCase(getAllOrders.fulfilled, (state, action) => {
         state.isOrdersLoading = false;
-        state.allOrders = action.payload.orders.data;
+        const { data, page, perPage, totalPages, hasNextPage } =
+          action.payload.orders;
+
+        if (page === 1) {
+          state.allOrders = data;
+        } else {
+          state.allOrders = [...state.allOrders, ...data];
+        }
+
+        state.currentPage = page;
+        state.perPage = perPage;
+        state.totalPages = totalPages;
+        state.hasNextPage = hasNextPage;
       })
       .addCase(getAllOrders.rejected, handleRejected)
 
@@ -54,7 +74,10 @@ const ordersSlice = createSlice({
       .addCase(getOrderById.rejected, handleRejected)
 
       .addCase(logout.fulfilled, state => {
-        (state.allOrders = []), (state.currentOrder = null);
+        state.allOrders = [];
+        state.currentOrder = null;
+        state.currentPage = 1;
+        state.totalPages = 1;
       })
 
       .addCase(createOrMergeOrder.pending, handlePending)
@@ -173,4 +196,4 @@ const ordersSlice = createSlice({
 });
 
 export default ordersSlice.reducer;
-export const { clearCurrentOrder } = ordersSlice.actions;
+export const { clearCurrentOrder, setCurrentPage } = ordersSlice.actions;

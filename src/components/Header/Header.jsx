@@ -11,11 +11,11 @@ import { selectIsLoggedIn } from '../../redux/auth/selectors.js';
 
 import css from './Header.module.css';
 
-const Header = () => {
+const Header = ({ className }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   return (
-    <header className={css.header}>
+    <header className={clsx(css.header, className)}>
       <NavLink to="/">
         <img src={logo} alt="logo" height="85px" width="120px" />
       </NavLink>

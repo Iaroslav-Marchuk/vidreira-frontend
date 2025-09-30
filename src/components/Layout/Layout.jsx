@@ -8,11 +8,11 @@ import css from './Layout.module.css';
 const Layout = () => {
   return (
     <div className={css.container}>
-      <Header />
-      <main>
+      <Header className={css.header} />
+      <main className={css.main}>
         <Outlet />
       </main>
-      <Footer />
+      <Footer className={css.footer} />
     </div>
   );
 };

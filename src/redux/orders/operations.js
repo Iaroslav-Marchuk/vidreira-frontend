@@ -3,12 +3,16 @@ import axiosAPI from '../../services/api.js';
 
 export const getAllOrders = createAsyncThunk(
   'orders/getAllOrders',
-  async (_, thunkAPI) => {
+  async ({ page = 1, perPage = 10 } = {}, thunkAPI) => {
     try {
-      const response = await axiosAPI.get('/orders');
+      const response = await axiosAPI.get('/orders', {
+        params: { page, perPage },
+      });
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
+      return thunkAPI.rejectWithValue(
+        error.response.data.message || error.message
+      );
     }
   }
 );
@@ -18,7 +22,7 @@ export const getOrderById = createAsyncThunk(
   async (orderId, thunkAPI) => {
     try {
       const response = await axiosAPI.get(`/orders/${orderId}`);
-      return response.data;
+      return response.data.orders;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
     }

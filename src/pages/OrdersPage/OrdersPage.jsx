@@ -9,12 +9,15 @@ import Loader from '../../components/Loader/Loader.jsx';
 import { selectRole } from '../../redux/auth/selectors.js';
 import {
   selectAllOrders,
+  selectCurrentPage,
   selectIsOrdersLoading,
+  selectTotalPages,
 } from '../../redux/orders/selectors.js';
 import { getAllOrders } from '../../redux/orders/operations.js';
 
 import css from './OrdersPage.module.css';
 import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
+import { setCurrentPage } from '../../redux/orders/slice.js';
 
 const OrdersPage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -26,9 +29,26 @@ const OrdersPage = () => {
   const allOrders = useSelector(selectAllOrders);
   const isLoading = useSelector(selectIsOrdersLoading);
 
+  const currentPage = useSelector(selectCurrentPage);
+  const totalPages = useSelector(selectTotalPages);
+
+  const hasOrders = allOrders.length > 0;
+  const isNotLastPage = currentPage < totalPages;
+
+  console.log(allOrders);
+
   useEffect(() => {
-    dispatch(getAllOrders());
+    dispatch(setCurrentPage(1));
+    dispatch(getAllOrders({ page: 1, perPage: 10 }));
   }, [dispatch]);
+
+  const handleLoadMore = () => {
+    if (isNotLastPage) {
+      const nextPage = currentPage + 1;
+      dispatch(getAllOrders({ page: nextPage, perPage: 10 }));
+      dispatch(setCurrentPage(nextPage));
+    }
+  };
 
   return (
     <div className={css.wrapper}>
@@ -55,6 +75,11 @@ const OrdersPage = () => {
       {allOrders.length > 0 && <OrdersTable />}
       {!isLoading && allOrders.length === 0 && (
         <p className={css.noResults}>Não existe nenhum pedido!</p>
+      )}
+      {hasOrders && !isLoading && isNotLastPage && (
+        <Button className={css.loadMoreBtn} onClick={handleLoadMore}>
+          Mais...
+        </Button>
       )}
     </div>
   );
