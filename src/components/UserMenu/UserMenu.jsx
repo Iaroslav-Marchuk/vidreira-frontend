@@ -32,8 +32,8 @@ const UserMenu = () => {
 
   return (
     <>
-      {isLoading && <Loader loadingState={true} />}
       <div className={css.wrapper}>
+        {isLoading && <Loader loadingState={true} />}
         <p className={css.avatar}>{user.name[0]}</p>
         <Popover.Root open={open} onOpenChange={setOpen}>
           <Popover.Trigger>

@@ -52,13 +52,11 @@ const ordersSlice = createSlice({
         state.isOrdersLoading = false;
         const { data, page, perPage, totalPages, hasNextPage } =
           action.payload.orders;
-
         if (page === 1) {
           state.allOrders = data;
         } else {
           state.allOrders = [...state.allOrders, ...data];
         }
-
         state.currentPage = page;
         state.perPage = perPage;
         state.totalPages = totalPages;
@@ -168,19 +166,16 @@ const ordersSlice = createSlice({
       .addCase(deleteOrderItem.fulfilled, (state, action) => {
         state.isOrdersLoading = false;
         state.error = null;
-        const updatedOrder = action.payload;
+        const { updatedOrder } = action.payload;
         if (updatedOrder) {
           const index = state.allOrders.findIndex(
             order => order._id === updatedOrder._id
           );
           if (index !== -1) {
-            state.allOrders[index] = updatedOrder;
-          } else {
-            state.allOrders.push(updatedOrder);
+            state.allOrders[index] = { ...updatedOrder }; // Копія для ререндеру
           }
-
           if (state.currentOrder?._id === updatedOrder._id) {
-            state.currentOrder = updatedOrder;
+            state.currentOrder = { ...updatedOrder };
           }
         } else {
           state.allOrders = state.allOrders.filter(

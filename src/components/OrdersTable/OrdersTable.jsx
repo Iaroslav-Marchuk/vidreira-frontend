@@ -13,7 +13,7 @@ import OrderCollapse from '../OrderCollapse/OrderCollapse.jsx';
 
 import { selectAllOrders } from '../../redux/orders/selectors.js';
 
-const OrdersTable = () => {
+const OrdersTable = ({ openCollapses, toggleCollapse }) => {
   const allOrders = useSelector(selectAllOrders);
 
   return (
@@ -43,7 +43,13 @@ const OrdersTable = () => {
         </TableHead>
         <TableBody>
           {allOrders.map(order => (
-            <OrderCollapse key={order._id} order={order} orderId={order._id} />
+            <OrderCollapse
+              key={order._id}
+              order={order}
+              orderId={order._id}
+              isOpen={openCollapses.includes(order._id)}
+              toggleCollapse={() => toggleCollapse(order._id)}
+            />
           ))}
         </TableBody>
       </Table>

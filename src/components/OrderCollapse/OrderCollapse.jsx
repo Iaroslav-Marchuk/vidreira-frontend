@@ -15,23 +15,26 @@ import {
 import { useState } from 'react';
 import { Pencil, Trash2, NotepadText } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import OrderRow from '../OrderRow/OrderRow.jsx';
-import OrderDetails from '../OrderDetails/OrderDetails.jsx';
 import ConfirmDelete from '../ConfirmDelete/ConfirmDelete.jsx';
 import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
 
-import { deleteOrder, getOrderById } from '../../redux/orders/operations.js';
+import {
+  deleteOrder,
+  getAllOrders,
+  getOrderById,
+} from '../../redux/orders/operations.js';
 import { clearCurrentOrder } from '../../redux/orders/slice.js';
 
 import css from './OrderCollapse.module.css';
 import OrderSummary from '../OrderSummary/OrderSummary.jsx';
+import { selectCurrentPage } from '../../redux/orders/selectors.js';
 
-const OrderCollapse = ({ order, orderId }) => {
+const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
   const dispatch = useDispatch();
-
-  const [collapseIsOpen, setCollapseIsOpen] = useState(false);
+  const currentPage = useSelector(selectCurrentPage);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
@@ -66,6 +69,7 @@ const OrderCollapse = ({ order, orderId }) => {
       .then(() => {
         toast.success('Order deleted successfully!');
         closeConfirm();
+        dispatch(getAllOrders({ page: currentPage, perPage: 10 }));
       })
       .catch(() => {
         toast.error('Failed to delete order.');
@@ -84,15 +88,8 @@ const OrderCollapse = ({ order, orderId }) => {
         }}
       >
         <TableCell>
-          <IconButton
-            size="small"
-            onClick={() => setCollapseIsOpen(!collapseIsOpen)}
-          >
-            {collapseIsOpen ? (
-              <KeyboardArrowUpIcon />
-            ) : (
-              <KeyboardArrowDownIcon />
-            )}
+          <IconButton size="small" onClick={toggleCollapse}>
+            {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
         <TableCell>{order.EP}</TableCell>
@@ -142,7 +139,7 @@ const OrderCollapse = ({ order, orderId }) => {
       </TableRow>
       <TableRow>
         <TableCell colSpan={8} sx={{ paddingBottom: 0, paddingTop: 0 }}>
-          <Collapse in={collapseIsOpen} timeout="auto" unmountOnExit>
+          <Collapse in={isOpen} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Table size="small" aria-label="items">
                 <TableHead>
@@ -186,7 +183,11 @@ const OrderCollapse = ({ order, orderId }) => {
       </ModalOverlay>
 
       <ModalOverlay isOpen={confirmIsOpen} onClose={closeConfirm}>
-        <ConfirmDelete onDelete={handleDelete} onClose={closeConfirm} />
+        <ConfirmDelete
+          onDelete={handleDelete}
+          onClose={closeConfirm}
+          text={'Tem a certeza de que deseja eliminar esta encomenda?'}
+        />
       </ModalOverlay>
     </>
   );

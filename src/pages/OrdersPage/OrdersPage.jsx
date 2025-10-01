@@ -23,6 +23,9 @@ const OrdersPage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
+
+  const [openCollapses, setOpenCollapses] = useState([]);
+
   const role = useSelector(selectRole);
 
   const dispatch = useDispatch();
@@ -35,8 +38,6 @@ const OrdersPage = () => {
   const hasOrders = allOrders.length > 0;
   const isNotLastPage = currentPage < totalPages;
 
-  console.log(allOrders);
-
   useEffect(() => {
     dispatch(setCurrentPage(1));
     dispatch(getAllOrders({ page: 1, perPage: 10 }));
@@ -48,6 +49,14 @@ const OrdersPage = () => {
       dispatch(getAllOrders({ page: nextPage, perPage: 10 }));
       dispatch(setCurrentPage(nextPage));
     }
+  };
+
+  const toggleCollapse = orderId => {
+    setOpenCollapses(prev =>
+      prev.includes(orderId)
+        ? prev.filter(id => id !== orderId)
+        : [...prev, orderId]
+    );
   };
 
   return (
@@ -72,7 +81,13 @@ const OrdersPage = () => {
 
       {isLoading && <Loader loadingState={isLoading} />}
 
-      {allOrders.length > 0 && <OrdersTable />}
+      {allOrders.length > 0 && (
+        <OrdersTable
+          openCollapses={openCollapses}
+          toggleCollapse={toggleCollapse}
+        />
+      )}
+
       {!isLoading && allOrders.length === 0 && (
         <p className={css.noResults}>Não existe nenhum pedido!</p>
       )}

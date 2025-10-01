@@ -31,7 +31,7 @@ const OrderSummary = () => {
           </li>
           <li className={css.infoItem}>
             <span className={css.span}>Faltas total:</span>{' '}
-            {currentOrder.items.length}
+            {currentOrder.items.reduce((sum, item) => sum + item.quantity, 0)}
           </li>
           <li className={css.infoItem}>
             <span className={css.span}>- em espera:</span>{' '}

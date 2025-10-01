@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearCurrentOrder } from '../../redux/orders/slice.js';
 import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
 import css from './OrderRow.module.css';
@@ -6,12 +6,19 @@ import { Pencil, Trash2, NotepadText } from 'lucide-react';
 
 import { TableCell, TableRow } from '@mui/material';
 import { useState } from 'react';
-import OrderDetails from '../OrderDetails/OrderDetails.jsx';
 
 import OrderItemSummary from '../OrderItemSummary/OrderItemSummary.jsx';
+import {
+  deleteOrderItem,
+  getAllOrders,
+} from '../../redux/orders/operations.js';
+import toast from 'react-hot-toast';
+import ConfirmDelete from '../ConfirmDelete/ConfirmDelete.jsx';
+import { selectCurrentPage } from '../../redux/orders/selectors.js';
 
-const OrderRow = ({ row }) => {
+const OrderRow = ({ row, orderId, itemId }) => {
   const dispatch = useDispatch();
+  const currentPage = useSelector(selectCurrentPage);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => {
@@ -19,9 +26,27 @@ const OrderRow = ({ row }) => {
     dispatch(clearCurrentOrder());
   };
 
+  const [confirmIsOpen, setConfirmIsOpen] = useState(false);
+  const openConfirm = () => setConfirmIsOpen(true);
+  const closeConfirm = () => setConfirmIsOpen(false);
+
   const handleEdit = () => {};
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    dispatch(deleteOrderItem({ orderId, itemId }))
+      .unwrap()
+      .then(response => {
+        toast.success('Order item deleted successfully!');
+        closeConfirm();
+        if (!response) {
+          dispatch(getAllOrders({ page: currentPage, perPage: 10 }));
+        }
+      })
+      .catch(() => {
+        toast.error('Failed to delete order item!');
+      });
+  };
+
   return (
     <>
       <TableRow
@@ -69,7 +94,10 @@ const OrderRow = ({ row }) => {
                 size={20}
                 color="#ff0000"
                 strokeWidth={1}
-                onClick={handleDelete}
+                onClick={e => {
+                  e.stopPropagation();
+                  openConfirm();
+                }}
               />
             </button>
           </div>
@@ -77,6 +105,14 @@ const OrderRow = ({ row }) => {
       </TableRow>
       <ModalOverlay isOpen={modalIsOpen} onClose={closeModal}>
         <OrderItemSummary item={row} onClose={closeModal} />
+      </ModalOverlay>
+
+      <ModalOverlay isOpen={confirmIsOpen} onClose={closeConfirm}>
+        <ConfirmDelete
+          onDelete={handleDelete}
+          onClose={closeConfirm}
+          text={'Tem a certeza de que deseja eliminar este artigo?'}
+        />
       </ModalOverlay>
     </>
   );

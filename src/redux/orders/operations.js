@@ -22,7 +22,7 @@ export const getOrderById = createAsyncThunk(
   async (orderId, thunkAPI) => {
     try {
       const response = await axiosAPI.get(`/orders/${orderId}`);
-      return response.data.orders;
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
     }
