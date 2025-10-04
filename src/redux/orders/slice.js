@@ -86,10 +86,11 @@ const ordersSlice = createSlice({
         const index = state.allOrders.findIndex(
           order => order._id === newOrder._id
         );
+
         if (index !== -1) {
           state.allOrders[index] = newOrder;
         } else {
-          state.allOrders.push(newOrder);
+          state.allOrders.unshift(newOrder);
         }
 
         state.currentOrder = newOrder;
@@ -166,13 +167,14 @@ const ordersSlice = createSlice({
       .addCase(deleteOrderItem.fulfilled, (state, action) => {
         state.isOrdersLoading = false;
         state.error = null;
+        // const { updatedOrder, deletedItemId } = action.payload;
         const { updatedOrder } = action.payload;
         if (updatedOrder) {
           const index = state.allOrders.findIndex(
             order => order._id === updatedOrder._id
           );
           if (index !== -1) {
-            state.allOrders[index] = { ...updatedOrder }; // Копія для ререндеру
+            state.allOrders[index] = { ...updatedOrder };
           }
           if (state.currentOrder?._id === updatedOrder._id) {
             state.currentOrder = { ...updatedOrder };

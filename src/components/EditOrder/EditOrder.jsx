@@ -1,68 +1,54 @@
-// import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
-// import toast from 'react-hot-toast';
-// import { useId } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
+import * as Yup from 'yup';
 
-// import css from './OrderEdit.module.css';
+import { Formik, Form } from 'formik';
 
-// const OrderEdit = ({ order, onClose }) => {
-//   const localFieldId = useId();
-//   const EPFieldId = useId();
-//   const clienteFieldId = useId();
-//   const categoryFieldId = useId();
-//   const typeFieldId = useId();
-//   const sizeXFieldId = useId();
-//   const sizeYFieldId = useId();
-//   const sizeZFieldId = useId();
-//   const quantityFieldId = useId();
-//   const reasonFieldId = useId();
+import css from './EditOrder.module.css';
 
-//   const dispatch = useDispatch();
-//   const contacts = useSelector(selectContacts);
+import OrderForm from '../OrderForm/OrderForm.jsx';
+import Button from '../Button/Button.jsx';
 
-//   const handleSave = async (values, actions) => {
-//     if (
-//       values.name.trim() === contact.name.trim() &&
-//       values.number.trim() === contact.number.trim()
-//     ) {
-//       toast.error('Contact unchanged.');
-//       actions.setSubmitting(false);
-//       return;
-//     }
+const OrderSchema = Yup.object().shape({
+  local: Yup.object().shape({
+    zona: Yup.string().required('Escolha uma opção.'),
+  }),
+  EP: Yup.number()
+    .positive('O valor deve ser um número positivo.')
+    .integer('Valida se um número é um inteiro.')
+    .required('Campo obrigatório'),
+  cliente: Yup.string()
+    .min(3, 'Mínimo 3 caracteres')
+    .max(40, 'Máximo de 40 caracteres')
+    .required('Campo obrigatório'),
+});
 
-//     const isDuplicate = contacts.some(
-//       cont =>
-//         cont.id !== contact.id &&
-//         cont.name.toLowerCase() === values.name.toLowerCase() &&
-//         cont.number === values.number
-//     );
+const EditOrder = ({ order, onSubmit }) => {
+  const initialValues = {
+    EP: order.EP,
+    cliente: order.cliente,
+    local: {
+      zona: order.local.zona,
+      operator: order.local.operator,
+    },
+  };
 
-//     if (isDuplicate) {
-//       toast.error('This contact already exists!');
-//       actions.setSubmitting(false);
-//       return;
-//     }
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={OrderSchema}
+      validateOnBlur={true}
+      validateOnChange={false}
+      onSubmit={onSubmit}
+    >
+      {() => (
+        <Form className={css.form}>
+          <OrderForm />
+          <Button className={css.button} type="submit">
+            Update
+          </Button>
+        </Form>
+      )}
+    </Formik>
+  );
+};
 
-//     try {
-//       await dispatch(
-//         editContact({
-//           id: contact.id,
-//           updatedContact: { name: values.name, number: values.number },
-//         })
-//       ).unwrap();
-
-//       toast.success('Contact saved succesfully!');
-//       actions.resetForm();
-//       onClose();
-//     } catch (error) {
-//       toast.error('Failed to add contact.' + error);
-//     }
-//   };
-
-//   const handleCancel = () => {
-//     onClose();
-//   };
-
-//   return <ModalOverlay onClose={onClose}></ModalOverlay>;
-// };
-// export default OrderEdit;
+export default EditOrder;

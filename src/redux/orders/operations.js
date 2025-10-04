@@ -6,7 +6,7 @@ export const getAllOrders = createAsyncThunk(
   async ({ page = 1, perPage = 10 } = {}, thunkAPI) => {
     try {
       const response = await axiosAPI.get('/orders', {
-        params: { page, perPage },
+        params: { page, perPage, sortBy: 'createdAt', sortOrder: 'desc' },
       });
       return response.data;
     } catch (error) {
@@ -46,7 +46,7 @@ export const updateOrder = createAsyncThunk(
   async ({ orderId, values }, thunkAPI) => {
     try {
       const response = await axiosAPI.patch(`/orders/${orderId}`, values);
-      return response.data;
+      return response.data.updatedOrder;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -61,7 +61,7 @@ export const updateOrderItem = createAsyncThunk(
         `/orders/${orderId}/${itemId}`,
         values
       );
-      return response.data;
+      return response.data.updatedOrder;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

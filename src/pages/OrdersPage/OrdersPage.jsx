@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '../../components/Button/Button.jsx';
 import OrdersTable from '../../components/OrdersTable/OrdersTable.jsx';
-import FormContainer from '../../components/FormContainer/FormContainer.jsx';
+import CreateOrderForm from '../../components/CreateOrderForm/CreateOrderForm.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
 
 import { selectRole } from '../../redux/auth/selectors.js';
@@ -75,7 +75,7 @@ const OrdersPage = () => {
 
       {modalIsOpen && (
         <ModalOverlay isOpen={modalIsOpen} onClose={closeModal}>
-          <FormContainer onClose={closeModal} />
+          <CreateOrderForm onClose={closeModal} />
         </ModalOverlay>
       )}
 

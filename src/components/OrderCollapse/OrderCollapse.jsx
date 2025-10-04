@@ -23,18 +23,20 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
 
 import {
   deleteOrder,
-  getAllOrders,
   getOrderById,
+  updateOrder,
 } from '../../redux/orders/operations.js';
 import { clearCurrentOrder } from '../../redux/orders/slice.js';
 
 import css from './OrderCollapse.module.css';
 import OrderSummary from '../OrderSummary/OrderSummary.jsx';
-import { selectCurrentPage } from '../../redux/orders/selectors.js';
+import { selectAllOrders } from '../../redux/orders/selectors.js';
+import EditOrder from '../EditOrder/EditOrder.jsx';
 
 const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
   const dispatch = useDispatch();
-  const currentPage = useSelector(selectCurrentPage);
+
+  const allOrders = useSelector(selectAllOrders);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
@@ -46,6 +48,17 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
   const [confirmIsOpen, setConfirmIsOpen] = useState(false);
   const openConfirm = () => setConfirmIsOpen(true);
   const closeConfirm = () => setConfirmIsOpen(false);
+
+  const [editIsOpen, setEditisOpen] = useState(false);
+  const openEdit = async () => {
+    try {
+      await dispatch(getOrderById(orderId)).unwrap();
+      setEditisOpen(true);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+  const closeEdit = () => setEditisOpen(false);
 
   const handleMore = async () => {
     try {
@@ -61,15 +74,72 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
     }
   };
 
-  const handleEdit = () => {};
+  const handleEdit = async values => {
+    const currentOrderData = {
+      EP: order.EP,
+      cliente: order.cliente,
+      local: { zona: order.local.zona },
+    };
+
+    const duplicateEPInSameZone = allOrders.some(
+      o =>
+        o._id !== order._id &&
+        o.EP === Number(values.EP) &&
+        o.local.zona === values.local.zona
+    );
+
+    if (duplicateEPInSameZone) {
+      toast.error(
+        `Order with EP ${values.EP} already exists in zone ${values.local.zona}!`
+      );
+      return;
+    }
+
+    const differentClientForSameEP = allOrders.find(
+      o =>
+        o._id !== order._id &&
+        o.EP === Number(values.EP) &&
+        o.cliente !== values.cliente
+    );
+
+    if (differentClientForSameEP) {
+      toast.error(
+        `Order with EP ${values.EP} already exists with a different client: "${differentClientForSameEP.cliente}".`
+      );
+      return;
+    }
+
+    const isUnchanged =
+      values.EP === currentOrderData.EP &&
+      values.cliente === currentOrderData.cliente &&
+      values.local.zona === currentOrderData.local.zona;
+    if (isUnchanged) {
+      toast.error('Order unchanged.');
+      return;
+    }
+
+    const payload = {
+      EP: Number(values.EP),
+      cliente: values.cliente,
+      local: { zona: values.local.zona },
+    };
+
+    try {
+      await dispatch(updateOrder({ orderId, values: payload })).unwrap();
+      toast.success('Order updated successfully!');
+      closeEdit();
+    } catch (error) {
+      toast.error('Failed to update order: ' + error);
+    }
+  };
 
   const handleDelete = () => {
     dispatch(deleteOrder(orderId))
       .unwrap()
       .then(() => {
-        toast.success('Order deleted successfully!');
         closeConfirm();
-        dispatch(getAllOrders({ page: currentPage, perPage: 10 }));
+        // dispatch(getAllOrders({ page: currentPage, perPage: 10 }));
+        toast.success('Order deleted successfully!');
       })
       .catch(() => {
         toast.error('Failed to delete order.');
@@ -107,32 +177,20 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
         </TableCell>
         <TableCell>
           <div className={css.actions}>
-            <button className={css.btn}>
-              <NotepadText
-                size={20}
-                color="#163259"
-                strokeWidth={1}
-                onClick={handleMore}
-              />
+            <button className={css.btn} onClick={handleMore}>
+              <NotepadText size={20} color="#163259" strokeWidth={1} />
             </button>
-            <button className={css.btn}>
-              <Pencil
-                size={20}
-                color="#163259"
-                strokeWidth={1}
-                onClick={handleEdit}
-              />
+            <button className={css.btn} onClick={openEdit}>
+              <Pencil size={20} color="#163259" strokeWidth={1} />
             </button>
-            <button className={css.btn}>
-              <Trash2
-                size={20}
-                color="#ff0000"
-                strokeWidth={1}
-                onClick={e => {
-                  e.stopPropagation();
-                  openConfirm();
-                }}
-              />
+            <button
+              className={css.btn}
+              onClick={e => {
+                e.stopPropagation();
+                openConfirm();
+              }}
+            >
+              <Trash2 size={20} color="#ff0000" strokeWidth={1} />
             </button>
           </div>
         </TableCell>
@@ -166,7 +224,7 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
                   {order.items.map((item, i) => (
                     <OrderRow
                       key={item._id}
-                      row={item}
+                      item={item}
                       index={i}
                       itemId={item._id}
                       orderId={order._id}
@@ -188,6 +246,10 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
           onClose={closeConfirm}
           text={'Tem a certeza de que deseja eliminar esta encomenda?'}
         />
+      </ModalOverlay>
+
+      <ModalOverlay isOpen={editIsOpen} onClose={closeEdit}>
+        <EditOrder order={order} onSubmit={handleEdit} />
       </ModalOverlay>
     </>
   );
