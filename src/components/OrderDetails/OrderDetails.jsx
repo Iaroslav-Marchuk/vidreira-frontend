@@ -61,7 +61,8 @@ const OrderDetails = ({ itemId, onClose }) => {
             <span className={css.span}>EP:</span> {currentOrder.EP}
           </li>
           <li className={css.infoItem}>
-            <span className={css.span}>Cliente:</span> {currentOrder.cliente}
+            <span className={css.span}>Cliente:</span>{' '}
+            {currentOrder.cliente.name}
           </li>
           <li className={css.infoItem}>
             <span className={css.span}>Vidro:</span>

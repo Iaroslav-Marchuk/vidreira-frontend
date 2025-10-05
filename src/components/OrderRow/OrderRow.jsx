@@ -111,7 +111,6 @@ const OrderRow = ({ item, orderId, itemId }) => {
       await dispatch(
         updateOrderItem({ orderId, itemId, values: payload })
       ).unwrap();
-      // await dispatch(getAllOrders({ page: currentPage, perPage: 10 }));
       toast.success('Item updated successfully!');
       closeEdit();
     } catch (error) {

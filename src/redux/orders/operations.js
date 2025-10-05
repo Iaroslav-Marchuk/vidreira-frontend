@@ -3,16 +3,37 @@ import axiosAPI from '../../services/api.js';
 
 export const getAllOrders = createAsyncThunk(
   'orders/getAllOrders',
-  async ({ page = 1, perPage = 10 } = {}, thunkAPI) => {
+  async (
+    {
+      page = 1,
+      perPage = 10,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+      filter = {},
+    } = {},
+    thunkAPI
+  ) => {
     try {
       const response = await axiosAPI.get('/orders', {
-        params: { page, perPage, sortBy: 'createdAt', sortOrder: 'desc' },
+        params: { page, perPage, sortBy, sortOrder, ...filter },
       });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        error.response.data.message || error.message
+        error.response?.data?.message || error.message
       );
+    }
+  }
+);
+
+export const getAllClients = createAsyncThunk(
+  'clients/getAllClients',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axiosAPI.get('/clients');
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
     }
   }
 );

@@ -2,26 +2,24 @@ import { Field, ErrorMessage, useFormikContext } from 'formik';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 
-import { clientsBase } from '../../constants/clientsBase.js';
-
 import { selectUser } from '../../redux/auth/selectors.js';
 
 import css from './OrderForm.module.css';
 
-const OrderForm = () => {
+const OrderForm = ({ clientsList, isClientsLoading }) => {
+  const { values, setFieldValue } = useFormikContext();
   const user = useSelector(selectUser);
-  const { setFieldValue } = useFormikContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const inputRef = useRef(null);
 
-  const filteredClients = clientsBase
-    .filter(client => client.toLowerCase().includes(searchTerm.toLowerCase()))
-    .slice(0, 10);
+  const filteredClients = clientsList.filter(client =>
+    client.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleSelectClient = client => {
-    setSearchTerm(client);
-    setFieldValue('cliente', client);
+    setFieldValue('cliente', client.name);
+    setSearchTerm(client.name);
     setIsDropdownOpen(false);
   };
 
@@ -86,28 +84,38 @@ const OrderForm = () => {
         <label className={css.label}>
           Cliente
           <div ref={inputRef}>
-            <Field
-              className={css.inputCliente}
-              type="text"
-              name="cliente"
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              onFocus={() => setIsDropdownOpen(true)}
-              placeholder="Type or select a client..."
-              autoComplete="off"
-            />
-            {isDropdownOpen && filteredClients.length > 0 && (
-              <ul className={css.dropdown}>
-                {filteredClients.map((client, index) => (
-                  <li
-                    key={index}
-                    className={css.dropdownItem}
-                    onClick={() => handleSelectClient(client)}
-                  >
-                    {client}
-                  </li>
-                ))}
-              </ul>
+            {isClientsLoading ? (
+              <div className={css.loading}>Loading clients...</div>
+            ) : (
+              <>
+                <Field
+                  className={css.inputCliente}
+                  type="text"
+                  name="cliente"
+                  value={values.cliente}
+                  onChange={e => {
+                    setSearchTerm(e.target.value);
+                    setFieldValue('cliente', e.target.value);
+                  }}
+                  onFocus={() => setIsDropdownOpen(true)}
+                  placeholder="Digite ou selecione um cliente..."
+                  autoComplete="off"
+                />
+
+                {isDropdownOpen && filteredClients.length > 0 && (
+                  <ul className={css.dropdown}>
+                    {filteredClients.map((client, index) => (
+                      <li
+                        key={index}
+                        className={css.dropdownItem}
+                        onClick={() => handleSelectClient(client)}
+                      >
+                        {client.name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             )}
           </div>
           <ErrorMessage className={css.error} name="cliente" component="span" />

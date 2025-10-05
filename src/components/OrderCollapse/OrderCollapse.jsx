@@ -138,7 +138,6 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
       .unwrap()
       .then(() => {
         closeConfirm();
-        // dispatch(getAllOrders({ page: currentPage, perPage: 10 }));
         toast.success('Order deleted successfully!');
       })
       .catch(() => {
@@ -163,7 +162,7 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
           </IconButton>
         </TableCell>
         <TableCell>{order.EP}</TableCell>
-        <TableCell>{order.cliente}</TableCell>
+        <TableCell>{order.cliente.name}</TableCell>
         <TableCell>
           {order.items
             .filter(item => item.status !== 'Concluído')

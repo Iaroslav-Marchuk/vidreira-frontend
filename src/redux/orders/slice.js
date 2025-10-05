@@ -3,6 +3,7 @@ import {
   createOrMergeOrder,
   deleteOrder,
   deleteOrderItem,
+  getAllClients,
   getAllOrders,
   getOrderById,
   updateItemStatus,
@@ -26,8 +27,10 @@ const ordersSlice = createSlice({
 
   initialState: {
     allOrders: [],
+    clientsList: [],
     currentOrder: null,
     isOrdersLoading: false,
+    isClientsLoading: false,
     error: null,
     currentPage: 1,
     perPage: 10,
@@ -63,6 +66,19 @@ const ordersSlice = createSlice({
         state.hasNextPage = hasNextPage;
       })
       .addCase(getAllOrders.rejected, handleRejected)
+
+      .addCase(getAllClients.pending, state => {
+        state.isClientsLoading = true;
+        state.error = null;
+      })
+      .addCase(getAllClients.fulfilled, (state, action) => {
+        state.isClientsLoading = false;
+        state.clientsList = action.payload.clients;
+      })
+      .addCase(getAllClients.rejected, (state, action) => {
+        state.isClientsLoading = false;
+        state.error = action.payload;
+      })
 
       .addCase(getOrderById.pending, handlePending)
       .addCase(getOrderById.fulfilled, (state, action) => {
@@ -167,7 +183,6 @@ const ordersSlice = createSlice({
       .addCase(deleteOrderItem.fulfilled, (state, action) => {
         state.isOrdersLoading = false;
         state.error = null;
-        // const { updatedOrder, deletedItemId } = action.payload;
         const { updatedOrder } = action.payload;
         if (updatedOrder) {
           const index = state.allOrders.findIndex(
