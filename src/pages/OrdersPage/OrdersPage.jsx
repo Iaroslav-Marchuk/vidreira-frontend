@@ -18,6 +18,7 @@ import { getAllOrders } from '../../redux/orders/operations.js';
 import css from './OrdersPage.module.css';
 import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
 import { setCurrentPage } from '../../redux/orders/slice.js';
+import SearchBox from '../../components/SearchBox/SearchBox.jsx';
 
 const OrdersPage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -25,6 +26,7 @@ const OrdersPage = () => {
   const closeModal = () => setModalIsOpen(false);
 
   const [openCollapses, setOpenCollapses] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const role = useSelector(selectRole);
 
@@ -38,10 +40,31 @@ const OrdersPage = () => {
   const hasOrders = allOrders.length > 0;
   const isNotLastPage = currentPage < totalPages;
 
+  // useEffect(() => {
+  //   dispatch(setCurrentPage(1));
+  //   dispatch(getAllOrders({ page: 1, perPage: 10 }));
+  // }, [dispatch]);
+
   useEffect(() => {
     dispatch(setCurrentPage(1));
-    dispatch(getAllOrders({ page: 1, perPage: 10 }));
-  }, [dispatch]);
+
+    let filter = {};
+    if (searchQuery) {
+      if (!isNaN(Number(searchQuery))) {
+        filter.EP = Number(searchQuery);
+      } else {
+        filter.cliente = searchQuery;
+      }
+    }
+
+    dispatch(
+      getAllOrders({
+        page: 1,
+        perPage: 10,
+        filter,
+      })
+    );
+  }, [searchQuery, dispatch]);
 
   const handleLoadMore = () => {
     if (isNotLastPage) {
@@ -62,11 +85,7 @@ const OrdersPage = () => {
   return (
     <div className={css.wrapper}>
       <h1 className={css.title}>Pedidos em curso</h1>
-      <div className={css.filtersWrapper}>
-        <input type="text" />
-        <input type="text" />
-      </div>
-
+      <SearchBox onSearch={setSearchQuery} />
       {role === 'duplo' && (
         <Button className={css.btn} onClick={openModal}>
           ➕ Novo Pedido

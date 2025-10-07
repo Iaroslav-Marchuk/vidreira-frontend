@@ -46,6 +46,10 @@ const ordersSlice = createSlice({
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
     },
+
+    setTextFilter: (state, action) => {
+      state.textFilter = action.payload;
+    },
   },
 
   extraReducers: builder => {
