@@ -77,7 +77,7 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
   const handleEdit = async values => {
     const currentOrderData = {
       EP: order.EP,
-      cliente: order.cliente,
+      cliente: order.cliente.name,
       local: { zona: order.local.zona },
     };
 
@@ -99,12 +99,12 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
       o =>
         o._id !== order._id &&
         o.EP === Number(values.EP) &&
-        o.cliente !== values.cliente
+        o.cliente.name !== values.cliente
     );
 
     if (differentClientForSameEP) {
       toast.error(
-        `Order with EP ${values.EP} already exists with a different client: "${differentClientForSameEP.cliente}".`
+        `Order with EP ${values.EP} already exists with a different client: "${differentClientForSameEP.cliente.name}".`
       );
       return;
     }
@@ -112,7 +112,8 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
     const isUnchanged =
       values.EP === currentOrderData.EP &&
       values.cliente === currentOrderData.cliente &&
-      values.local.zona === currentOrderData.local.zona;
+      values.local.zona === currentOrderData.local.zona &&
+      JSON.stringify(values.items || []) === JSON.stringify(order.items || []);
     if (isUnchanged) {
       toast.error('Order unchanged.');
       return;

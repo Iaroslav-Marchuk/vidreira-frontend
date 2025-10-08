@@ -9,11 +9,13 @@ import Loader from '../../components/Loader/Loader.jsx';
 import { selectRole } from '../../redux/auth/selectors.js';
 import {
   selectAllOrders,
+  selectClientsList,
   selectCurrentPage,
+  selectisClientsLoading,
   selectIsOrdersLoading,
   selectTotalPages,
 } from '../../redux/orders/selectors.js';
-import { getAllOrders } from '../../redux/orders/operations.js';
+import { getAllClients, getAllOrders } from '../../redux/orders/operations.js';
 
 import css from './OrdersPage.module.css';
 import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
@@ -34,26 +36,35 @@ const OrdersPage = () => {
   const allOrders = useSelector(selectAllOrders);
   const isLoading = useSelector(selectIsOrdersLoading);
 
+  const clientsList = useSelector(selectClientsList);
+  const isClientsLoading = useSelector(selectisClientsLoading);
+
   const currentPage = useSelector(selectCurrentPage);
   const totalPages = useSelector(selectTotalPages);
 
   const hasOrders = allOrders.length > 0;
   const isNotLastPage = currentPage < totalPages;
 
-  // useEffect(() => {
-  //   dispatch(setCurrentPage(1));
-  //   dispatch(getAllOrders({ page: 1, perPage: 10 }));
-  // }, [dispatch]);
-
   useEffect(() => {
     dispatch(setCurrentPage(1));
 
+    dispatch(getAllOrders({ page: 1, perPage: 10 }));
+
+    if (!clientsList?.length && !isClientsLoading) {
+      dispatch(getAllClients());
+    }
+  }, [dispatch, clientsList?.length, isClientsLoading]);
+
+  const handleSearch = query => {
+    setSearchQuery(query);
+    dispatch(setCurrentPage(1));
+
     let filter = {};
-    if (searchQuery) {
-      if (!isNaN(Number(searchQuery))) {
-        filter.EP = Number(searchQuery);
+    if (query) {
+      if (!isNaN(Number(query))) {
+        filter.EP = Number(query);
       } else {
-        filter.cliente = searchQuery;
+        filter.cliente = query;
       }
     }
 
@@ -64,12 +75,20 @@ const OrdersPage = () => {
         filter,
       })
     );
-  }, [searchQuery, dispatch]);
+  };
 
   const handleLoadMore = () => {
     if (isNotLastPage) {
       const nextPage = currentPage + 1;
-      dispatch(getAllOrders({ page: nextPage, perPage: 10 }));
+      let filter = {};
+      if (searchQuery) {
+        if (!isNaN(Number(searchQuery))) {
+          filter.EP = Number(searchQuery);
+        } else {
+          filter.cliente = searchQuery;
+        }
+      }
+      dispatch(getAllOrders({ page: nextPage, perPage: 10, filter }));
       dispatch(setCurrentPage(nextPage));
     }
   };
@@ -85,7 +104,7 @@ const OrdersPage = () => {
   return (
     <div className={css.wrapper}>
       <h1 className={css.title}>Pedidos em curso</h1>
-      <SearchBox onSearch={setSearchQuery} />
+      <SearchBox onSearch={handleSearch} />
       {role === 'duplo' && (
         <Button className={css.btn} onClick={openModal}>
           ➕ Novo Pedido

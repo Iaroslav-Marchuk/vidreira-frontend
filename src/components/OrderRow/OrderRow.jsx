@@ -27,8 +27,6 @@ const OrderRow = ({ item, orderId, itemId }) => {
   const currentPage = useSelector(selectCurrentPage);
   const currentOrder = useSelector(selectCurrentOrder);
 
-  // const item = currentOrder.items.find(i => i._id === itemId);
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => {

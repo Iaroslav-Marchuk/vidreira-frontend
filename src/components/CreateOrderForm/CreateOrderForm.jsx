@@ -11,7 +11,6 @@ import Button from '../Button/Button.jsx';
 
 import {
   createOrMergeOrder,
-  getAllClients,
   getAllOrders,
 } from '../../redux/orders/operations.js';
 
@@ -20,7 +19,6 @@ import {
   selectClientsList,
   selectisClientsLoading,
 } from '../../redux/orders/selectors.js';
-import { useEffect } from 'react';
 
 const initialValues = {
   EP: '',
@@ -96,12 +94,6 @@ const CreateOrderForm = ({ onClose }) => {
       })
     ),
   });
-
-  useEffect(() => {
-    if (!clientsList.length) {
-      dispatch(getAllClients());
-    }
-  }, [dispatch, clientsList.length]);
 
   const handleSubmit = async (values, actions) => {
     const payload = {

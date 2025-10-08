@@ -1,13 +1,21 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 36px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 48px;
+}
+
 .searchbox {
   position: relative;
   width: 400px;
-  margin: 0 auto 24px;
 }
 
 .input {
   outline: none;
   width: 400px;
-  padding: 8px 12px 8px 40px;
+  padding: 8px 40px 8px 40px;
   border: 1px solid var(--color-btn-bg);
   border-radius: var(--border-radius);
   font-size: var(--font-size-md);
@@ -34,4 +42,25 @@
 .input:focus {
   border: 3px solid var(--color-btn-hover-bg);
   box-shadow: 0 0 0 3px var(--color-modal-bg);
+}
+
+.clear {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  transform-origin: center;
+}
+
+.clear:hover {
+  transform: translateY(-50%) scale(1.2);
 }
