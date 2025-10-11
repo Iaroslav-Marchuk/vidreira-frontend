@@ -5,8 +5,9 @@ import { glassOptions } from '../../constants/glassOptions.js';
 
 import css from './OrderItemForm.module.css';
 
-const OrderItemForm = ({ isEditMode = false }) => {
+const OrderItemForm = ({ isEditItemMode = false }) => {
   const { values, setFieldValue } = useFormikContext();
+
   return (
     <fieldset className={css.fieldsetArray}>
       <legend className={css.legend}>Vidro</legend>
@@ -205,7 +206,7 @@ const OrderItemForm = ({ isEditMode = false }) => {
               </div>
             ))}
 
-            {!isEditMode && (
+            {!isEditItemMode && (
               <div className={css.addWrapper}>
                 <button
                   className={css.button}

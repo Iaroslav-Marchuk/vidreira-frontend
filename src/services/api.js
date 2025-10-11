@@ -3,11 +3,12 @@ import { logout, setAuthHeader } from '../redux/auth/operations.js';
 import { store } from '../redux/store.js';
 
 const axiosAPI = axios.create({
-  baseURL: 'https://vidreira-backend.onrender.com',
+  // baseURL: 'https://vidreira-backend.onrender.com',
+  baseURL: 'http://localhost:3000',
   withCredentials: true,
 });
 
-axios.interceptors.response.use(
+axiosAPI.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;

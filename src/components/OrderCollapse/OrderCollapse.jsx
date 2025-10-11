@@ -123,6 +123,16 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
       EP: Number(values.EP),
       cliente: values.cliente,
       local: { zona: values.local.zona },
+      items: values.items.map(item => ({
+        category: item.category,
+        type: item.type,
+        temper: Boolean(item.temper),
+        sizeX: Number(item.sizeX),
+        sizeY: Number(item.sizeY),
+        sizeZ: String(item.sizeZ),
+        quantity: Number(item.quantity),
+        reason: item.reason,
+      })),
     };
 
     try {

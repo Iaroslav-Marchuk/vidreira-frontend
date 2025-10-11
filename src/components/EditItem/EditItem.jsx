@@ -51,7 +51,7 @@ const EditItem = ({ item, onSubmit }) => {
     >
       {() => (
         <Form className={css.form}>
-          <OrderItemForm isEditMode={true} />
+          <OrderItemForm isEditItemMode={true} />
           <Button className={css.button} type="submit">
             Update
           </Button>

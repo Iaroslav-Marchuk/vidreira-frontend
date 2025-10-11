@@ -17,55 +17,31 @@ import {
 
 import OrderCollapse from '../OrderCollapse/OrderCollapse.jsx';
 
-import { selectAllOrders } from '../../redux/orders/selectors.js';
-import { useState } from 'react';
+import {
+  selectAllOrders,
+  selectSortBy,
+  selectSortOrder,
+} from '../../redux/orders/selectors.js';
 
 import css from './OrdersTable.module.css';
-import { getAllOrders } from '../../redux/orders/operations.js';
+import { setSorting } from '../../redux/orders/slice.js';
 
 const OrdersTable = ({ openCollapses, toggleCollapse }) => {
   const dispatch = useDispatch();
   const allOrders = useSelector(selectAllOrders);
 
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState('none');
+  const sortBy = useSelector(selectSortBy);
+  const sortOrder = useSelector(selectSortOrder);
 
-  const sortableColumns = {
-    1: 'EP',
-    2: 'cliente',
-    3: 'falta',
-    4: 'status',
-    5: 'local.zona',
-    6: 'createdAt',
+  const handleSortClick = sortField => {
+    const newOrder =
+      sortBy === sortField && sortOrder === 'desc' ? 'asc' : 'desc';
+    dispatch(setSorting({ sortBy: sortField, sortOrder: newOrder }));
   };
 
-  const handleSortClick = colIndex => {
-    const columnKey = sortableColumns[colIndex];
-    let newDirection;
-
-    if (sortColumn === colIndex) {
-      newDirection = sortDirection === 'desc' ? 'asc' : 'desc';
-    } else {
-      newDirection = 'desc';
-    }
-
-    setSortColumn(colIndex);
-    setSortDirection(newDirection);
-
-    dispatch(
-      getAllOrders({
-        page: 1,
-        perPage: 10,
-        sortBy: columnKey,
-        sortOrder: newDirection,
-        filter: {},
-      })
-    );
-  };
-
-  const getSortIcon = colIndex => {
-    if (sortColumn === colIndex && sortDirection !== 'none') {
-      return sortDirection === 'asc' ? (
+  const getSortIcon = sortField => {
+    if (sortBy === sortField) {
+      return sortOrder === 'asc' ? (
         <ArrowUpNarrowWide size={20} color="#fff" strokeWidth={2} />
       ) : (
         <ArrowDownWideNarrow size={20} color="#fff" strokeWidth={2} />
@@ -92,79 +68,67 @@ const OrdersTable = ({ openCollapses, toggleCollapse }) => {
             <TableCell />
             <TableCell>
               <div className={css.wrapper}>
-                {sortableColumns[1] && (
-                  <button
-                    className={css.button}
-                    onClick={() => handleSortClick(1)}
-                  >
-                    {getSortIcon(1)}
-                  </button>
-                )}
+                <button
+                  className={css.button}
+                  onClick={() => handleSortClick('EP')}
+                >
+                  {getSortIcon('EP')}
+                </button>
                 <span className={css.text}>EP</span>
               </div>
             </TableCell>
             <TableCell>
               <div className={css.wrapper}>
-                {sortableColumns[2] && (
-                  <button
-                    className={css.button}
-                    onClick={() => handleSortClick(2)}
-                  >
-                    {getSortIcon(2)}
-                  </button>
-                )}
+                <button
+                  className={css.button}
+                  onClick={() => handleSortClick('cliente')}
+                >
+                  {getSortIcon('cliente')}
+                </button>
                 <span className={css.text}>Cliente</span>
               </div>
             </TableCell>
             <TableCell>
               <div className={css.wrapper}>
-                {sortableColumns[3] && (
-                  <button
-                    className={css.button}
-                    onClick={() => handleSortClick(3)}
-                  >
-                    {getSortIcon(3)}
-                  </button>
-                )}
+                <button
+                  className={css.button}
+                  onClick={() => handleSortClick('falta')}
+                >
+                  {getSortIcon('falta')}
+                </button>
                 <span className={css.text}>Em falta</span>
               </div>
             </TableCell>
             <TableCell>
               <div className={css.wrapper}>
-                {sortableColumns[4] && (
-                  <button
-                    className={css.button}
-                    onClick={() => handleSortClick(4)}
-                  >
-                    {getSortIcon(4)}
-                  </button>
-                )}
+                <button
+                  className={css.button}
+                  onClick={() => handleSortClick('status')}
+                >
+                  {getSortIcon('status')}
+                </button>
                 <span className={css.text}>Estado</span>
               </div>
             </TableCell>
             <TableCell>
               <div className={css.wrapper}>
-                {sortableColumns[5] && (
-                  <button
-                    className={css.button}
-                    onClick={() => handleSortClick(5)}
-                  >
-                    {getSortIcon(5)}
-                  </button>
-                )}
+                <button
+                  className={css.button}
+                  onClick={() => handleSortClick('local.zona')}
+                >
+                  {getSortIcon('local.zona')}
+                </button>
                 <span className={css.text}>Zona</span>
               </div>
             </TableCell>
             <TableCell>
               <div className={css.wrapper}>
-                {sortableColumns[6] && (
-                  <button
-                    className={css.button}
-                    onClick={() => handleSortClick(6)}
-                  >
-                    {getSortIcon(6)}
-                  </button>
-                )}
+                <button
+                  className={css.button}
+                  onClick={() => handleSortClick('createdAt')}
+                >
+                  {getSortIcon('createdAt')}
+                </button>
                 <span className={css.text}>Data</span>
               </div>
             </TableCell>

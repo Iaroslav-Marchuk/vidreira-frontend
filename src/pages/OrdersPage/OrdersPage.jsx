@@ -13,26 +13,31 @@ import {
   selectCurrentPage,
   selectisClientsLoading,
   selectIsOrdersLoading,
+  selectPerPage,
+  selectSearchQuery,
+  selectSortBy,
+  selectSortOrder,
   selectTotalPages,
 } from '../../redux/orders/selectors.js';
 import { getAllClients, getAllOrders } from '../../redux/orders/operations.js';
 
 import css from './OrdersPage.module.css';
 import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
-import { setCurrentPage } from '../../redux/orders/slice.js';
+import { setCurrentPage, setSearchQuery } from '../../redux/orders/slice.js';
 import SearchBox from '../../components/SearchBox/SearchBox.jsx';
 
 const OrdersPage = () => {
+  const dispatch = useDispatch();
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
 
   const [openCollapses, setOpenCollapses] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  // const [searchQuery, setSearchQuery] = useState('');
 
   const role = useSelector(selectRole);
 
-  const dispatch = useDispatch();
   const allOrders = useSelector(selectAllOrders);
   const isLoading = useSelector(selectIsOrdersLoading);
 
@@ -41,55 +46,60 @@ const OrdersPage = () => {
 
   const currentPage = useSelector(selectCurrentPage);
   const totalPages = useSelector(selectTotalPages);
+  const perPage = useSelector(selectPerPage);
+
+  const searchQuery = useSelector(selectSearchQuery);
+
+  const sortBy = useSelector(selectSortBy);
+  const sortOrder = useSelector(selectSortOrder);
 
   const hasOrders = allOrders.length > 0;
   const isNotLastPage = currentPage < totalPages;
 
   useEffect(() => {
-    dispatch(setCurrentPage(1));
-
-    dispatch(getAllOrders({ page: 1, perPage: 10 }));
-
-    if (!clientsList?.length && !isClientsLoading) {
+    if (!clientsList.length && !isClientsLoading) {
       dispatch(getAllClients());
     }
-  }, [dispatch, clientsList?.length, isClientsLoading]);
+  }, [dispatch, clientsList.length, isClientsLoading]);
 
-  const handleSearch = query => {
-    setSearchQuery(query);
-    dispatch(setCurrentPage(1));
-
+  useEffect(() => {
     let filter = {};
-    if (query) {
-      if (!isNaN(Number(query))) {
-        filter.EP = Number(query);
+    if (searchQuery) {
+      if (!isNaN(Number(searchQuery))) {
+        filter.EP = Number(searchQuery);
       } else {
-        filter.cliente = query;
+        filter.cliente = searchQuery;
       }
     }
 
     dispatch(
       getAllOrders({
-        page: 1,
+        page: currentPage,
         perPage: 10,
+        sortBy,
+        sortOrder,
         filter,
       })
     );
+  }, [dispatch, currentPage, sortBy, sortOrder, searchQuery]);
+
+  const handleSearch = query => {
+    dispatch(setSearchQuery(query));
+    dispatch(setCurrentPage(1));
   };
 
   const handleLoadMore = () => {
     if (isNotLastPage) {
-      const nextPage = currentPage + 1;
-      let filter = {};
-      if (searchQuery) {
-        if (!isNaN(Number(searchQuery))) {
-          filter.EP = Number(searchQuery);
-        } else {
-          filter.cliente = searchQuery;
-        }
-      }
-      dispatch(getAllOrders({ page: nextPage, perPage: 10, filter }));
-      dispatch(setCurrentPage(nextPage));
+      dispatch(
+        getAllOrders({
+          page: currentPage + 1,
+          perPage,
+          sortBy,
+          sortOrder,
+          filter: searchQuery ? { cliente: searchQuery } : {},
+        })
+      );
+      dispatch(setCurrentPage(currentPage + 1));
     }
   };
 

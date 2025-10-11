@@ -50,12 +50,24 @@ export const getOrderById = createAsyncThunk(
   }
 );
 
-export const createOrMergeOrder = createAsyncThunk(
-  'orders/createOrMergeOrder',
+export const createOrder = createAsyncThunk(
+  'orders/createOrder',
   async (values, thunkAPI) => {
     try {
       const response = await axiosAPI.post('/orders', values);
-      return response.data.newOrder;
+      return response.data.order;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.data.message);
+    }
+  }
+);
+
+export const mergeOrder = createAsyncThunk(
+  'orders/mergeOrder',
+  async ({ orderId, values }, thunkAPI) => {
+    try {
+      const response = await axiosAPI.post(`/orders/${orderId}`, values);
+      return response.data.order;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

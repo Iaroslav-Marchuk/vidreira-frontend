@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  createOrMergeOrder,
+  createOrder,
   deleteOrder,
   deleteOrderItem,
   getAllClients,
   getAllOrders,
   getOrderById,
+  mergeOrder,
   updateItemStatus,
   updateOrder,
   updateOrderItem,
@@ -34,8 +35,11 @@ const ordersSlice = createSlice({
     error: null,
     currentPage: 1,
     perPage: 10,
-    hasNextPage: false,
     totalPages: 1,
+    hasNextPage: false,
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
+    searchQuery: '',
   },
 
   reducers: {
@@ -47,8 +51,16 @@ const ordersSlice = createSlice({
       state.currentPage = action.payload;
     },
 
-    setTextFilter: (state, action) => {
-      state.textFilter = action.payload;
+    setSorting: (state, action) => {
+      const { sortBy, sortOrder } = action.payload;
+      state.sortBy = sortBy;
+      state.sortOrder = sortOrder;
+      state.currentPage = 1;
+    },
+
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
+      state.currentPage = 1;
     },
   },
 
@@ -57,12 +69,27 @@ const ordersSlice = createSlice({
       .addCase(getAllOrders.pending, handlePending)
       .addCase(getAllOrders.fulfilled, (state, action) => {
         state.isOrdersLoading = false;
-        const { data, page, perPage, totalPages, hasNextPage } =
-          action.payload.orders;
+
+        const {
+          data,
+          page,
+          perPage,
+          totalPages,
+          hasNextPage,
+          sortBy,
+          sortOrder,
+        } = action.payload.orders;
+
+        if (sortBy) state.sortBy = sortBy;
+        if (sortOrder) state.sortOrder = sortOrder;
+
         if (page === 1) {
           state.allOrders = data;
         } else {
-          state.allOrders = [...state.allOrders, ...data];
+          const newOrders = data.filter(
+            o => !state.allOrders.some(existing => existing._id === o._id)
+          );
+          state.allOrders = [...state.allOrders, ...newOrders];
         }
         state.currentPage = page;
         state.perPage = perPage;
@@ -98,24 +125,43 @@ const ordersSlice = createSlice({
         state.totalPages = 1;
       })
 
-      .addCase(createOrMergeOrder.pending, handlePending)
-      .addCase(createOrMergeOrder.fulfilled, (state, action) => {
+      .addCase(createOrder.pending, handlePending)
+      .addCase(createOrder.fulfilled, (state, action) => {
         state.isOrdersLoading = false;
         state.error = null;
-        const newOrder = action.payload;
+        const order = action.payload;
         const index = state.allOrders.findIndex(
-          order => order._id === newOrder._id
+          order => order._id === order._id
         );
 
         if (index !== -1) {
-          state.allOrders[index] = newOrder;
+          state.allOrders[index] = order;
         } else {
-          state.allOrders.unshift(newOrder);
+          state.allOrders.unshift(order);
         }
 
-        state.currentOrder = newOrder;
+        state.currentOrder = order;
       })
-      .addCase(createOrMergeOrder.rejected, handleRejected)
+      .addCase(createOrder.rejected, handleRejected)
+
+      .addCase(mergeOrder.pending, handlePending)
+      .addCase(mergeOrder.fulfilled, (state, action) => {
+        state.isOrdersLoading = false;
+        state.error = null;
+        const updatedOrder = action.payload;
+        const index = state.allOrders.findIndex(
+          order => order._id === updatedOrder._id
+        );
+
+        if (index !== -1) {
+          state.allOrders[index] = updatedOrder;
+        } else {
+          state.allOrders.unshift(updatedOrder);
+        }
+
+        state.currentOrder = updatedOrder;
+      })
+      .addCase(mergeOrder.rejected, handleRejected)
 
       .addCase(updateOrder.pending, handlePending)
       .addCase(updateOrder.fulfilled, (state, action) => {
@@ -212,4 +258,5 @@ const ordersSlice = createSlice({
 });
 
 export default ordersSlice.reducer;
-export const { clearCurrentOrder, setCurrentPage } = ordersSlice.actions;
+export const { clearCurrentOrder, setCurrentPage, setSearchQuery, setSorting } =
+  ordersSlice.actions;

@@ -1,4 +1,4 @@
-import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 
 import * as Yup from 'yup';
 
@@ -9,10 +9,7 @@ import OrderForm from '../OrderForm/OrderForm.jsx';
 import OrderItemForm from '../OrderItemForm/OrderItemForm.jsx';
 import Button from '../Button/Button.jsx';
 
-import {
-  createOrMergeOrder,
-  getAllOrders,
-} from '../../redux/orders/operations.js';
+import { createOrder, getAllOrders } from '../../redux/orders/operations.js';
 
 import css from './CreateOrderForm.module.css';
 import {
@@ -115,39 +112,43 @@ const CreateOrderForm = ({ onClose }) => {
     };
 
     try {
-      await dispatch(createOrMergeOrder(payload)).unwrap();
+      await dispatch(createOrder(payload)).unwrap();
       await dispatch(getAllOrders({ page: 1, perPage: 10 }));
       toast.success('Order added successfully!');
       actions.resetForm();
       onClose();
     } catch (error) {
-      toast.error('Failed to add new order: ' + error);
+      const errorMessage =
+        error || 'Order with this EP and client already exists';
+      toast.error('Failed to add new order: ' + errorMessage);
     }
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={OrderSchema}
-      validateOnBlur={true}
-      validateOnChange={false}
-      onSubmit={handleSubmit}
-    >
-      {({ values, setFieldValue }) => (
-        <Form className={css.form}>
-          <OrderForm
-            values={values}
-            setFieldValue={setFieldValue}
-            clientsList={clientsList}
-            isClientsLoading={isClientsLoading}
-          />
-          <OrderItemForm values={values} setFieldValue={setFieldValue} />
-          <Button className={css.button} type="submit">
-            Submit
-          </Button>
-        </Form>
-      )}
-    </Formik>
+    <>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={OrderSchema}
+        validateOnBlur={true}
+        validateOnChange={false}
+        onSubmit={handleSubmit}
+      >
+        {({ values, setFieldValue }) => (
+          <Form className={css.form}>
+            <OrderForm
+              values={values}
+              setFieldValue={setFieldValue}
+              clientsList={clientsList}
+              isClientsLoading={isClientsLoading}
+            />
+            <OrderItemForm values={values} setFieldValue={setFieldValue} />
+            <Button className={css.button} type="submit">
+              Submit
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 };
 
