@@ -23,7 +23,11 @@ import { getAllClients, getAllOrders } from '../../redux/orders/operations.js';
 
 import css from './OrdersPage.module.css';
 import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
-import { setCurrentPage, setSearchQuery } from '../../redux/orders/slice.js';
+import {
+  setCurrentPage,
+  setSearchQuery,
+  setSorting,
+} from '../../redux/orders/slice.js';
 import SearchBox from '../../components/SearchBox/SearchBox.jsx';
 
 const OrdersPage = () => {
@@ -34,7 +38,6 @@ const OrdersPage = () => {
   const closeModal = () => setModalIsOpen(false);
 
   const [openCollapses, setOpenCollapses] = useState([]);
-  // const [searchQuery, setSearchQuery] = useState('');
 
   const role = useSelector(selectRole);
 
@@ -55,6 +58,14 @@ const OrdersPage = () => {
 
   const hasOrders = allOrders.length > 0;
   const isNotLastPage = currentPage < totalPages;
+
+  useEffect(() => {
+    return () => {
+      dispatch(setCurrentPage(1));
+      dispatch(setSorting({ sortBy: 'createdAt', sortOrder: 'desc' }));
+      dispatch(setSearchQuery(''));
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     if (!clientsList.length && !isClientsLoading) {
