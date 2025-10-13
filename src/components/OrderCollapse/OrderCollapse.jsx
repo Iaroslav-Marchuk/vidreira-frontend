@@ -14,6 +14,7 @@ import {
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { Pencil, Trash2, NotepadText } from 'lucide-react';
+
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -193,6 +194,7 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
             <button className={css.btn} onClick={openEdit}>
               <Pencil size={20} color="#163259" strokeWidth={1} />
             </button>
+
             <button
               className={css.btn}
               onClick={e => {

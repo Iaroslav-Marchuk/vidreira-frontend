@@ -105,13 +105,13 @@ export const updateItemStatus = createAsyncThunk(
   'orders/updateItemStatus',
   async ({ orderId, itemId, status }, thunkAPI) => {
     try {
-      const response = await axiosAPI.patch(`/orders/${orderId}/status`, {
-        itemId,
-        status,
-      });
+      const response = await axiosAPI.patch(
+        `/orders/${orderId}/${itemId}/status`,
+        { status }
+      );
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.message);
     }
   }
 );

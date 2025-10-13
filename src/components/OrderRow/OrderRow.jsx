@@ -21,11 +21,16 @@ import {
   selectCurrentPage,
 } from '../../redux/orders/selectors.js';
 import EditItem from '../EditItem/EditItem.jsx';
+import { selectUser } from '../../redux/auth/selectors.js';
+import StatusButton from '../StatusButton/StatusButton.jsx';
 
 const OrderRow = ({ item, orderId, itemId }) => {
   const dispatch = useDispatch();
   const currentPage = useSelector(selectCurrentPage);
   const currentOrder = useSelector(selectCurrentOrder);
+  const currentUser = useSelector(selectUser);
+
+  const [itemStatus, setItemStatus] = useState(item.status);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
@@ -47,6 +52,7 @@ const OrderRow = ({ item, orderId, itemId }) => {
       toast.error(error);
     }
   };
+
   const closeEdit = () => setEditisOpen(false);
 
   const handleEdit = async values => {
@@ -165,6 +171,15 @@ const OrderRow = ({ item, orderId, itemId }) => {
             <button className={css.btn} onClick={openEdit}>
               <Pencil size={20} color="#163259" strokeWidth={1} />
             </button>
+
+            <StatusButton
+              orderId={orderId}
+              itemId={item._id}
+              currentStatus={itemStatus}
+              userId={currentUser._id}
+              onStatusChange={setItemStatus}
+            />
+
             <button
               className={css.btn}
               onClick={e => {

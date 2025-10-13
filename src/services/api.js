@@ -8,29 +8,58 @@ const axiosAPI = axios.create({
   withCredentials: true,
 });
 
+// axios.interceptors.response.use(
+//   response => response,
+//   async error => {
+//     const originalRequest = error.config;
+
+//     if (error.response.status === 401 && !originalRequest._retry) {
+//       originalRequest._retry = true;
+
+//       try {
+//         const refreshResponse = await axiosAPI.post(
+//           '/auth/refresh',
+//           {},
+//           { withCredentials: true }
+//         );
+//         const { accessToken } = refreshResponse.data;
+
+//         setAuthHeader(accessToken);
+//         return axiosAPI(originalRequest);
+//       } catch (error) {
+//         store.dispatch(logout());
+//         return Promise.reject(error);
+//       }
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+
 axiosAPI.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const refreshResponse = await axiosAPI.post(
-          '/auth/refresh',
+        const refreshResponse = await axios.post(
+          'https://vidreira-backend.onrender.com/auth/refresh',
           {},
           { withCredentials: true }
         );
-        const { accessToken } = refreshResponse.data;
 
+        const { accessToken } = refreshResponse.data;
         setAuthHeader(accessToken);
+
         return axiosAPI(originalRequest);
-      } catch (error) {
+      } catch (err) {
         store.dispatch(logout());
-        return Promise.reject(error);
+        return Promise.reject(err);
       }
     }
+
     return Promise.reject(error);
   }
 );
