@@ -19,7 +19,7 @@ import {
 
 const initialValues = {
   EP: '',
-  cliente: '',
+  client: '',
   local: {
     zona: '',
     operator: '',
@@ -52,7 +52,7 @@ const CreateOrderForm = ({ onClose }) => {
       .positive('O valor deve ser um número positivo.')
       .integer('Valida se um número é um inteiro.')
       .required('Campo obrigatório'),
-    cliente: Yup.string()
+    client: Yup.string()
       .oneOf(
         clientsList.map(c => c.name),
         'Escolhe o cliente'
@@ -95,7 +95,7 @@ const CreateOrderForm = ({ onClose }) => {
   const handleSubmit = async (values, actions) => {
     const payload = {
       EP: Number(values.EP),
-      cliente: values.cliente,
+      client: values.client,
       local: {
         zona: values.local.zona,
       },

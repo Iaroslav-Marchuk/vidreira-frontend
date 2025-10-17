@@ -8,33 +8,6 @@ const axiosAPI = axios.create({
   withCredentials: true,
 });
 
-// axios.interceptors.response.use(
-//   response => response,
-//   async error => {
-//     const originalRequest = error.config;
-
-//     if (error.response.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;
-
-//       try {
-//         const refreshResponse = await axiosAPI.post(
-//           '/auth/refresh',
-//           {},
-//           { withCredentials: true }
-//         );
-//         const { accessToken } = refreshResponse.data;
-
-//         setAuthHeader(accessToken);
-//         return axiosAPI(originalRequest);
-//       } catch (error) {
-//         store.dispatch(logout());
-//         return Promise.reject(error);
-//       }
-//     }
-//     return Promise.reject(error);
-//   }
-// );
-
 axiosAPI.interceptors.response.use(
   response => response,
   async error => {
@@ -45,7 +18,8 @@ axiosAPI.interceptors.response.use(
 
       try {
         const refreshResponse = await axios.post(
-          'https://vidreira-backend.onrender.com/auth/refresh',
+          // 'https://vidreira-backend.onrender.com/auth/refresh',
+          'http://localhost:3000/auth/refresh',
           {},
           { withCredentials: true }
         );
@@ -63,5 +37,10 @@ axiosAPI.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export const axiosPublic = axios.create({
+  baseURL: 'http://localhost:3000',
+  withCredentials: true, // якщо потрібні cookie для refresh
+});
 
 export default axiosAPI;

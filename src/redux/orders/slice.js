@@ -5,6 +5,7 @@ import {
   deleteOrderItem,
   getAllClients,
   getAllOrders,
+  getAllRoles,
   getOrderById,
   mergeOrder,
   updateItemStatus,
@@ -29,9 +30,11 @@ const ordersSlice = createSlice({
   initialState: {
     allOrders: [],
     clientsList: [],
+    rolesList: [],
     currentOrder: null,
     isOrdersLoading: false,
     isClientsLoading: false,
+    isRolesLoading: false,
     error: null,
     currentPage: 1,
     perPage: 10,
@@ -108,6 +111,19 @@ const ordersSlice = createSlice({
       })
       .addCase(getAllClients.rejected, (state, action) => {
         state.isClientsLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(getAllRoles.pending, state => {
+        state.isRolesLoading = true;
+        state.error = null;
+      })
+      .addCase(getAllRoles.fulfilled, (state, action) => {
+        state.isRolesLoading = false;
+        state.rolesList = action.payload.roles;
+      })
+      .addCase(getAllRoles.rejected, (state, action) => {
+        state.isRolesLoading = false;
         state.error = action.payload;
       })
 

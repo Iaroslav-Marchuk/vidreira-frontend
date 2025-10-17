@@ -1,4 +1,4 @@
-import { CirclePlus, CirclePlay, CircleCheck } from 'lucide-react';
+import { CirclePlus, CirclePlay, CircleCheck, Loader } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import css from './StatusButton.module.css';
@@ -20,25 +20,28 @@ const StatusButton = ({
 }) => {
   const dispatch = useDispatch();
   const [status, setStatus] = useState(currentStatus);
+  const [loading, setLoading] = useState(false);
 
   const { icon: Icon, color, next } = statusMap[status];
 
   const handleChangeStatus = async () => {
-    if (!next) return;
+    if (!next || loading) return;
 
-    // Миттєво оновлюємо стан кнопки
-    setStatus(next);
-    onStatusChange?.(next);
+    setLoading(true);
 
     try {
       await dispatch(
         updateItemStatus({ orderId, itemId, status: next, userId })
       ).unwrap();
+      setStatus(next);
+      onStatusChange?.(next);
       toast.success(`Status updated to "${next}"`);
     } catch (error) {
       setStatus(status);
       onStatusChange?.(status);
       toast.error('Failed to update status: ' + error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -50,8 +53,13 @@ const StatusButton = ({
         handleChangeStatus();
       }}
       title={next ? `Change status to "${next}"` : 'Status final'}
+      disabled={loading || !next}
     >
-      <Icon size={20} color={color} strokeWidth={1} />
+      {loading ? (
+        <Loader size={20} className={css.loader} />
+      ) : (
+        <Icon size={20} color={color} strokeWidth={1} />
+      )}
     </button>
   );
 };

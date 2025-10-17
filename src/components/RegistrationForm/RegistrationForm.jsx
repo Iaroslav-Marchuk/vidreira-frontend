@@ -11,7 +11,7 @@ import { selectIsLoading } from '../../redux/auth/selectors.js';
 
 import css from './RegistrationForm.module.css';
 
-const RegistrationForm = () => {
+const RegistrationForm = ({ rolesList }) => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
 
@@ -62,9 +62,14 @@ const RegistrationForm = () => {
               <option value="" disabled>
                 Escolha o seu cargo
               </option>
-              <option value="corte">Corte</option>
+              {rolesList.map(r => (
+                <option key={r.value} value={r.value}>
+                  {r.label}
+                </option>
+              ))}
+              {/* <option value="corte">Corte</option>
               <option value="duplo">Duplo</option>
-              <option value="guest">Visitante</option>
+              <option value="guest">Visitante</option> */}
             </Field>
           </div>
 

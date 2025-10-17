@@ -18,7 +18,7 @@ const OrderForm = ({ clientsList, isClientsLoading }) => {
   );
 
   const handleSelectClient = client => {
-    setFieldValue('cliente', client.name);
+    setFieldValue('client', client.name);
     setSearchTerm(client.name);
     setIsDropdownOpen(false);
   };
@@ -89,13 +89,13 @@ const OrderForm = ({ clientsList, isClientsLoading }) => {
             ) : (
               <>
                 <Field
-                  className={css.inputCliente}
+                  className={css.inputClient}
                   type="text"
-                  name="cliente"
-                  value={values.cliente}
+                  name="client"
+                  value={values.client}
                   onChange={e => {
                     setSearchTerm(e.target.value);
-                    setFieldValue('cliente', e.target.value);
+                    setFieldValue('client', e.target.value);
                   }}
                   onFocus={() => setIsDropdownOpen(true)}
                   placeholder="Digite ou selecione um cliente..."
@@ -118,7 +118,7 @@ const OrderForm = ({ clientsList, isClientsLoading }) => {
               </>
             )}
           </div>
-          <ErrorMessage className={css.error} name="cliente" component="span" />
+          <ErrorMessage className={css.error} name="client" component="span" />
         </label>
       </fieldset>
     </div>

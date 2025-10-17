@@ -1,16 +1,33 @@
 import clsx from 'clsx';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import LoginForm from '../../components/LoginForm/LoginForm.jsx';
 import RegisterForm from '../../components/RegistrationForm/RegistrationForm.jsx';
 
 import css from './AuthPage.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectIsRolesLoading,
+  selectRolesList,
+} from '../../redux/orders/selectors.js';
+import { getAllRoles } from '../../redux/orders/operations.js';
 
 const AuthPage = () => {
+  const dispatch = useDispatch();
+
   const [formType, setFormType] = useState('login');
   const handleLoginForm = () => setFormType('login');
   const handleRegisterForm = () => setFormType('register');
+
+  const rolesList = useSelector(selectRolesList);
+  const isRolesLoading = useSelector(selectIsRolesLoading);
+
+  useEffect(() => {
+    if (!rolesList.length && !isRolesLoading) {
+      dispatch(getAllRoles());
+    }
+  }, [dispatch, rolesList.length, isRolesLoading]);
 
   return (
     <>
@@ -34,7 +51,7 @@ const AuthPage = () => {
       </div>
 
       {formType === 'login' && <LoginForm />}
-      {formType === 'register' && <RegisterForm />}
+      {formType === 'register' && <RegisterForm rolesList={rolesList} />}
     </>
   );
 };

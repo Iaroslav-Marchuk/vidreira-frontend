@@ -25,7 +25,7 @@ const OrderSummary = () => {
           </li>
           <li className={css.infoItem}>
             <span className={css.span}>Cliente:</span>{' '}
-            {currentOrder.cliente.name}
+            {currentOrder.client.name}
           </li>
           <li className={css.infoItem}>
             <span className={css.span}>Zona:</span> {currentOrder.local.zona}

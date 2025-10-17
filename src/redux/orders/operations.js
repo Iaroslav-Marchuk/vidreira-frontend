@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axiosAPI from '../../services/api.js';
+import axiosAPI, { axiosPublic } from '../../services/api.js';
 
 export const getAllOrders = createAsyncThunk(
   'orders/getAllOrders',
@@ -31,6 +31,18 @@ export const getAllClients = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axiosAPI.get('/clients');
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const getAllRoles = createAsyncThunk(
+  'roles/getAllRoles',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axiosPublic.get('/roles');
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
@@ -81,7 +93,7 @@ export const updateOrder = createAsyncThunk(
       const response = await axiosAPI.patch(`/orders/${orderId}`, values);
       return response.data.updatedOrder;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.data.message);
     }
   }
 );

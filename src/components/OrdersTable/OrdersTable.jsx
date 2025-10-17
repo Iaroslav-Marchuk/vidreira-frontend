@@ -23,8 +23,9 @@ import {
   selectSortOrder,
 } from '../../redux/orders/selectors.js';
 
-import css from './OrdersTable.module.css';
 import { setSorting } from '../../redux/orders/slice.js';
+
+import css from './OrdersTable.module.css';
 
 const OrdersTable = ({ openCollapses, toggleCollapse }) => {
   const dispatch = useDispatch();
@@ -81,9 +82,9 @@ const OrdersTable = ({ openCollapses, toggleCollapse }) => {
               <div className={css.wrapper}>
                 <button
                   className={css.button}
-                  onClick={() => handleSortClick('cliente')}
+                  onClick={() => handleSortClick('client')}
                 >
-                  {getSortIcon('cliente')}
+                  {getSortIcon('client')}
                 </button>
                 <span className={css.text}>Cliente</span>
               </div>

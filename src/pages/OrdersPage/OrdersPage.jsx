@@ -14,6 +14,7 @@ import {
   selectisClientsLoading,
   selectIsOrdersLoading,
   selectPerPage,
+  selectRolesList,
   selectSearchQuery,
   selectSortBy,
   selectSortOrder,
@@ -29,6 +30,7 @@ import {
   setSorting,
 } from '../../redux/orders/slice.js';
 import SearchBox from '../../components/SearchBox/SearchBox.jsx';
+import { roleCanDo } from '../../utils/roleCanDo.js';
 
 const OrdersPage = () => {
   const dispatch = useDispatch();
@@ -40,6 +42,7 @@ const OrdersPage = () => {
   const [openCollapses, setOpenCollapses] = useState([]);
 
   const role = useSelector(selectRole);
+  const rolesList = useSelector(selectRolesList);
 
   const allOrders = useSelector(selectAllOrders);
   const isLoading = useSelector(selectIsOrdersLoading);
@@ -79,7 +82,7 @@ const OrdersPage = () => {
       if (!isNaN(Number(searchQuery))) {
         filter.EP = Number(searchQuery);
       } else {
-        filter.cliente = searchQuery;
+        filter.client = searchQuery;
       }
     }
 
@@ -107,7 +110,7 @@ const OrdersPage = () => {
           perPage,
           sortBy,
           sortOrder,
-          filter: searchQuery ? { cliente: searchQuery } : {},
+          filter: searchQuery ? { client: searchQuery } : {},
         })
       );
       dispatch(setCurrentPage(currentPage + 1));
@@ -126,27 +129,24 @@ const OrdersPage = () => {
     <div className={css.wrapper}>
       <h1 className={css.title}>Pedidos em curso</h1>
       <SearchBox onSearch={handleSearch} />
-      {role === 'duplo' && (
+
+      {roleCanDo(rolesList, role, 'create') && (
         <Button className={css.btn} onClick={openModal}>
           ➕ Novo Pedido
         </Button>
       )}
-
       {modalIsOpen && (
         <ModalOverlay isOpen={modalIsOpen} onClose={closeModal}>
           <CreateOrderForm onClose={closeModal} />
         </ModalOverlay>
       )}
-
       {isLoading && <Loader loadingState={isLoading} />}
-
       {allOrders.length > 0 && (
         <OrdersTable
           openCollapses={openCollapses}
           toggleCollapse={toggleCollapse}
         />
       )}
-
       {!isLoading && allOrders.length === 0 && (
         <p className={css.noResults}>Não existe nenhum pedido!</p>
       )}

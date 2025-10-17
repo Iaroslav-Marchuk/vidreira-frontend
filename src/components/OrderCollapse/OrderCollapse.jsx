@@ -24,6 +24,7 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
 
 import {
   deleteOrder,
+  getAllOrders,
   getOrderById,
   updateOrder,
 } from '../../redux/orders/operations.js';
@@ -31,13 +32,38 @@ import { clearCurrentOrder } from '../../redux/orders/slice.js';
 
 import css from './OrderCollapse.module.css';
 import OrderSummary from '../OrderSummary/OrderSummary.jsx';
-import { selectAllOrders } from '../../redux/orders/selectors.js';
+import {
+  selectAllOrders,
+  selectCurrentPage,
+  selectPerPage,
+  selectRolesList,
+  selectSearchQuery,
+  selectSortBy,
+  selectSortOrder,
+} from '../../redux/orders/selectors.js';
 import EditOrder from '../EditOrder/EditOrder.jsx';
+import { selectRole, selectUser } from '../../redux/auth/selectors.js';
+import { roleCanDo } from '../../utils/roleCanDo.js';
 
 const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
   const dispatch = useDispatch();
 
   const allOrders = useSelector(selectAllOrders);
+
+  const currentPage = useSelector(selectCurrentPage);
+  const perPage = useSelector(selectPerPage);
+  const sortBy = useSelector(selectSortBy);
+  const sortOrder = useSelector(selectSortOrder);
+  const searchQuery = useSelector(selectSearchQuery);
+
+  const role = useSelector(selectRole);
+  const rolesList = useSelector(selectRolesList);
+  const user = useSelector(selectUser);
+  const userId = user._id;
+
+  const canEdit = roleCanDo(rolesList, role, 'edit') && order.owner === userId;
+  const canDelete =
+    roleCanDo(rolesList, role, 'delete') && order.owner === userId;
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
@@ -78,7 +104,7 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
   const handleEdit = async values => {
     const currentOrderData = {
       EP: order.EP,
-      cliente: order.cliente.name,
+      client: order.client.name,
       local: { zona: order.local.zona },
     };
 
@@ -100,19 +126,19 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
       o =>
         o._id !== order._id &&
         o.EP === Number(values.EP) &&
-        o.cliente.name !== values.cliente
+        o.client.name !== values.client
     );
 
     if (differentClientForSameEP) {
       toast.error(
-        `Order with EP ${values.EP} already exists with a different client: "${differentClientForSameEP.cliente.name}".`
+        `Order with EP ${values.EP} already exists with a different client: "${differentClientForSameEP.client.name}".`
       );
       return;
     }
 
     const isUnchanged =
       values.EP === currentOrderData.EP &&
-      values.cliente === currentOrderData.cliente &&
+      values.client === currentOrderData.client &&
       values.local.zona === currentOrderData.local.zona &&
       JSON.stringify(values.items || []) === JSON.stringify(order.items || []);
     if (isUnchanged) {
@@ -122,7 +148,7 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
 
     const payload = {
       EP: Number(values.EP),
-      cliente: values.cliente,
+      client: values.client,
       local: { zona: values.local.zona },
       items: values.items.map(item => ({
         category: item.category,
@@ -149,11 +175,23 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
     dispatch(deleteOrder(orderId))
       .unwrap()
       .then(() => {
-        closeConfirm();
         toast.success('Order deleted successfully!');
+
+        dispatch(
+          getAllOrders({
+            page: currentPage,
+            perPage,
+            sortBy,
+            sortOrder,
+            filter: searchQuery ? { client: searchQuery } : {},
+          })
+        );
       })
       .catch(() => {
         toast.error('Failed to delete order.');
+      })
+      .finally(() => {
+        closeConfirm();
       });
   };
 
@@ -174,7 +212,7 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
           </IconButton>
         </TableCell>
         <TableCell>{order.EP}</TableCell>
-        <TableCell>{order.cliente.name}</TableCell>
+        <TableCell>{order.client.name}</TableCell>
         <TableCell>
           {order.items
             .filter(item => item.status !== 'Concluído')
@@ -191,8 +229,12 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
             <button className={css.btn} onClick={handleMore}>
               <NotepadText size={20} color="#163259" strokeWidth={1} />
             </button>
-            <button className={css.btn} onClick={openEdit}>
-              <Pencil size={20} color="#163259" strokeWidth={1} />
+            <button className={css.btn} onClick={openEdit} disabled={!canEdit}>
+              <Pencil
+                size={20}
+                color={!canEdit ? '#999' : '#163259'}
+                strokeWidth={1}
+              />
             </button>
 
             <button
@@ -201,8 +243,13 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
                 e.stopPropagation();
                 openConfirm();
               }}
+              disabled={!canDelete}
             >
-              <Trash2 size={20} color="#ff0000" strokeWidth={1} />
+              <Trash2
+                size={20}
+                color={!canDelete ? '#999' : '#ff0000'}
+                strokeWidth={1}
+              />
             </button>
           </div>
         </TableCell>

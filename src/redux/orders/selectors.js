@@ -13,3 +13,6 @@ export const selectSortOrder = state => state.orders.sortOrder;
 
 export const selectClientsList = state => state.orders.clientsList;
 export const selectisClientsLoading = state => state.orders.isClientsLoading;
+
+export const selectRolesList = state => state.orders.rolesList;
+export const selectIsRolesLoading = state => state.orders.isRolesLoading;

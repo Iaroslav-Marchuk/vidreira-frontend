@@ -33,7 +33,7 @@ const EditOrder = ({ order, onSubmit }) => {
 
   const OrderSchema = Yup.object().shape({
     EP: Yup.number().positive().integer().required('Campo obrigatório'),
-    cliente: Yup.string()
+    client: Yup.string()
       .oneOf(clientsList.map(c => c.name))
       .required('Campo obrigatório'),
     local: Yup.object().shape({
@@ -58,7 +58,7 @@ const EditOrder = ({ order, onSubmit }) => {
 
   const initialValues = {
     EP: order.EP,
-    cliente: order.cliente.name,
+    client: order.client.name,
     local: {
       zona: order.local.zona,
       operator: order.local.operator,
