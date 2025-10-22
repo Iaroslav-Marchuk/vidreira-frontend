@@ -121,9 +121,9 @@ export const updateItemStatus = createAsyncThunk(
         `/orders/${orderId}/${itemId}/status`,
         { status }
       );
-      return response.data;
+      return response.data.updatedOrder;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
+      return thunkAPI.rejectWithValue(error.response.data.data.message);
     }
   }
 );
@@ -148,6 +148,43 @@ export const deleteOrderItem = createAsyncThunk(
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getOrderHistory = createAsyncThunk(
+  '/history/getOrderHistory',
+  async (orderId, thunkAPI) => {
+    try {
+      const response = await axiosAPI.get(`/history/${orderId}`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getArchive = createAsyncThunk(
+  '/archive/getArchive',
+  async (
+    {
+      page = 1,
+      perPage = 10,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+      filter = {},
+    } = {},
+    thunkAPI
+  ) => {
+    try {
+      const response = await axiosAPI.get('/archive', {
+        params: { page, perPage, sortBy, sortOrder, ...filter },
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response.data.message || error.message
+      );
     }
   }
 );

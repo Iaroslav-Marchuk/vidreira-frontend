@@ -7,10 +7,16 @@ const Navigation = () => {
   return (
     <nav className={css.navigation}>
       <NavLink
+        to="/archive"
+        className={({ isActive }) => clsx(css.link, isActive && css.active)}
+      >
+        Archivo
+      </NavLink>
+      <NavLink
         to="/orders"
         className={({ isActive }) => clsx(css.link, isActive && css.active)}
       >
-        Pedidos
+        Pedidos activos
       </NavLink>
       <NavLink
         to="/statistics"

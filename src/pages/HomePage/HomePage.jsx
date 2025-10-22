@@ -49,10 +49,10 @@ const HomePage = () => {
       <h1 className={css.welcome}>Olá, {user.name}!</h1>
       <div className={css.stats}>
         <div className={css.statCard}>
-          📦 Em produção: <strong>INPROGRESS</strong>
+          📦 Adicionado hoje: <strong>CRIADOS</strong>
         </div>
         <div className={css.statCard}>
-          ✅ Concluídos hoje: <strong>COMPLETED</strong>
+          ✅ Concluídos hoje: <strong>CONCLUÍDOS</strong>
         </div>
         <div className={css.statCard}>
           ⏳ Atrasados: <strong>ATRASADOS</strong>

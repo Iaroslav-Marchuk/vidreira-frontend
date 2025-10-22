@@ -1,13 +1,16 @@
 import { CirclePlus, CirclePlay, CircleCheck, Loader } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import css from './StatusButton.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateItemStatus } from '../../redux/orders/operations.js';
+import { roleCanDo } from '../../utils/roleCanDo.js';
+import { selectRole } from '../../redux/auth/selectors.js';
+import { selectRolesList } from '../../redux/orders/selectors.js';
 
 const statusMap = {
-  Criado: { icon: CirclePlus, color: '#cdc769ff', next: 'Em produção' },
-  'Em produção': { icon: CirclePlay, color: '#288328ff', next: 'Concluído' },
+  Criado: { icon: CirclePlus, color: '#69cd71ff', next: 'Em produção' },
+  'Em produção': { icon: CirclePlay, color: '#e89126ff', next: 'Concluído' },
   Concluído: { icon: CircleCheck, color: '#3319c7ff', next: null },
 };
 
@@ -22,7 +25,17 @@ const StatusButton = ({
   const [status, setStatus] = useState(currentStatus);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setStatus(currentStatus);
+  }, [currentStatus]);
+
   const { icon: Icon, color, next } = statusMap[status];
+
+  const role = useSelector(selectRole);
+  const rolesList = useSelector(selectRolesList);
+  const canChange = next
+    ? roleCanDo(rolesList, role, `changeStatus:${next}`)
+    : false;
 
   const handleChangeStatus = async () => {
     if (!next || loading) return;
@@ -30,16 +43,25 @@ const StatusButton = ({
     setLoading(true);
 
     try {
-      await dispatch(
+      const updatedOrder = await dispatch(
         updateItemStatus({ orderId, itemId, status: next, userId })
       ).unwrap();
-      setStatus(next);
-      onStatusChange?.(next);
-      toast.success(`Status updated to "${next}"`);
+
+      const updatedItem = updatedOrder.items.find(i => i._id === itemId);
+      setStatus(updatedItem.status);
+
+      onStatusChange?.(updatedItem.status);
+
+      if (updatedItem.status === 'Concluído') {
+        toast.success('Pedido movido para o arquivo!');
+        toast.success(`Status atualizado para "${updatedItem.status}"`);
+      } else {
+        toast.success(`Status atualizado para "${updatedItem.status}"`);
+      }
     } catch (error) {
       setStatus(status);
       onStatusChange?.(status);
-      toast.error('Failed to update status: ' + error);
+      toast.error('Falha ao atualizar o status: ' + error);
     } finally {
       setLoading(false);
     }
@@ -52,13 +74,13 @@ const StatusButton = ({
         e.stopPropagation();
         handleChangeStatus();
       }}
-      title={next ? `Change status to "${next}"` : 'Status final'}
-      disabled={loading || !next}
+      title={next ? `Alterar estado para "${next}"` : 'Estado final'}
+      disabled={loading || !next || !canChange}
     >
       {loading ? (
         <Loader size={20} className={css.loader} />
       ) : (
-        <Icon size={20} color={color} strokeWidth={1} />
+        <Icon size={20} color={!canChange ? '#999' : color} strokeWidth={2} />
       )}
     </button>
   );

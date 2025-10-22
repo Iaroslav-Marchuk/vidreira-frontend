@@ -26,6 +26,7 @@ import {
   deleteOrder,
   getAllOrders,
   getOrderById,
+  getOrderHistory,
   updateOrder,
 } from '../../redux/orders/operations.js';
 import { clearCurrentOrder } from '../../redux/orders/slice.js';
@@ -45,7 +46,13 @@ import EditOrder from '../EditOrder/EditOrder.jsx';
 import { selectRole, selectUser } from '../../redux/auth/selectors.js';
 import { roleCanDo } from '../../utils/roleCanDo.js';
 
-const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
+const OrderCollapse = ({
+  order,
+  orderId,
+  isOpen,
+  toggleCollapse,
+  isArchive,
+}) => {
   const dispatch = useDispatch();
 
   const allOrders = useSelector(selectAllOrders);
@@ -61,9 +68,16 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
   const user = useSelector(selectUser);
   const userId = user._id;
 
-  const canEdit = roleCanDo(rolesList, role, 'edit') && order.owner === userId;
+  const isEditableStatus = order.status === 'Criado';
+  const canEdit =
+    isEditableStatus &&
+    roleCanDo(rolesList, role, 'edit') &&
+    order.owner === userId;
+
   const canDelete =
-    roleCanDo(rolesList, role, 'delete') && order.owner === userId;
+    isEditableStatus &&
+    roleCanDo(rolesList, role, 'delete') &&
+    order.owner === userId;
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
@@ -90,6 +104,7 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
   const handleMore = async () => {
     try {
       const order = await dispatch(getOrderById(orderId)).unwrap();
+      await dispatch(getOrderHistory(orderId)).unwrap();
       if (!order) {
         toast.error('Order not found!');
         return;
@@ -213,44 +228,57 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
         </TableCell>
         <TableCell>{order.EP}</TableCell>
         <TableCell>{order.client.name}</TableCell>
-        <TableCell>
-          {order.items
-            .filter(item => item.status !== 'Concluído')
-            .reduce((total, item) => total + item.quantity, 0)}
-        </TableCell>
+        {!isArchive && (
+          <TableCell>
+            {order.items
+              .filter(item => item.status !== 'Concluído')
+              .reduce((total, item) => total + item.quantity, 0)}
+          </TableCell>
+        )}
 
         <TableCell>{order.status}</TableCell>
         <TableCell>{order.local.zona}</TableCell>
         <TableCell>
-          {new Date(order.createdAt).toLocaleDateString('pt-PT')}
+          {isArchive
+            ? new Date(order.updatedAt).toLocaleDateString('pt-PT')
+            : new Date(order.createdAt).toLocaleDateString('pt-PT')}
         </TableCell>
         <TableCell>
           <div className={css.actions}>
             <button className={css.btn} onClick={handleMore}>
               <NotepadText size={20} color="#163259" strokeWidth={1} />
             </button>
-            <button className={css.btn} onClick={openEdit} disabled={!canEdit}>
-              <Pencil
-                size={20}
-                color={!canEdit ? '#999' : '#163259'}
-                strokeWidth={1}
-              />
-            </button>
 
-            <button
-              className={css.btn}
-              onClick={e => {
-                e.stopPropagation();
-                openConfirm();
-              }}
-              disabled={!canDelete}
-            >
-              <Trash2
-                size={20}
-                color={!canDelete ? '#999' : '#ff0000'}
-                strokeWidth={1}
-              />
-            </button>
+            {!isArchive && (
+              <>
+                <button
+                  className={css.btn}
+                  onClick={openEdit}
+                  disabled={!canEdit}
+                >
+                  <Pencil
+                    size={20}
+                    color={!canEdit ? '#999' : '#163259'}
+                    strokeWidth={1}
+                  />
+                </button>
+
+                <button
+                  className={css.btn}
+                  onClick={e => {
+                    e.stopPropagation();
+                    openConfirm();
+                  }}
+                  disabled={!canDelete}
+                >
+                  <Trash2
+                    size={20}
+                    color={!canDelete ? '#999' : '#ff0000'}
+                    strokeWidth={1}
+                  />
+                </button>
+              </>
+            )}
           </div>
         </TableCell>
       </TableRow>
@@ -275,7 +303,9 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
                     <TableCell>Medida</TableCell>
                     <TableCell>Qtde</TableCell>
                     <TableCell>Estado</TableCell>
-                    <TableCell>Data</TableCell>
+                    <TableCell>
+                      {isArchive ? 'Data de Conclusão' : 'Data de Criação'}
+                    </TableCell>
                     <TableCell>Ações</TableCell>
                   </TableRow>
                 </TableHead>
@@ -287,6 +317,8 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
                       index={i}
                       itemId={item._id}
                       orderId={order._id}
+                      ownerId={order.owner}
+                      isArchive={isArchive}
                     />
                   ))}
                 </TableBody>
@@ -296,7 +328,7 @@ const OrderCollapse = ({ order, orderId, isOpen, toggleCollapse }) => {
         </TableCell>
       </TableRow>
       <ModalOverlay isOpen={modalIsOpen} onClose={closeModal}>
-        <OrderSummary onClose={closeModal} />
+        <OrderSummary history={history} onClose={closeModal} />
       </ModalOverlay>
 
       <ModalOverlay isOpen={confirmIsOpen} onClose={closeConfirm}>

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { clearCurrentOrder } from '../../redux/orders/slice.js';
+import { clearHistory } from '../../redux/orders/slice.js';
 import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
 import css from './OrderRow.module.css';
 import { Pencil, Trash2, NotepadText } from 'lucide-react';
@@ -12,6 +12,7 @@ import {
   deleteOrderItem,
   getAllOrders,
   getOrderById,
+  getOrderHistory,
   updateOrderItem,
 } from '../../redux/orders/operations.js';
 import toast from 'react-hot-toast';
@@ -19,24 +20,52 @@ import ConfirmDelete from '../ConfirmDelete/ConfirmDelete.jsx';
 import {
   selectCurrentOrder,
   selectCurrentPage,
+  selectPerPage,
+  selectRolesList,
+  selectSearchQuery,
+  selectSortBy,
+  selectSortOrder,
 } from '../../redux/orders/selectors.js';
 import EditItem from '../EditItem/EditItem.jsx';
-import { selectUser } from '../../redux/auth/selectors.js';
+import { selectRole, selectUser } from '../../redux/auth/selectors.js';
 import StatusButton from '../StatusButton/StatusButton.jsx';
+import { roleCanDo } from '../../utils/roleCanDo.js';
 
-const OrderRow = ({ item, orderId, itemId }) => {
+const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
   const dispatch = useDispatch();
   const currentPage = useSelector(selectCurrentPage);
   const currentOrder = useSelector(selectCurrentOrder);
   const currentUser = useSelector(selectUser);
 
+  const perPage = useSelector(selectPerPage);
+  const sortBy = useSelector(selectSortBy);
+  const sortOrder = useSelector(selectSortOrder);
+  const searchQuery = useSelector(selectSearchQuery);
+
+  const role = useSelector(selectRole);
+  const rolesList = useSelector(selectRolesList);
+  const user = useSelector(selectUser);
+  const userId = user._id;
+
+  const canEdit = roleCanDo(rolesList, role, 'edit') && ownerId === userId;
+  const canDelete = roleCanDo(rolesList, role, 'delete') && ownerId === userId;
+
   const [itemStatus, setItemStatus] = useState(item.status);
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => {
-    setModalIsOpen(false);
-    dispatch(clearCurrentOrder());
+  const [historyIsOpen, setHistoryIsOpen] = useState(false);
+
+  const openHistory = async () => {
+    try {
+      await dispatch(getOrderHistory(orderId)).unwrap();
+      setHistoryIsOpen(true);
+    } catch (error) {
+      toast.error('Failed to load history ' + error);
+    }
+  };
+
+  const closeHistory = () => {
+    setHistoryIsOpen(false);
+    dispatch(clearHistory());
   };
 
   const [confirmIsOpen, setConfirmIsOpen] = useState(false);
@@ -139,6 +168,31 @@ const OrderRow = ({ item, orderId, itemId }) => {
       });
   };
 
+  const handleStatusChange = newStatus => {
+    setItemStatus(newStatus);
+
+    if (newStatus === 'Concluído') {
+      let filter = {};
+      if (searchQuery) {
+        if (!isNaN(Number(searchQuery))) {
+          filter.EP = Number(searchQuery);
+        } else {
+          filter.client = searchQuery;
+        }
+      }
+
+      dispatch(
+        getAllOrders({
+          page: currentPage,
+          perPage,
+          sortBy,
+          sortOrder,
+          filter,
+        })
+      );
+    }
+  };
+
   return (
     <>
       <TableRow
@@ -153,23 +207,31 @@ const OrderRow = ({ item, orderId, itemId }) => {
         <TableCell>{`${item.category} ${item.type} ${item.sizeZ}`}</TableCell>
         <TableCell>{`${item.sizeX}x${item.sizeY}`}</TableCell>
         <TableCell>{item.quantity}</TableCell>
-        <TableCell>{item.status}</TableCell>
+        <TableCell>{itemStatus}</TableCell>
         <TableCell>
-          {new Date(item.createdAt).toLocaleString('pt-PT', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
+          {new Date(isArchive ? item.updatedAt : item.createdAt).toLocaleString(
+            'pt-PT',
+            {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            }
+          )}
         </TableCell>
         <TableCell>
           <div className={css.actions}>
-            <button className={css.btn} onClick={openModal}>
+            <button className={css.btn} onClick={openHistory}>
               <NotepadText size={20} color="#163259" strokeWidth={1} />
             </button>
-            <button className={css.btn} onClick={openEdit}>
-              <Pencil size={20} color="#163259" strokeWidth={1} />
+
+            <button className={css.btn} onClick={openEdit} disabled={!canEdit}>
+              <Pencil
+                size={20}
+                color={!canEdit ? '#999' : '#163259'}
+                strokeWidth={1}
+              />
             </button>
 
             <StatusButton
@@ -177,7 +239,7 @@ const OrderRow = ({ item, orderId, itemId }) => {
               itemId={item._id}
               currentStatus={itemStatus}
               userId={currentUser._id}
-              onStatusChange={setItemStatus}
+              onStatusChange={handleStatusChange}
             />
 
             <button
@@ -186,14 +248,19 @@ const OrderRow = ({ item, orderId, itemId }) => {
                 e.stopPropagation();
                 openConfirm();
               }}
+              disabled={!canDelete}
             >
-              <Trash2 size={20} color="#ff0000" strokeWidth={1} />
+              <Trash2
+                size={20}
+                color={!canDelete ? '#999' : '#ff0000'}
+                strokeWidth={1}
+              />
             </button>
           </div>
         </TableCell>
       </TableRow>
-      <ModalOverlay isOpen={modalIsOpen} onClose={closeModal}>
-        <OrderItemSummary item={item} onClose={closeModal} />
+      <ModalOverlay isOpen={historyIsOpen} onClose={closeHistory}>
+        <OrderItemSummary itemId={itemId} onClose={closeHistory} />
       </ModalOverlay>
 
       <ModalOverlay isOpen={confirmIsOpen} onClose={closeConfirm}>

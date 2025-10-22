@@ -17,19 +17,14 @@ import {
 
 import OrderCollapse from '../OrderCollapse/OrderCollapse.jsx';
 
-import {
-  selectAllOrders,
-  selectSortBy,
-  selectSortOrder,
-} from '../../redux/orders/selectors.js';
+import { selectSortBy, selectSortOrder } from '../../redux/orders/selectors.js';
 
 import { setSorting } from '../../redux/orders/slice.js';
 
 import css from './OrdersTable.module.css';
 
-const OrdersTable = ({ openCollapses, toggleCollapse }) => {
+const OrdersTable = ({ orders, openCollapses, toggleCollapse, isArchive }) => {
   const dispatch = useDispatch();
-  const allOrders = useSelector(selectAllOrders);
 
   const sortBy = useSelector(selectSortBy);
   const sortOrder = useSelector(selectSortOrder);
@@ -89,17 +84,19 @@ const OrdersTable = ({ openCollapses, toggleCollapse }) => {
                 <span className={css.text}>Cliente</span>
               </div>
             </TableCell>
-            <TableCell>
-              <div className={css.wrapper}>
-                <button
-                  className={css.button}
-                  onClick={() => handleSortClick('falta')}
-                >
-                  {getSortIcon('falta')}
-                </button>
-                <span className={css.text}>Em falta</span>
-              </div>
-            </TableCell>
+            {!isArchive && (
+              <TableCell>
+                <div className={css.wrapper}>
+                  <button
+                    className={css.button}
+                    onClick={() => handleSortClick('falta')}
+                  >
+                    {getSortIcon('falta')}
+                  </button>
+                  <span className={css.text}>Em falta</span>
+                </div>
+              </TableCell>
+            )}
             <TableCell>
               <div className={css.wrapper}>
                 <button
@@ -130,20 +127,23 @@ const OrdersTable = ({ openCollapses, toggleCollapse }) => {
                 >
                   {getSortIcon('createdAt')}
                 </button>
-                <span className={css.text}>Data</span>
+                <span className={css.text}>
+                  {isArchive ? 'Data de Conclusão' : 'Data de Criação'}
+                </span>
               </div>
             </TableCell>
             <TableCell>Ações</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {allOrders.map(order => (
+          {orders.map(order => (
             <OrderCollapse
               key={order._id}
               order={order}
               orderId={order._id}
               isOpen={openCollapses.includes(order._id)}
               toggleCollapse={() => toggleCollapse(order._id)}
+              isArchive={isArchive}
             />
           ))}
         </TableBody>

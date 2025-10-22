@@ -6,7 +6,9 @@ import {
   getAllClients,
   getAllOrders,
   getAllRoles,
+  getArchive,
   getOrderById,
+  getOrderHistory,
   mergeOrder,
   updateItemStatus,
   updateOrder,
@@ -31,10 +33,14 @@ const ordersSlice = createSlice({
     allOrders: [],
     clientsList: [],
     rolesList: [],
+    history: [],
+    archive: [],
     currentOrder: null,
     isOrdersLoading: false,
+    isArchiveLoading: false,
     isClientsLoading: false,
     isRolesLoading: false,
+    isHistoryLoading: false,
     error: null,
     currentPage: 1,
     perPage: 10,
@@ -48,6 +54,14 @@ const ordersSlice = createSlice({
   reducers: {
     clearCurrentOrder: state => {
       state.currentOrder = null;
+    },
+
+    clearArchive: state => {
+      state.archive = [];
+    },
+
+    clearHistory: state => {
+      state.history = [];
     },
 
     setCurrentPage: (state, action) => {
@@ -269,10 +283,65 @@ const ordersSlice = createSlice({
           }
         }
       })
-      .addCase(deleteOrderItem.rejected, handleRejected);
+      .addCase(deleteOrderItem.rejected, handleRejected)
+
+      .addCase(getOrderHistory.pending, state => {
+        state.isHistoryLoading = true;
+        state.error = null;
+      })
+      .addCase(getOrderHistory.fulfilled, (state, action) => {
+        state.isHistoryLoading = false;
+        state.history = action.payload.history;
+      })
+      .addCase(getOrderHistory.rejected, (state, action) => {
+        state.isHistoryLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(getArchive.pending, state => {
+        (state.isArchiveLoading = true), (state.error = null);
+      })
+      .addCase(getArchive.fulfilled, (state, action) => {
+        state.isArchiveLoading = false;
+
+        const {
+          data,
+          page,
+          perPage,
+          totalPages,
+          hasNextPage,
+          sortBy,
+          sortOrder,
+        } = action.payload.archive;
+        if (sortBy) state.sortBy = sortBy;
+        if (sortOrder) state.sortOrder = sortOrder;
+
+        if (page === 1) {
+          state.archive = data;
+        } else {
+          const newOrders = data.filter(
+            o => !state.archive.some(existing => existing._id === o._id)
+          );
+          state.archive = [...state.archive, ...newOrders];
+        }
+        state.currentPage = page;
+        state.perPage = perPage;
+        state.totalPages = totalPages;
+        state.hasNextPage = hasNextPage;
+      })
+      .addCase(getArchive.rejected, (state, action) => {
+        state.isArchiveLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 
 export default ordersSlice.reducer;
-export const { clearCurrentOrder, setCurrentPage, setSearchQuery, setSorting } =
-  ordersSlice.actions;
+export const {
+  clearCurrentOrder,
+  clearHistory,
+  clearArchive,
+  setCurrentPage,
+  setSearchQuery,
+  setSorting,
+} = ordersSlice.actions;

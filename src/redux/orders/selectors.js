@@ -16,3 +16,9 @@ export const selectisClientsLoading = state => state.orders.isClientsLoading;
 
 export const selectRolesList = state => state.orders.rolesList;
 export const selectIsRolesLoading = state => state.orders.isRolesLoading;
+
+export const selectHistory = state => state.orders.history;
+export const selectIsHistoryLoading = state => state.orders.isHistoryLoading;
+
+export const selectArchive = state => state.orders.archive;
+export const selectIsArchiveLoading = state => state.orders.isArchiveLoading;

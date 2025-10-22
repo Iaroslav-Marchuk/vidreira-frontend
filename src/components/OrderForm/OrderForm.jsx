@@ -47,7 +47,7 @@ const OrderForm = ({ clientsList, isClientsLoading }) => {
       <fieldset className={css.fieldset}>
         <legend className={css.legend}>Local Info</legend>
         <label className={css.label}>
-          Linha
+          Local
           <Field className={css.selectLocal} as="select" name="local.zona">
             <option value="" disabled>
               --
@@ -55,6 +55,8 @@ const OrderForm = ({ clientsList, isClientsLoading }) => {
             <option value="L1">L1</option>
             <option value="L2">L2</option>
             <option value="L3">L3</option>
+            <option value="Forno">Forno</option>
+            <option value="Ligística">Logística</option>
           </Field>
           <ErrorMessage
             className={css.error}

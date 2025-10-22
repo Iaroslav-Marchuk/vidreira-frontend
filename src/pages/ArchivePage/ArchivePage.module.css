@@ -1,0 +1,21 @@
+.wrapper {
+  margin: 30px auto;
+  padding: 24px 32px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  margin-bottom: 16px;
+}
+
+.btn {
+  margin-bottom: 24px;
+}
+
+.loadMoreBtn {
+  margin-top: 24px;
+}

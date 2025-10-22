@@ -4,6 +4,9 @@ import { lazy, Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const HomePage = lazy(() => import('../../pages/HomePage/HomePage.jsx'));
+const ArchivePage = lazy(() =>
+  import('../../pages/ArchivePage/ArchivePage.jsx')
+);
 const OrdersPage = lazy(() => import('../../pages/OrdersPage/OrdersPage.jsx'));
 const ProfilePage = lazy(() =>
   import('../../pages/ProfilePage/ProfilePage.jsx')
@@ -47,6 +50,10 @@ const App = () => {
               element={
                 <RestrictedRoute redirectTo="/" element={<AuthPage />} />
               }
+            />
+            <Route
+              path="archive"
+              element={<PrivateRoute element={<ArchivePage />} />}
             />
             <Route
               path="orders"
