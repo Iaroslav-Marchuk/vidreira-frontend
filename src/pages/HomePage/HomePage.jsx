@@ -1,13 +1,45 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { selectIsLoggedIn, selectUser } from '../../redux/auth/selectors.js';
 
 import css from './HomePage.module.css';
+import { useEffect } from 'react';
+import { getStats } from '../../redux/stats/operations.js';
+import {
+  selectAllStats,
+  selectIsStatsLoading,
+} from '../../redux/stats/selectors.js';
+import StatsList from '../../components/StatsList/StatsList.jsx';
+import Loader from '../../components/Loader/Loader.jsx';
 
 const HomePage = () => {
+  const dispatch = useDispatch();
+
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const user = useSelector(selectUser);
+
+  const allStats = useSelector(selectAllStats);
+  const isStatsLoading = useSelector(selectIsStatsLoading);
+
+  const createdOrdersTodayList = allStats.createdOrdersToday ?? [];
+  const createdItemsTodayList = createdOrdersTodayList.map(order =>
+    order.items.reduce((sum, item) => sum + item.quantity, 0)
+  );
+
+  const completedOrdersTodayList = allStats.completedOrdersToday ?? [];
+  const completedItemsTodayList = completedOrdersTodayList.map(order =>
+    order.items.reduce((sum, item) => sum + item.quantity, 0)
+  );
+
+  const overduesList = allStats.overdues ?? [];
+  const overduesItemsList = overduesList.map(order =>
+    order.items.reduce((sum, item) => sum + item.quantity, 0)
+  );
+
+  useEffect(() => {
+    dispatch(getStats());
+  }, [dispatch]);
 
   return !isLoggedIn ? (
     <div className={css.container}>
@@ -34,7 +66,6 @@ const HomePage = () => {
       <p className={css.text}>
         Para começar, por favor
         <Link to="/auth" className={css.linkBtn}>
-          {' '}
           Inicie sessão
         </Link>
         .
@@ -49,16 +80,47 @@ const HomePage = () => {
       <h1 className={css.welcome}>Olá, {user.name}!</h1>
       <div className={css.stats}>
         <div className={css.statCard}>
-          📦 Adicionado hoje: <strong>CRIADOS</strong>
+          <h3 className={css.listTitle}>📦 Adicionados hoje:</h3>
+          {isStatsLoading ? (
+            <Loader />
+          ) : createdOrdersTodayList.length > 0 ? (
+            <StatsList
+              orderList={createdOrdersTodayList}
+              itemList={createdItemsTodayList}
+            />
+          ) : (
+            <p>A lista está vazia</p>
+          )}
         </div>
         <div className={css.statCard}>
-          ✅ Concluídos hoje: <strong>CONCLUÍDOS</strong>
+          <h3 className={css.listTitle}>✅ Concluídos hoje:</h3>
+          {isStatsLoading ? (
+            <Loader />
+          ) : completedOrdersTodayList.length > 0 ? (
+            <StatsList
+              orderList={completedOrdersTodayList}
+              itemList={completedItemsTodayList}
+            />
+          ) : (
+            <p>A lista está vazia</p>
+          )}
         </div>
         <div className={css.statCard}>
-          ⏳ Atrasados: <strong>ATRASADOS</strong>
+          <h3 className={css.listTitle}>⏳ Atrasados:</h3>
+          {isStatsLoading ? (
+            <Loader />
+          ) : overduesList.length > 0 ? (
+            <StatsList
+              orderList={overduesList}
+              itemList={overduesItemsList}
+              isOverdues={true}
+            />
+          ) : (
+            <p>A lista está vazia</p>
+          )}
         </div>
       </div>
-      <div className={css.actions}>
+      {/* <div className={css.actions}>
         <Link to="/orders" className={css.btn}>
           ➕ Novo Pedido
         </Link>
@@ -68,7 +130,7 @@ const HomePage = () => {
         <Link to="/statistics" className={css.btn}>
           📊 Estatísticas
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 };

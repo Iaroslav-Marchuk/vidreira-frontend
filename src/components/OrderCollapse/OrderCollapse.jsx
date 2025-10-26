@@ -299,13 +299,14 @@ const OrderCollapse = ({
                       },
                     }}
                   >
-                    <TableCell>Vidro</TableCell>
-                    <TableCell>Medida</TableCell>
-                    <TableCell>Qtde</TableCell>
+                    <TableCell>Tipo de vidro</TableCell>
+                    <TableCell>Dimensão</TableCell>
+                    <TableCell>Quant.</TableCell>
                     <TableCell>Estado</TableCell>
                     <TableCell>
                       {isArchive ? 'Data de Conclusão' : 'Data de Criação'}
                     </TableCell>
+                    <TableCell>Motivo</TableCell>
                     <TableCell>Ações</TableCell>
                   </TableRow>
                 </TableHead>

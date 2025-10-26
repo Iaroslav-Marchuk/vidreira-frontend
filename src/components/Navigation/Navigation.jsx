@@ -10,7 +10,7 @@ const Navigation = () => {
         to="/archive"
         className={({ isActive }) => clsx(css.link, isActive && css.active)}
       >
-        Archivo
+        Arquivo de pedidos
       </NavLink>
       <NavLink
         to="/orders"

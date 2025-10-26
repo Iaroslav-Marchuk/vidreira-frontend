@@ -220,6 +220,7 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
             }
           )}
         </TableCell>
+        <TableCell>{item.reason}</TableCell>
         <TableCell>
           <div className={css.actions}>
             <button className={css.btn} onClick={openHistory}>
