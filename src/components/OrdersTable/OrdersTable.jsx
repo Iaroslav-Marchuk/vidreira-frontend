@@ -123,9 +123,11 @@ const OrdersTable = ({ orders, openCollapses, toggleCollapse, isArchive }) => {
               <div className={css.wrapper}>
                 <button
                   className={css.button}
-                  onClick={() => handleSortClick('createdAt')}
+                  onClick={() =>
+                    handleSortClick(isArchive ? 'updatedAt' : 'createdAt')
+                  }
                 >
-                  {getSortIcon('createdAt')}
+                  {getSortIcon(isArchive ? 'updatedAt' : 'createdAt')}
                 </button>
                 <span className={css.text}>
                   {isArchive ? 'Data de Conclusão' : 'Data de Criação'}

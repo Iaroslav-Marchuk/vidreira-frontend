@@ -120,7 +120,7 @@ const OrderItemForm = ({ isEditItemMode = false }) => {
                 </label>
 
                 <label className={css.label}>
-                  Medida
+                  Dimensão
                   <div className={css.inlineInputs}>
                     <div className={css.inputWrapper}>
                       <Field
@@ -152,7 +152,7 @@ const OrderItemForm = ({ isEditItemMode = false }) => {
                 </label>
 
                 <label className={css.label} htmlFor={`temper-${index}`}>
-                  Temper
+                  Temper.
                   <Field
                     className={css.checkbox}
                     id={`temper-${index}`}
@@ -168,7 +168,7 @@ const OrderItemForm = ({ isEditItemMode = false }) => {
                 </label>
 
                 <label className={css.label}>
-                  Quantidade
+                  Quant.
                   <Field
                     className={css.inputQuantity}
                     type="text"
