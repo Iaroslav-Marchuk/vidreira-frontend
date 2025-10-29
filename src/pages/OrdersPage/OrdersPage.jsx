@@ -11,7 +11,6 @@ import {
   selectAllOrders,
   selectClientsList,
   selectCurrentPage,
-  selectisClientsLoading,
   selectIsOrdersLoading,
   selectPerPage,
   selectRolesList,
@@ -35,6 +34,8 @@ import {
 } from '../../redux/orders/slice.js';
 import SearchBox from '../../components/SearchBox/SearchBox.jsx';
 import { roleCanDo } from '../../utils/roleCanDo.js';
+import { selectGlassOptions } from '../../redux/glass/selectors.js';
+import { getGlassOptions } from '../../redux/glass/operations.js';
 
 const OrdersPage = () => {
   const dispatch = useDispatch();
@@ -48,11 +49,12 @@ const OrdersPage = () => {
   const role = useSelector(selectRole);
   const rolesList = useSelector(selectRolesList);
 
+  const glassOptions = useSelector(selectGlassOptions);
+
   const allOrders = useSelector(selectAllOrders);
-  const isLoading = useSelector(selectIsOrdersLoading);
+  const isOrdersLoading = useSelector(selectIsOrdersLoading);
 
   const clientsList = useSelector(selectClientsList);
-  const isClientsLoading = useSelector(selectisClientsLoading);
 
   const currentPage = useSelector(selectCurrentPage);
   const totalPages = useSelector(selectTotalPages);
@@ -75,16 +77,16 @@ const OrdersPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!clientsList.length && !isClientsLoading) {
+    if (!clientsList.length) {
       dispatch(getAllClients());
     }
-  }, [dispatch, clientsList.length, isClientsLoading]);
-
-  useEffect(() => {
     if (!rolesList.length) {
       dispatch(getAllRoles());
     }
-  }, [dispatch, rolesList.length]);
+    if (Object.keys(glassOptions).length === 0) {
+      dispatch(getGlassOptions());
+    }
+  }, [dispatch, clientsList.length, rolesList.length, glassOptions]);
 
   useEffect(() => {
     let filter = {};
@@ -147,10 +149,10 @@ const OrdersPage = () => {
       )}
       {modalIsOpen && (
         <ModalOverlay isOpen={modalIsOpen} onClose={closeModal}>
-          <CreateOrderForm onClose={closeModal} />
+          <CreateOrderForm glassOptions={glassOptions} onClose={closeModal} />
         </ModalOverlay>
       )}
-      {isLoading && <Loader loadingState={isLoading} />}
+      {isOrdersLoading && <Loader loadingState={isOrdersLoading} />}
       {allOrders.length > 0 && (
         <OrdersTable
           orders={allOrders}
@@ -159,10 +161,10 @@ const OrdersPage = () => {
           toggleCollapse={toggleCollapse}
         />
       )}
-      {!isLoading && allOrders.length === 0 && (
+      {!isOrdersLoading && allOrders.length === 0 && (
         <p className={css.noResults}>Não existe nenhum pedido activo!</p>
       )}
-      {hasOrders && !isLoading && isNotLastPage && (
+      {hasOrders && !isOrdersLoading && isNotLastPage && (
         <Button className={css.loadMoreBtn} onClick={handleLoadMore}>
           Mais...
         </Button>

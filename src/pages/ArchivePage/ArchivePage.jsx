@@ -96,8 +96,6 @@ const ArchivePage = () => {
         filter,
       })
     );
-
-    console.log(getArchive());
   }, [dispatch, currentPage, sortBy, sortOrder, searchQuery]);
 
   const handleSearch = query => {

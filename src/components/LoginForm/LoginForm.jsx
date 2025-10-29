@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '../Button/Button.jsx';
 
 import { login } from '../../redux/auth/operations.js';
-import { selectIsLoading } from '../../redux/auth/selectors.js';
+import { selectIsUserLoading } from '../../redux/auth/selectors.js';
 
 import css from './LoginForm.module.css';
 import Loader from '../Loader/Loader.jsx';
@@ -14,7 +14,7 @@ import { UserRound, KeyRound } from 'lucide-react';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
+  const isUserLoading = useSelector(selectIsUserLoading);
 
   const handleSubmit = async (values, actions) => {
     if (!values.name || !values.password) {
@@ -34,7 +34,7 @@ const LoginForm = () => {
 
   return (
     <>
-      {isLoading && <Loader loadingState={true} />}
+      {isUserLoading && <Loader loadingState={true} />}
       <Formik
         initialValues={{ name: '', password: '' }}
         onSubmit={handleSubmit}

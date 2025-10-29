@@ -7,13 +7,13 @@ import Button from '../Button/Button.jsx';
 import Loader from '../Loader/Loader.jsx';
 
 import { register } from '../../redux/auth/operations.js';
-import { selectIsLoading } from '../../redux/auth/selectors.js';
+import { selectIsUserLoading } from '../../redux/auth/selectors.js';
 
 import css from './RegistrationForm.module.css';
 
 const RegistrationForm = ({ rolesList }) => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
+  const isUserLoading = useSelector(selectIsUserLoading);
 
   const handleSubmit = async (values, actions) => {
     if (!values.name) {
@@ -33,7 +33,7 @@ const RegistrationForm = ({ rolesList }) => {
 
   return (
     <>
-      {isLoading && <Loader loadingState={true} />}
+      {isUserLoading && <Loader loadingState={true} />}
       <Formik
         initialValues={{ name: '', role: '', password: '' }}
         onSubmit={handleSubmit}
@@ -67,9 +67,6 @@ const RegistrationForm = ({ rolesList }) => {
                   {r.label}
                 </option>
               ))}
-              {/* <option value="corte">Corte</option>
-              <option value="duplo">Duplo</option>
-              <option value="guest">Visitante</option> */}
             </Field>
           </div>
 

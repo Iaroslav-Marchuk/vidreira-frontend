@@ -9,13 +9,13 @@ import toast from 'react-hot-toast';
 import Loader from '../Loader/Loader.jsx';
 
 import { logout } from '../../redux/auth/operations.js';
-import { selectIsLoading, selectUser } from '../../redux/auth/selectors.js';
+import { selectIsUserLoading, selectUser } from '../../redux/auth/selectors.js';
 
 import css from './UserMenu.module.css';
 
 const UserMenu = () => {
   const user = useSelector(selectUser);
-  const isLoading = useSelector(selectIsLoading);
+  const isUserLoading = useSelector(selectIsUserLoading);
 
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -33,7 +33,7 @@ const UserMenu = () => {
   return (
     <>
       <div className={css.wrapper}>
-        {isLoading && <Loader loadingState={true} />}
+        {isUserLoading && <Loader loadingState={true} />}
         <p className={css.avatar}>{user.name[0]}</p>
         <Popover.Root open={open} onOpenChange={setOpen}>
           <Popover.Trigger>

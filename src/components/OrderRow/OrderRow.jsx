@@ -30,9 +30,13 @@ import EditItem from '../EditItem/EditItem.jsx';
 import { selectRole, selectUser } from '../../redux/auth/selectors.js';
 import StatusButton from '../StatusButton/StatusButton.jsx';
 import { roleCanDo } from '../../utils/roleCanDo.js';
+import { formatText } from '../../utils/formatText.js';
+
+import { selectGlassOptions } from '../../redux/glass/selectors.js';
 
 const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
   const dispatch = useDispatch();
+  const glassOptions = useSelector(selectGlassOptions);
   const currentPage = useSelector(selectCurrentPage);
   const currentOrder = useSelector(selectCurrentOrder);
   const currentUser = useSelector(selectUser);
@@ -204,7 +208,8 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
           },
         }}
       >
-        <TableCell>{`${item.category} ${item.type} ${item.sizeZ}`}</TableCell>
+        {/* <TableCell>{`${item.category} ${item.type} ${item.sizeZ}`}</TableCell> */}
+        <TableCell>{formatText(item, glassOptions)}</TableCell>
         <TableCell>{`${item.sizeX}x${item.sizeY}`}</TableCell>
         <TableCell>{item.quantity}</TableCell>
         <TableCell>{itemStatus}</TableCell>

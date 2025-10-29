@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getStats } from './operations.js';
+import { logout } from '../auth/operations.js';
 
 const statsSlice = createSlice({
   name: 'stats',
@@ -24,6 +25,9 @@ const statsSlice = createSlice({
       .addCase(getStats.rejected, (state, action) => {
         state.isStatsLoading = false;
         state.error = action.payload;
+      })
+      .addCase(logout.fulfilled, state => {
+        state.allStats = {};
       });
   },
 });

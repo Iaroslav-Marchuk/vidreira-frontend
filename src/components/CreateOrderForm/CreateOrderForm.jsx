@@ -38,7 +38,7 @@ const initialValues = {
   ],
 };
 
-const CreateOrderForm = ({ onClose }) => {
+const CreateOrderForm = ({ glassOptions, onClose }) => {
   const dispatch = useDispatch();
 
   const clientsList = useSelector(selectClientsList);
@@ -141,7 +141,11 @@ const CreateOrderForm = ({ onClose }) => {
               clientsList={clientsList}
               isClientsLoading={isClientsLoading}
             />
-            <OrderItemForm values={values} setFieldValue={setFieldValue} />
+            <OrderItemForm
+              glassOptions={glassOptions}
+              values={values}
+              setFieldValue={setFieldValue}
+            />
             <Button className={css.button} type="submit">
               Submit
             </Button>
