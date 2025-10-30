@@ -9,21 +9,15 @@ import Loader from '../../components/Loader/Loader.jsx';
 import { selectRole } from '../../redux/auth/selectors.js';
 import {
   selectAllOrders,
-  selectClientsList,
   selectCurrentPage,
   selectIsOrdersLoading,
   selectPerPage,
-  selectRolesList,
   selectSearchQuery,
   selectSortBy,
   selectSortOrder,
   selectTotalPages,
 } from '../../redux/orders/selectors.js';
-import {
-  getAllClients,
-  getAllOrders,
-  getAllRoles,
-} from '../../redux/orders/operations.js';
+import { getAllOrders } from '../../redux/orders/operations.js';
 
 import css from './OrdersPage.module.css';
 import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
@@ -36,6 +30,10 @@ import SearchBox from '../../components/SearchBox/SearchBox.jsx';
 import { roleCanDo } from '../../utils/roleCanDo.js';
 import { selectGlassOptions } from '../../redux/glass/selectors.js';
 import { getGlassOptions } from '../../redux/glass/operations.js';
+import { getAllRoles } from '../../redux/roles/operations.js';
+import { selectRolesList } from '../../redux/roles/selectors.js';
+import { getAllClients } from '../../redux/clients/operations.js';
+import { selectClientsList } from '../../redux/clients/selectors.js';
 
 const OrdersPage = () => {
   const dispatch = useDispatch();

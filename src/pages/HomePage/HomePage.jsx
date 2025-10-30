@@ -134,17 +134,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-{
-  /* <div className={css.actions}>
-        <Link to="/orders" className={css.btn}>
-          ➕ Novo Pedido
-        </Link>
-        <Link to="/orders" className={css.btn}>
-          📋 Ver Pedidos
-        </Link>
-        <Link to="/statistics" className={css.btn}>
-          📊 Estatísticas
-        </Link>
-      </div> */
-}

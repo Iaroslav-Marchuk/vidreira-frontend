@@ -37,7 +37,6 @@ import {
   selectAllOrders,
   selectCurrentPage,
   selectPerPage,
-  selectRolesList,
   selectSearchQuery,
   selectSortBy,
   selectSortOrder,
@@ -45,6 +44,7 @@ import {
 import EditOrder from '../EditOrder/EditOrder.jsx';
 import { selectRole, selectUser } from '../../redux/auth/selectors.js';
 import { roleCanDo } from '../../utils/roleCanDo.js';
+import { selectRolesList } from '../../redux/roles/selectors.js';
 
 const OrderCollapse = ({
   order,

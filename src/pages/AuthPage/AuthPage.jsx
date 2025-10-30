@@ -7,11 +7,12 @@ import RegisterForm from '../../components/RegistrationForm/RegistrationForm.jsx
 
 import css from './AuthPage.module.css';
 import { useDispatch, useSelector } from 'react-redux';
+
 import {
   selectIsRolesLoading,
   selectRolesList,
-} from '../../redux/orders/selectors.js';
-import { getAllRoles } from '../../redux/orders/operations.js';
+} from '../../redux/roles/selectors.js';
+import { getAllRoles } from '../../redux/roles/operations.js';
 
 const AuthPage = () => {
   const dispatch = useDispatch();

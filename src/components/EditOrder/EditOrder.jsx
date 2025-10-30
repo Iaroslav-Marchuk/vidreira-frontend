@@ -7,12 +7,11 @@ import OrderForm from '../OrderForm/OrderForm.jsx';
 import OrderItemForm from '../OrderItemForm/OrderItemForm.jsx';
 import Button from '../Button/Button.jsx';
 
+import css from './EditOrder.module.css';
 import {
   selectClientsList,
   selectisClientsLoading,
-} from '../../redux/orders/selectors.js';
-
-import css from './EditOrder.module.css';
+} from '../../redux/clients/selectors.js';
 
 const EditOrder = ({ order, onSubmit }) => {
   const clientsList = useSelector(selectClientsList);

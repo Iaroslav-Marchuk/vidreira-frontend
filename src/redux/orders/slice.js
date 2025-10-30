@@ -3,9 +3,7 @@ import {
   createOrder,
   deleteOrder,
   deleteOrderItem,
-  getAllClients,
   getAllOrders,
-  getAllRoles,
   getArchive,
   getOrderById,
   getOrderHistory,
@@ -31,15 +29,11 @@ const ordersSlice = createSlice({
 
   initialState: {
     allOrders: [],
-    clientsList: [],
-    rolesList: [],
     history: [],
     archive: [],
     currentOrder: null,
     isOrdersLoading: false,
     isArchiveLoading: false,
-    isClientsLoading: false,
-    isRolesLoading: false,
     isHistoryLoading: false,
     error: null,
     currentPage: 1,
@@ -114,32 +108,6 @@ const ordersSlice = createSlice({
         state.hasNextPage = hasNextPage;
       })
       .addCase(getAllOrders.rejected, handleRejected)
-
-      .addCase(getAllClients.pending, state => {
-        state.isClientsLoading = true;
-        state.error = null;
-      })
-      .addCase(getAllClients.fulfilled, (state, action) => {
-        state.isClientsLoading = false;
-        state.clientsList = action.payload.clients;
-      })
-      .addCase(getAllClients.rejected, (state, action) => {
-        state.isClientsLoading = false;
-        state.error = action.payload;
-      })
-
-      .addCase(getAllRoles.pending, state => {
-        state.isRolesLoading = true;
-        state.error = null;
-      })
-      .addCase(getAllRoles.fulfilled, (state, action) => {
-        state.isRolesLoading = false;
-        state.rolesList = action.payload.roles;
-      })
-      .addCase(getAllRoles.rejected, (state, action) => {
-        state.isRolesLoading = false;
-        state.error = action.payload;
-      })
 
       .addCase(getOrderById.pending, handlePending)
       .addCase(getOrderById.fulfilled, (state, action) => {

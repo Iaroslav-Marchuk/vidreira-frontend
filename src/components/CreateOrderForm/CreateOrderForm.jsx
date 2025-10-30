@@ -15,7 +15,7 @@ import css from './CreateOrderForm.module.css';
 import {
   selectClientsList,
   selectisClientsLoading,
-} from '../../redux/orders/selectors.js';
+} from '../../redux/clients/selectors.js';
 
 const initialValues = {
   EP: '',

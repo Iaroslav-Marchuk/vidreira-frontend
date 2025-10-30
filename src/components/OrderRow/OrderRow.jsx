@@ -21,7 +21,6 @@ import {
   selectCurrentOrder,
   selectCurrentPage,
   selectPerPage,
-  selectRolesList,
   selectSearchQuery,
   selectSortBy,
   selectSortOrder,
@@ -33,6 +32,7 @@ import { roleCanDo } from '../../utils/roleCanDo.js';
 import { formatText } from '../../utils/formatText.js';
 
 import { selectGlassOptions } from '../../redux/glass/selectors.js';
+import { selectRolesList } from '../../redux/roles/selectors.js';
 
 const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
   const dispatch = useDispatch();

@@ -4,6 +4,8 @@ import authReducer from './auth/slice.js';
 import ordersReducer from './orders/slice.js';
 import statsReducer from './stats/slice.js';
 import glassReducer from './glass/slice.js';
+import rolesReducer from './roles/slice.js';
+import clientsReducer from './clients/slice.js';
 
 export const store = configureStore({
   reducer: {
@@ -11,5 +13,7 @@ export const store = configureStore({
     orders: ordersReducer,
     stats: statsReducer,
     glassOptions: glassReducer,
+    roles: rolesReducer,
+    clients: clientsReducer,
   },
 });

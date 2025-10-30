@@ -56,7 +56,7 @@ const OrderForm = ({ clientsList, isClientsLoading }) => {
             <option value="L2">L2</option>
             <option value="L3">L3</option>
             <option value="Forno">Forno</option>
-            <option value="Ligística">Logística</option>
+            <option value="Logística">Logística</option>
           </Field>
           <ErrorMessage
             className={css.error}

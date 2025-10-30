@@ -4,40 +4,70 @@ const StatsList = ({ orderList, itemList, type }) => {
   return (
     <ul className={css.statsList}>
       {orderList.map((order, index) => {
-        let text = '';
+        let content = null;
         switch (type) {
           case 'created': {
             const totalCreated = itemList[index] ?? 0;
-            text = `EP-${order.EP} - ${order.client.name} (${totalCreated} vidros)`;
+            content = (
+              <div className={css.content}>
+                <span>
+                  EP-{order.EP} {order.client.name}
+                </span>
+                <span>({totalCreated} vidros)</span>
+              </div>
+            );
             break;
           }
 
           case 'completed': {
             const totalCompleted = itemList[index] ?? 0;
-            text = `EP-${order.EP} - ${order.client.name} (${totalCompleted} vidros), encomenda completa`;
+            content = (
+              <div className={css.content}>
+                <span>
+                  EP-{order.EP} {order.client.name}
+                </span>
+                <span>{totalCompleted} vidros, encomenda completa</span>
+              </div>
+            );
             break;
           }
 
           case 'pending': {
-            text = `EP-${order.EP} - ${order.client} - ${order.completedItems} vidros, falta ${order.pendingItems} para concluir`;
+            content = (
+              <div className={css.content}>
+                <span>
+                  EP-{order.EP} {order.client}
+                </span>
+                <span>fechado {order.completedItems} vidros,</span>
+                <span>falta {order.pendingItems} para concluir</span>
+              </div>
+            );
             break;
           }
 
           case 'overdues': {
             const totalOverdue = itemList[index] ?? 0;
-            text = `${new Date(order.createdAt).toLocaleDateString(
-              'pt-PT'
-            )} EP-${order.EP} - ${order.client.name} (${totalOverdue} vidros)`;
+            content = (
+              <div className={css.content}>
+                <span>
+                  Desde {new Date(order.createdAt).toLocaleDateString('pt-PT')}
+                </span>
+                <span>
+                  EP-{order.EP} {order.client.name}
+                </span>
+                <span>({totalOverdue} vidros)</span>
+              </div>
+            );
             break;
           }
 
           default:
-            text = '';
+            content = null;
         }
 
         return (
           <li key={index} className={css.statsItem}>
-            {text}
+            {content}
           </li>
         );
       })}

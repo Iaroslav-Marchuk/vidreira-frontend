@@ -7,22 +7,15 @@ import Loader from '../../components/Loader/Loader.jsx';
 
 import {
   selectArchive,
-  selectClientsList,
   selectCurrentPage,
   selectIsArchiveLoading,
-  selectisClientsLoading,
   selectPerPage,
-  selectRolesList,
   selectSearchQuery,
   selectSortBy,
   selectSortOrder,
   selectTotalPages,
 } from '../../redux/orders/selectors.js';
-import {
-  getAllClients,
-  getAllRoles,
-  getArchive,
-} from '../../redux/orders/operations.js';
+import { getArchive } from '../../redux/orders/operations.js';
 
 import css from './ArchivePage.module.css';
 import {
@@ -31,6 +24,13 @@ import {
   setSorting,
 } from '../../redux/orders/slice.js';
 import SearchBox from '../../components/SearchBox/SearchBox.jsx';
+import { selectRolesList } from '../../redux/roles/selectors.js';
+import { getAllRoles } from '../../redux/roles/operations.js';
+import { getAllClients } from '../../redux/clients/operations.js';
+import {
+  selectClientsList,
+  selectisClientsLoading,
+} from '../../redux/clients/selectors.js';
 
 const ArchivePage = () => {
   const dispatch = useDispatch();

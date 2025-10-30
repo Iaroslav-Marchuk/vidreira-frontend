@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axiosAPI, { axiosPublic } from '../../services/api.js';
+import axiosAPI from '../../services/api.js';
 
 export const getAllOrders = createAsyncThunk(
   'orders/getAllOrders',
@@ -22,30 +22,6 @@ export const getAllOrders = createAsyncThunk(
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || error.message
       );
-    }
-  }
-);
-
-export const getAllClients = createAsyncThunk(
-  'clients/getAllClients',
-  async (_, thunkAPI) => {
-    try {
-      const response = await axiosAPI.get('/clients');
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
-    }
-  }
-);
-
-export const getAllRoles = createAsyncThunk(
-  'roles/getAllRoles',
-  async (_, thunkAPI) => {
-    try {
-      const response = await axiosPublic.get('/roles');
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
     }
   }
 );

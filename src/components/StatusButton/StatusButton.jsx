@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateItemStatus } from '../../redux/orders/operations.js';
 import { roleCanDo } from '../../utils/roleCanDo.js';
 import { selectRole } from '../../redux/auth/selectors.js';
-import { selectRolesList } from '../../redux/orders/selectors.js';
+import { selectRolesList } from '../../redux/roles/selectors.js';
 
 const statusMap = {
   Criado: { icon: CirclePlus, color: '#69cd71ff', next: 'Em produção' },
