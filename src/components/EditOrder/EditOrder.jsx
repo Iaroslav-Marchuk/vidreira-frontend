@@ -12,10 +12,13 @@ import {
   selectClientsList,
   selectisClientsLoading,
 } from '../../redux/clients/selectors.js';
+import { selectGlassOptions } from '../../redux/glass/selectors.js';
 
 const EditOrder = ({ order, onSubmit }) => {
   const clientsList = useSelector(selectClientsList);
   const isClientsLoading = useSelector(selectisClientsLoading);
+
+  const glassOptions = useSelector(selectGlassOptions);
 
   const initialNewItem = {
     category: '',
@@ -86,6 +89,7 @@ const EditOrder = ({ order, onSubmit }) => {
           />
 
           <OrderItemForm
+            glassOptions={glassOptions}
             values={{ items: [newItem] }}
             setFieldValue={(field, value) =>
               setNewItem(prev => ({

@@ -120,7 +120,13 @@ const OrderCollapse = ({
     const currentOrderData = {
       EP: order.EP,
       client: order.client.name,
-      local: { zona: order.local.zona },
+      local: order.local.zona,
+    };
+
+    const newOrderData = {
+      EP: Number(values.EP),
+      client: values.client,
+      local: values.local.zona,
     };
 
     const duplicateEPInSameZone = allOrders.some(
@@ -151,11 +157,14 @@ const OrderCollapse = ({
       return;
     }
 
+    const hasNewItems = Array.isArray(values.items) && values.items.length > 0;
+
     const isUnchanged =
-      values.EP === currentOrderData.EP &&
-      values.client === currentOrderData.client &&
-      values.local.zona === currentOrderData.local.zona &&
-      JSON.stringify(values.items || []) === JSON.stringify(order.items || []);
+      currentOrderData.EP === newOrderData.EP &&
+      currentOrderData.client === newOrderData.client &&
+      currentOrderData.local === newOrderData.local &&
+      !hasNewItems;
+
     if (isUnchanged) {
       toast.error('Order unchanged.');
       return;

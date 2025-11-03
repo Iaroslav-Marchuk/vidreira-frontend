@@ -1,13 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { clearHistory } from '../../redux/orders/slice.js';
-import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
-import css from './OrderRow.module.css';
-import { Pencil, Trash2, NotepadText } from 'lucide-react';
-
 import { TableCell, TableRow } from '@mui/material';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { Pencil, Trash2, NotepadText } from 'lucide-react';
 
+import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
+import ConfirmDelete from '../ConfirmDelete/ConfirmDelete.jsx';
 import OrderItemSummary from '../OrderItemSummary/OrderItemSummary.jsx';
+import EditItem from '../EditItem/EditItem.jsx';
+import StatusButton from '../StatusButton/StatusButton.jsx';
+
+import { roleCanDo } from '../../utils/roleCanDo.js';
+import { formatText } from '../../utils/formatText.js';
+
+import { selectRole, selectUser } from '../../redux/auth/selectors.js';
+
+import { clearHistory } from '../../redux/orders/slice.js';
+
 import {
   deleteOrderItem,
   getAllOrders,
@@ -15,8 +24,7 @@ import {
   getOrderHistory,
   updateOrderItem,
 } from '../../redux/orders/operations.js';
-import toast from 'react-hot-toast';
-import ConfirmDelete from '../ConfirmDelete/ConfirmDelete.jsx';
+
 import {
   selectCurrentOrder,
   selectCurrentPage,
@@ -25,14 +33,11 @@ import {
   selectSortBy,
   selectSortOrder,
 } from '../../redux/orders/selectors.js';
-import EditItem from '../EditItem/EditItem.jsx';
-import { selectRole, selectUser } from '../../redux/auth/selectors.js';
-import StatusButton from '../StatusButton/StatusButton.jsx';
-import { roleCanDo } from '../../utils/roleCanDo.js';
-import { formatText } from '../../utils/formatText.js';
 
 import { selectGlassOptions } from '../../redux/glass/selectors.js';
 import { selectRolesList } from '../../redux/roles/selectors.js';
+
+import css from './OrderRow.module.css';
 
 const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
   const dispatch = useDispatch();
@@ -51,8 +56,14 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
   const user = useSelector(selectUser);
   const userId = user._id;
 
-  const canEdit = roleCanDo(rolesList, role, 'edit') && ownerId === userId;
-  const canDelete = roleCanDo(rolesList, role, 'delete') && ownerId === userId;
+  const canEdit =
+    roleCanDo(rolesList, role, 'edit') &&
+    ownerId === userId &&
+    item.status === 'Criado';
+  const canDelete =
+    roleCanDo(rolesList, role, 'delete') &&
+    ownerId === userId &&
+    item.status === 'Criado';
 
   const [itemStatus, setItemStatus] = useState(item.status);
 
@@ -205,10 +216,10 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
           '& .MuiTableCell-root': {
             textAlign: 'center',
             verticalAlign: 'middle',
+            color: item.status === 'Concluído' ? '#999' : 'inherit',
           },
         }}
       >
-        {/* <TableCell>{`${item.category} ${item.type} ${item.sizeZ}`}</TableCell> */}
         <TableCell>{formatText(item, glassOptions)}</TableCell>
         <TableCell>{`${item.sizeX}x${item.sizeY}`}</TableCell>
         <TableCell>{item.quantity}</TableCell>
@@ -266,7 +277,7 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
         </TableCell>
       </TableRow>
       <ModalOverlay isOpen={historyIsOpen} onClose={closeHistory}>
-        <OrderItemSummary itemId={itemId} onClose={closeHistory} />
+        <OrderItemSummary item={item} itemId={itemId} onClose={closeHistory} />
       </ModalOverlay>
 
       <ModalOverlay isOpen={confirmIsOpen} onClose={closeConfirm}>

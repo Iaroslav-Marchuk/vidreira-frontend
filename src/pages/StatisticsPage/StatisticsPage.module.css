@@ -44,3 +44,10 @@
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
 }
+
+.noResults {
+  font-style: italic;
+  color: #777;
+  margin-top: 10px;
+  text-align: center;
+}

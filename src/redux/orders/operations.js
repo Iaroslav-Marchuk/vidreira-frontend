@@ -129,10 +129,22 @@ export const deleteOrderItem = createAsyncThunk(
 );
 
 export const getOrderHistory = createAsyncThunk(
-  '/history/getOrderHistory',
+  'history/getOrderHistory',
   async (orderId, thunkAPI) => {
     try {
-      const response = await axiosAPI.get(`/history/${orderId}`);
+      const response = await axiosAPI.get(`/history/order/${orderId}`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getUserHistory = createAsyncThunk(
+  'history/getUserHistory',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axiosAPI.get(`/history/user`);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -141,7 +153,7 @@ export const getOrderHistory = createAsyncThunk(
 );
 
 export const getArchive = createAsyncThunk(
-  '/archive/getArchive',
+  'archive/getArchive',
   async (
     {
       page = 1,

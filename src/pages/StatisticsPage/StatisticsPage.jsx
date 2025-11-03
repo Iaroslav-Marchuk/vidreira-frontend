@@ -14,28 +14,32 @@ const StatisticsPage = () => {
   const allStats = useSelector(selectAllStats);
 
   const {
-    activeOrdersByZone,
-    activeItemsByZone,
-    averageItemExecutionTime,
-    completedItemsLastMonth,
-    completedItemsThisMonth,
-    completedItemsToday,
-    completedItemsYesterday,
-    completedOrdersLastMonth,
-    completedOrdersThisMonth,
-    completedOrdersToday,
-    completedOrdersYesterday,
-    createdItemsLastMonth,
-    createdItemsThisMonth,
-    createdItemsToday,
-    createdItemsYesterday,
-    createdOrdersLastMonth,
-    createdOrdersThisMonth,
-    createdOrdersToday,
-    createdOrdersYesterday,
-    noCompletedItemsTotal,
-    noCompletedOrdersTotal,
-  } = allStats;
+    createdOrdersToday = [],
+    createdOrdersYesterday = [],
+    createdOrdersThisMonth = [],
+    createdOrdersLastMonth = [],
+    completedOrdersToday = [],
+    completedOrdersYesterday = [],
+    completedOrdersThisMonth = [],
+    completedOrdersLastMonth = [],
+
+    createdItemsToday = 0,
+    createdItemsYesterday = 0,
+    createdItemsThisMonth = 0,
+    createdItemsLastMonth = 0,
+    completedItemsToday = 0,
+    completedItemsYesterday = 0,
+    completedItemsThisMonth = 0,
+    completedItemsLastMonth = 0,
+
+    activeOrdersByZone = {},
+    activeItemsByZone = {},
+
+    averageItemExecutionTime = { hours: 0, days: 0 },
+
+    noCompletedItemsTotal = 0,
+    noCompletedOrdersTotal = 0,
+  } = allStats || {};
 
   const isStatsLoading = useSelector(selectIsStatsLoading);
 
@@ -47,6 +51,8 @@ const StatisticsPage = () => {
     L1: 'Linha 1',
     L2: 'Linha 2',
     L3: 'Linha 3',
+    Forno: 'Forno',
+    Logística: 'Logística',
   };
 
   let maxZoneLabel = '';
@@ -65,6 +71,14 @@ const StatisticsPage = () => {
 
     maxZoneLabel = zoneLabels[maxEntry.zone] || maxEntry.zone;
     maxOrdersCount = maxEntry.count;
+  }
+  if (!allStats || Object.keys(allStats).length === 0) {
+    return (
+      <div className={css.wrapper}>
+        {isStatsLoading && <Loader />}
+        <p className={css.noResults}>A estatística não está disponível!</p>
+      </div>
+    );
   }
 
   return (

@@ -13,6 +13,7 @@ export const selectSortOrder = state => state.orders.sortOrder;
 
 export const selectHistory = state => state.orders.history;
 export const selectIsHistoryLoading = state => state.orders.isHistoryLoading;
+export const selectUserHistory = state => state.orders.userHistory;
 
 export const selectArchive = state => state.orders.archive;
 export const selectIsArchiveLoading = state => state.orders.isArchiveLoading;

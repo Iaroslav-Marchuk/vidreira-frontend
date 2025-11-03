@@ -5,6 +5,8 @@ import Button from '../Button/Button.jsx';
 import OrderItemForm from '../OrderItemForm/OrderItemForm.jsx';
 
 import css from './EditItem.module.css';
+import { useSelector } from 'react-redux';
+import { selectGlassOptions } from '../../redux/glass/selectors.js';
 
 const ItemSchema = Yup.object().shape({
   items: Yup.array().of(
@@ -40,6 +42,7 @@ const ItemSchema = Yup.object().shape({
 });
 
 const EditItem = ({ item, onSubmit }) => {
+  const glassOptions = useSelector(selectGlassOptions);
   return (
     <Formik
       initialValues={{ items: [item] }}
@@ -51,7 +54,7 @@ const EditItem = ({ item, onSubmit }) => {
     >
       {() => (
         <Form className={css.form}>
-          <OrderItemForm isEditItemMode={true} />
+          <OrderItemForm isEditItemMode={true} glassOptions={glassOptions} />
           <Button className={css.button} type="submit">
             Update
           </Button>

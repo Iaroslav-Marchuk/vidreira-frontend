@@ -28,7 +28,10 @@ import {
 } from '../../redux/orders/slice.js';
 import SearchBox from '../../components/SearchBox/SearchBox.jsx';
 import { roleCanDo } from '../../utils/roleCanDo.js';
-import { selectGlassOptions } from '../../redux/glass/selectors.js';
+import {
+  selectGlassOptions,
+  selectIsGlassLoading,
+} from '../../redux/glass/selectors.js';
 import { getGlassOptions } from '../../redux/glass/operations.js';
 import { getAllRoles } from '../../redux/roles/operations.js';
 import { selectRolesList } from '../../redux/roles/selectors.js';
@@ -48,6 +51,7 @@ const OrdersPage = () => {
   const rolesList = useSelector(selectRolesList);
 
   const glassOptions = useSelector(selectGlassOptions);
+  const isGlassLoading = useSelector(selectIsGlassLoading);
 
   const allOrders = useSelector(selectAllOrders);
   const isOrdersLoading = useSelector(selectIsOrdersLoading);
@@ -145,11 +149,17 @@ const OrdersPage = () => {
           ➕ Novo Pedido
         </Button>
       )}
+
       {modalIsOpen && (
         <ModalOverlay isOpen={modalIsOpen} onClose={closeModal}>
-          <CreateOrderForm glassOptions={glassOptions} onClose={closeModal} />
+          {Object.keys(glassOptions).length === 0 ? (
+            <Loader loadingState={isGlassLoading} />
+          ) : (
+            <CreateOrderForm glassOptions={glassOptions} onClose={closeModal} />
+          )}
         </ModalOverlay>
       )}
+
       {isOrdersLoading && <Loader loadingState={isOrdersLoading} />}
       {allOrders.length > 0 && (
         <OrdersTable

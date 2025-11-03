@@ -53,7 +53,14 @@ const StatusButton = ({
       onStatusChange?.(updatedItem.status);
 
       if (updatedItem.status === 'Concluído') {
-        toast.success('Pedido movido para o arquivo!');
+        const allCompleted = updatedOrder.items.every(
+          item => item.status === 'Concluído'
+        );
+
+        if (allCompleted) {
+          toast.success('Pedido movido para o arquivo!');
+        }
+
         toast.success(`Status atualizado para "${updatedItem.status}"`);
       } else {
         toast.success(`Status atualizado para "${updatedItem.status}"`);

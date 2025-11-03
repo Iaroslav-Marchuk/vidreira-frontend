@@ -72,3 +72,10 @@
   margin: 0 auto 24px;
   text-align: center;
 }
+
+.noHistory {
+  font-style: italic;
+  color: #777;
+  margin-top: 10px;
+  text-align: center;
+}

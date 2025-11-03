@@ -7,6 +7,7 @@ import {
   getArchive,
   getOrderById,
   getOrderHistory,
+  getUserHistory,
   mergeOrder,
   updateItemStatus,
   updateOrder,
@@ -30,6 +31,7 @@ const ordersSlice = createSlice({
   initialState: {
     allOrders: [],
     history: [],
+    userHistory: [],
     archive: [],
     currentOrder: null,
     isOrdersLoading: false,
@@ -56,6 +58,10 @@ const ordersSlice = createSlice({
 
     clearHistory: state => {
       state.history = [];
+    },
+
+    clearUserHistory: state => {
+      state.userHistory = [];
     },
 
     setCurrentPage: (state, action) => {
@@ -118,6 +124,8 @@ const ordersSlice = createSlice({
 
       .addCase(logout.fulfilled, state => {
         state.allOrders = [];
+        state.history = [];
+        state.userHistory = [];
         state.currentOrder = null;
         state.currentPage = 1;
         state.totalPages = 1;
@@ -221,6 +229,7 @@ const ordersSlice = createSlice({
         state.allOrders = state.allOrders.filter(
           order => order._id != deletedId
         );
+
         if (state.currentOrder?._id === deletedId) {
           state.currentOrder = null;
         }
@@ -262,6 +271,19 @@ const ordersSlice = createSlice({
         state.history = action.payload.history;
       })
       .addCase(getOrderHistory.rejected, (state, action) => {
+        state.isHistoryLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(getUserHistory.pending, state => {
+        state.isHistoryLoading = true;
+        state.error = null;
+      })
+      .addCase(getUserHistory.fulfilled, (state, action) => {
+        state.isHistoryLoading = false;
+        state.userHistory = action.payload.userHistory;
+      })
+      .addCase(getUserHistory.rejected, (state, action) => {
         state.isHistoryLoading = false;
         state.error = action.payload;
       })

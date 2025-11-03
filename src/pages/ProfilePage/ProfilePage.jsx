@@ -6,14 +6,28 @@ import { selectUser } from '../../redux/auth/selectors.js';
 import { logout } from '../../redux/auth/operations.js';
 
 import css from './ProfilePage.module.css';
+import { useEffect } from 'react';
+import {
+  selectIsHistoryLoading,
+  selectUserHistory,
+} from '../../redux/orders/selectors.js';
+import { getUserHistory } from '../../redux/orders/operations.js';
+import { formatHistoryEntry } from '../../utils/formatHistory.js';
+import Loader from '../../components/Loader/Loader.jsx';
 
 const ProfilePage = () => {
   const user = useSelector(selectUser);
+  const userHistory = useSelector(selectUserHistory);
+  const isHistoryLoading = useSelector(selectIsHistoryLoading);
 
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout());
   };
+
+  useEffect(() => {
+    dispatch(getUserHistory());
+  }, [dispatch]);
 
   return (
     <div className={css.wrapper}>
@@ -40,8 +54,43 @@ const ProfilePage = () => {
           Sair
         </button>
       </div>
-      <div className={css.activityWrapper}>
+      {/* <div className={css.activityWrapper}>
         <h2 className={css.title}>Ùltima atividade</h2>
+        {isHistoryLoading ? (
+          <Loader loadingstate={isHistoryLoading} />
+        ) : (
+          <ul className={css.historyList}>
+            {userHistory.map((h, index) => {
+              return formatHistoryEntry(h, { simplified: true }).map(
+                (line, i) => (
+                  <li key={`${index}-${i}`} className={css.historyItem}>
+                    {line}
+                  </li>
+                )
+              );
+            })}
+          </ul>
+        )}
+      </div> */}
+      <div className={css.activityWrapper}>
+        <h2 className={css.title}>Última atividade</h2>
+        {isHistoryLoading ? (
+          <Loader loadingstate={isHistoryLoading} />
+        ) : userHistory.length === 0 ? (
+          <p className={css.noHistory}>Sem dados de atividade do utilizador.</p>
+        ) : (
+          <ul className={css.historyList}>
+            {userHistory.map((h, index) => {
+              return formatHistoryEntry(h, { simplified: true }).map(
+                (line, i) => (
+                  <li key={`${index}-${i}`} className={css.historyItem}>
+                    {line}
+                  </li>
+                )
+              );
+            })}
+          </ul>
+        )}
       </div>
     </div>
   );

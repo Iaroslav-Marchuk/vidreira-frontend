@@ -19,3 +19,10 @@
 .loadMoreBtn {
   margin-top: 24px;
 }
+
+.noResults {
+  font-style: italic;
+  color: #777;
+  margin-top: 10px;
+  text-align: center;
+}
