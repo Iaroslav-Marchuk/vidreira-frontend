@@ -54,24 +54,7 @@ const ProfilePage = () => {
           Sair
         </button>
       </div>
-      {/* <div className={css.activityWrapper}>
-        <h2 className={css.title}>Ùltima atividade</h2>
-        {isHistoryLoading ? (
-          <Loader loadingstate={isHistoryLoading} />
-        ) : (
-          <ul className={css.historyList}>
-            {userHistory.map((h, index) => {
-              return formatHistoryEntry(h, { simplified: true }).map(
-                (line, i) => (
-                  <li key={`${index}-${i}`} className={css.historyItem}>
-                    {line}
-                  </li>
-                )
-              );
-            })}
-          </ul>
-        )}
-      </div> */}
+
       <div className={css.activityWrapper}>
         <h2 className={css.title}>Última atividade</h2>
         {isHistoryLoading ? (

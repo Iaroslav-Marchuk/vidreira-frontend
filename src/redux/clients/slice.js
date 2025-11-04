@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { getAllClients } from './operations.js';
+import { logout } from '../auth/operations.js';
 
 const clientsSlice = createSlice({
   name: 'clients',
@@ -23,6 +24,10 @@ const clientsSlice = createSlice({
       .addCase(getAllClients.rejected, (state, action) => {
         state.isClientsLoading = false;
         state.error = action.payload;
+      })
+
+      .addCase(logout.fulfilled, state => {
+        state.clientsList = [];
       });
   },
 });

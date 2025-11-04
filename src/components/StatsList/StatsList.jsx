@@ -10,7 +10,7 @@ const StatsList = ({ orderList, itemList, type }) => {
             const totalCreated = itemList[index] ?? 0;
             content = (
               <div className={css.content}>
-                <span>
+                <span className={css.clienteName}>
                   EP-{order.EP} {order.client.name}
                 </span>
                 <span>({totalCreated} vidros)</span>
@@ -23,7 +23,7 @@ const StatsList = ({ orderList, itemList, type }) => {
             const totalCompleted = itemList[index] ?? 0;
             content = (
               <div className={css.content}>
-                <span>
+                <span className={css.clienteName}>
                   EP-{order.EP} {order.client.name}
                 </span>
                 <span>{totalCompleted} vidros, encomenda completa</span>
@@ -35,7 +35,7 @@ const StatsList = ({ orderList, itemList, type }) => {
           case 'pending': {
             content = (
               <div className={css.content}>
-                <span>
+                <span className={css.clienteName}>
                   EP-{order.EP} {order.client}
                 </span>
                 <span>fechado {order.completedItems} vidros,</span>
@@ -52,7 +52,7 @@ const StatsList = ({ orderList, itemList, type }) => {
                 <span>
                   Desde {new Date(order.createdAt).toLocaleDateString('pt-PT')}
                 </span>
-                <span>
+                <span className={css.clienteName}>
                   EP-{order.EP} {order.client.name}
                 </span>
                 <span>({totalOverdue} vidros)</span>

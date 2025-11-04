@@ -1,14 +1,36 @@
 .statsList {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  width: 100%;
+}
 
-  align-items: start;
+.statsItem {
+  margin-bottom: 12px;
+  width: 100%;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  justify-content: left;
-  align-items: start;
-  margin-bottom: 12px;
+  align-items: flex-start;
+  width: 100%;
+  gap: 4px;
+}
+
+.clienteName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.content span:not(.clienteName) {
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  text-overflow: clip;
 }
