@@ -1,6 +1,5 @@
 .wrapper {
   margin: 30px auto;
-  padding: 24px 32px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -9,15 +8,17 @@
 }
 
 .title {
-  margin-bottom: 16px;
-}
-
-.btn {
+  font-size: var(--font-size-lg);
+  text-align: center;
   margin-bottom: 24px;
 }
 
+.btn {
+  margin-bottom: 16px;
+}
+
 .loadMoreBtn {
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
 .noResults {
@@ -25,4 +26,29 @@
   color: #777;
   margin-top: 10px;
   text-align: center;
+}
+
+@media only screen and (min-width: 768px) {
+  .wrapper {
+    margin: 40px auto;
+  }
+
+  .title {
+    font-size: 32px;
+    margin-bottom: 36px;
+  }
+
+  .btn {
+    margin-bottom: 24px;
+  }
+
+  .loadMoreBtn {
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width: 1240px) {
+  .wrapper {
+    padding: 24px 32px;
+  }
 }

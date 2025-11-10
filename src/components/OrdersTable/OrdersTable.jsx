@@ -38,12 +38,16 @@ const OrdersTable = ({ orders, openCollapses, toggleCollapse, isArchive }) => {
   const getSortIcon = sortField => {
     if (sortBy === sortField) {
       return sortOrder === 'asc' ? (
-        <ArrowUpNarrowWide size={20} color="#fff" strokeWidth={2} />
+        <ArrowUpNarrowWide className={css.arrow} color="#fff" strokeWidth={2} />
       ) : (
-        <ArrowDownWideNarrow size={20} color="#fff" strokeWidth={2} />
+        <ArrowDownWideNarrow
+          className={css.arrow}
+          color="#fff"
+          strokeWidth={2}
+        />
       );
     }
-    return <ArrowUpDown size={20} color="#fff" strokeWidth={2} />;
+    return <ArrowUpDown className={css.arrow} color="#fff" strokeWidth={2} />;
   };
 
   return (
@@ -55,8 +59,16 @@ const OrdersTable = ({ orders, openCollapses, toggleCollapse, isArchive }) => {
             '& .MuiTableCell-head': {
               color: 'var(--color-btn-txt)',
               fontWeight: 700,
-              fontSize: '16px',
+              fontSize: '14px',
               textAlign: 'center',
+              padding: '4px',
+            },
+
+            '@media (min-width: 1240px)': {
+              '& .MuiTableCell-head': {
+                fontSize: '16px',
+                padding: '16px',
+              },
             },
           }}
         >

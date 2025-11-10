@@ -1,37 +1,37 @@
 .wrapper {
-  margin-top: 100px;
+  margin: 30px auto;
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .profileWrapper {
   padding: 16px;
   border: solid var(--color-border) 1px;
   border-radius: var(--border-radius);
-  width: 360px;
 }
 
 .avatar {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 48px;
-  width: 48px;
-  font-size: 28px;
+  height: 40px;
+  width: 40px;
+  font-size: 20px;
   color: var(--color-btn-txt);
   background-color: var(--color-btn-bg);
   border: 3px solid var(--color-btn-hover-bg);
   border-radius: 100%;
-  margin-bottom: 36px;
+  margin-bottom: 20px;
 }
 
 .list {
   padding-left: 24px;
-  margin-bottom: 36px;
+  margin-bottom: 16px;
 }
 
 .item {
-  padding-bottom: 12px;
+  padding-bottom: 10px;
 }
 
 .span {
@@ -52,16 +52,11 @@
   margin: 0 auto;
 }
 
-.btn:hover {
-  background-color: var(--color-btn-hover-bg);
-}
-
 .svg {
   margin-right: 8px;
 }
 
 .activityWrapper {
-  width: calc(100% - 380px);
   padding: 16px;
   border: solid var(--color-border) 1px;
   border-radius: var(--border-radius);
@@ -69,7 +64,7 @@
 
 .title {
   font-size: 18px;
-  margin: 0 auto 24px;
+  margin-bottom: 16px;
   text-align: center;
 }
 
@@ -78,4 +73,47 @@
   color: #777;
   margin-top: 10px;
   text-align: center;
+}
+
+@media only screen and (min-width: 768px) {
+  .wrapper {
+    margin: 40px auto;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .profileWrapper {
+    width: 360px;
+  }
+
+  .avatar {
+    height: 48px;
+    width: 48px;
+    font-size: 28px;
+    margin-bottom: 36px;
+  }
+
+  .list {
+    margin-bottom: 20px;
+  }
+
+  .item {
+    padding-bottom: 12px;
+  }
+
+  .btn:hover {
+    background-color: var(--color-btn-hover-bg);
+  }
+
+  .activityWrapper {
+    width: calc(100% - 380px);
+    padding: 16px;
+    border: solid var(--color-border) 1px;
+    border-radius: var(--border-radius);
+  }
+
+  .title {
+    font-size: var(--font-size-lg);
+    margin-bottom: 24px;
+  }
 }

@@ -1,7 +1,7 @@
 .container {
-  max-width: 1200px;
+  max-width: 320px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -16,11 +16,24 @@
 .main {
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
 .footer {
   position: sticky;
   bottom: 0;
-  /* z-index: 100; */
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    max-width: 760px;
+    padding: 0 16px;
+  }
+}
+
+@media only screen and (min-width: 1240px) {
+  .container {
+    max-width: 1240px;
+    padding: 0 20px;
+  }
 }

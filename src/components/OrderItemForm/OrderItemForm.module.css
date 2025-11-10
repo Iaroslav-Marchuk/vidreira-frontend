@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   padding: 16px;
+
   border: 1px solid #ccc;
   border-radius: 8px;
   margin-bottom: 24px;
@@ -17,23 +18,24 @@
 
 .fieldset {
   display: flex;
+  flex-direction: column;
   gap: 24px;
   padding: 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  width: 50%;
 }
 
 .row {
   display: flex;
+  flex-direction: column;
   gap: 16px;
   margin-bottom: 36px;
   border-bottom: 1px solid #eee;
 }
 
-.label {
+label {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -46,7 +48,7 @@
 }
 
 .selectUnit {
-  width: 100px;
+  width: 100%;
   padding: 6px 8px;
   font-size: 14px;
   border: 1px solid #bbb;
@@ -69,19 +71,13 @@
 }
 
 .selectSizeZ {
-  width: 80px;
+  width: 100%;
   padding: 6px 8px;
   font-size: 14px;
   border: 1px solid #bbb;
   border-radius: 6px;
   background: #fff;
   cursor: pointer;
-}
-
-.inlineInputs {
-  display: flex;
-  /* align-items: center; */
-  gap: 4px;
 }
 
 .inputWrapper {
@@ -91,7 +87,7 @@
 }
 
 .inputSize {
-  width: 60px;
+  width: 100%;
   padding: 6px 10px;
   font-size: 14px;
   border: 1px solid #bbb;
@@ -108,7 +104,7 @@
 }
 
 .inputQuantity {
-  width: 40px;
+  width: 100%;
   padding: 6px 10px;
   font-size: 14px;
   border: 1px solid #bbb;
@@ -116,7 +112,7 @@
 }
 
 .textarea {
-  width: 140px;
+  width: 100%;
   padding: 6px 8px;
   font-size: 14px;
   border: 1px solid #bbb;
@@ -140,6 +136,64 @@
   transition: transform 0.2s ease;
 }
 
-.button:hover {
-  transform: scale(1.2);
+@media only screen and (min-width: 768px) {
+  .fieldset {
+    flex-direction: row;
+    gap: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .row {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .selectUnit {
+    width: 100px;
+  }
+
+  .selectSizeZ {
+    width: 80px;
+  }
+
+  .inlineInputs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .inputSize {
+    width: 60px;
+  }
+
+  .inputQuantity {
+    width: 40px;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+  }
+
+  .textarea {
+    width: 100px;
+    padding: 6px 8px;
+    font-size: 14px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    resize: vertical;
+  }
+
+  .button:hover {
+    transform: scale(1.2);
+  }
+}
+
+@media only screen and (min-width: 1240px) {
+  .textarea {
+    width: 140px;
+  }
+
+  .row {
+    flex-wrap: nowrap;
+  }
 }

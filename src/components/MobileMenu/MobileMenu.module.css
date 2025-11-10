@@ -1,0 +1,21 @@
+.navigation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+  gap: 30px;
+  padding: 24px 0;
+}
+
+.link {
+  user-select: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-md);
+  line-height: 1.25;
+  text-align: center;
+}
+
+.svg {
+  margin-right: 8px;
+}

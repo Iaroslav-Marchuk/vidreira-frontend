@@ -227,6 +227,15 @@ const OrderCollapse = ({
           '& .MuiTableCell-root': {
             textAlign: 'center',
             verticalAlign: 'middle',
+            fontSize: '12px',
+            padding: '4px',
+          },
+
+          '@media (min-width: 1240px)': {
+            '& .MuiTableCell-root': {
+              fontSize: '16px',
+              padding: '16px',
+            },
           },
         }}
       >
@@ -305,6 +314,15 @@ const OrderCollapse = ({
                         verticalAlign: 'middle',
                         fontWeight: 'bold',
                         borderBottom: '1px solid rgba(0,0,0,0.12)',
+                        fontSize: '12px',
+                        padding: '4px',
+                      },
+
+                      '@media (min-width: 1240px)': {
+                        '& .MuiTableCell-root': {
+                          fontSize: '16px',
+                          padding: '16px',
+                        },
                       },
                     }}
                   >

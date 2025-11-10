@@ -1,8 +1,6 @@
 .container {
-  max-width: 800px;
-  margin: 0 auto;
-  margin-top: 100px;
-  padding: 40px 20px;
+  margin: 30px auto;
+  margin-top: 20px;
   text-align: center;
   background-color: var(--color-theme);
   border-radius: 16px;
@@ -10,7 +8,7 @@
 }
 
 .title {
-  font-size: 40px;
+  font-size: var(--font-size-xl);
   margin-bottom: 20px;
   color: #333;
   text-align: center;
@@ -18,12 +16,12 @@
 
 .text {
   color: var(--color-text);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   line-height: 1.5;
 }
 
 .list {
-  margin: 20px 0;
+  margin-bottom: 16px;
   text-align: left;
   display: inline-block;
 }
@@ -35,39 +33,29 @@
 .linkBtn {
   margin: 0 6px;
   color: var(--color-btn);
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
   transition: color 0.2s ease;
 }
 
-.linkBtn:hover {
-  color: var(--color-btn-hover);
-  text-decoration: underline;
-}
-
 .dashboard {
-  /* max-width: 1000px; */
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 30px auto;
 }
 
 .welcome {
-  font-size: 1.8rem;
-  margin-bottom: 24px;
+  font-size: var(--font-size-xl);
+  margin-bottom: 20px;
 }
 
 .stats {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
 }
 
 .statCard {
-  flex: 1 1 300px;
   background: #f5f5f5;
-  padding: 1rem;
-  border-radius: 12px;
-  font-size: 1.2rem;
+  border-radius: 8px;
   text-align: left;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -75,33 +63,67 @@
   flex-direction: column;
 }
 
-.statCard:last-child {
-  flex: 2 1 400px;
-}
-
 .listTitle {
-  font-size: var(--font-size-lg);
   margin-bottom: 16px;
 }
 
-.actions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
+@media only screen and (min-width: 768px) {
+  .container {
+    max-width: 800px;
+    margin-top: 40px;
+    padding: 40px 20px;
+    text-align: center;
+  }
 
-.btn {
-  flex: 1 1 200px;
-  padding: 0.8rem;
-  text-align: center;
-  background: #007bff;
-  color: white;
-  border-radius: 8px;
-  font-weight: bold;
-  text-decoration: none;
-  transition: background 0.2s;
-}
+  .title {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
 
-.btn:hover {
-  background: #0056b3;
+  .text {
+    margin-bottom: 20px;
+  }
+
+  .list {
+    margin-bottom: 20px;
+  }
+
+  .linkBtn:hover {
+    color: var(--color-btn-hover);
+    text-decoration: underline;
+  }
+
+  .dashboard {
+    margin: 24px auto;
+  }
+
+  .welcome {
+    font-size: 32px;
+    margin-bottom: 24px;
+  }
+
+  .stats {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .statCard {
+    flex: 1 1 300px;
+    padding: 16px;
+    text-align: left;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .statCard:last-child {
+    flex: 2 1 400px;
+  }
+
+  .listTitle {
+    font-size: var(--font-size-lg);
+  }
 }

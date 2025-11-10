@@ -11,7 +11,7 @@ const StatsList = ({ orderList, itemList, type }) => {
             content = (
               <div className={css.content}>
                 <span className={css.clienteName}>
-                  EP-{order.EP} {order.client.name}
+                  <b>EP-{order.EP}</b> {order.client.name}
                 </span>
                 <span>({totalCreated} vidros)</span>
               </div>
@@ -24,7 +24,7 @@ const StatsList = ({ orderList, itemList, type }) => {
             content = (
               <div className={css.content}>
                 <span className={css.clienteName}>
-                  EP-{order.EP} {order.client.name}
+                  <b>EP-{order.EP}</b> {order.client.name}
                 </span>
                 <span>{totalCompleted} vidros, encomenda completa</span>
               </div>
@@ -36,7 +36,7 @@ const StatsList = ({ orderList, itemList, type }) => {
             content = (
               <div className={css.content}>
                 <span className={css.clienteName}>
-                  EP-{order.EP} {order.client}
+                  <b>EP-{order.EP}</b> {order.client}
                 </span>
                 <span>fechado {order.completedItems} vidros,</span>
                 <span>falta {order.pendingItems} para concluir</span>
@@ -53,7 +53,7 @@ const StatsList = ({ orderList, itemList, type }) => {
                   Desde {new Date(order.createdAt).toLocaleDateString('pt-PT')}
                 </span>
                 <span className={css.clienteName}>
-                  EP-{order.EP} {order.client.name}
+                  <b>EP-{order.EP}</b> {order.client.name}
                 </span>
                 <span>({totalOverdue} vidros)</span>
               </div>

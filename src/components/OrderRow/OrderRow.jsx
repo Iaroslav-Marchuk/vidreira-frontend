@@ -217,6 +217,15 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
             textAlign: 'center',
             verticalAlign: 'middle',
             color: item.status === 'Concluído' ? '#999' : 'inherit',
+            fontSize: '12px',
+            padding: '4px',
+          },
+
+          '@media (min-width: 1240px)': {
+            '& .MuiTableCell-root': {
+              fontSize: '16px',
+              padding: '12px',
+            },
           },
         }}
       >

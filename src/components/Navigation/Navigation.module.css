@@ -1,7 +1,5 @@
 .navigation {
-  display: flex;
-  align-items: center;
-  gap: 48px;
+  display: none;
 }
 
 .link {
@@ -14,13 +12,20 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.link:hover {
-  background-color: var(--color-btn-hover-bg);
-}
+@media only screen and (min-width: 768px) {
+  .navigation {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
 
-.active {
-  background-color: var(--color-btn-hover-bg);
-  /* font-weight: 700; */
-  transform: scale(0.97);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  .link:hover {
+    background-color: var(--color-btn-hover-bg);
+  }
+
+  .active {
+    background-color: var(--color-btn-hover-bg);
+    transform: scale(0.97);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
 }

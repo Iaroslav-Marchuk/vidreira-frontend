@@ -1,6 +1,5 @@
 .wrapper {
   margin: 30px auto;
-  padding: 24px 32px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -8,18 +7,15 @@
 }
 
 .title {
+  font-size: var(--font-size-xl);
   margin: 0 auto;
-  margin-bottom: 36px;
+  text-align: center;
+  margin-bottom: 24px;
 }
 
 .section {
   display: block;
-  margin-bottom: 24px;
-}
-
-.span {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
+  margin-bottom: 20px;
 }
 
 .sectionTitle {
@@ -29,6 +25,7 @@
   background-color: var(--color-btn-bg);
   color: var(--color-btn-txt);
   margin-bottom: 16px;
+  font-size: var(--font-size-lg);
 }
 
 .text,
@@ -50,4 +47,24 @@
   color: #777;
   margin-top: 10px;
   text-align: center;
+}
+
+@media only screen and (min-width: 768px) {
+  .wrapper {
+    margin: 40px auto;
+  }
+
+  .title {
+    margin: 0 auto;
+    font-size: 32px;
+    margin-bottom: 36px;
+  }
+
+  .section {
+    margin-bottom: 24px;
+  }
+
+  .sectionTitle {
+    font-size: var(--font-size-xl);
+  }
 }

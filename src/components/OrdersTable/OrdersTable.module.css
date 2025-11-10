@@ -5,6 +5,10 @@
   gap: 8px;
 }
 
+.arrow {
+  height: 16px;
+}
+
 .button {
   display: flex;
   align-items: center;
@@ -18,4 +22,10 @@
 
 .button:hover {
   transform: scale(1.2);
+}
+
+@media only screen and (min-width: 768px) {
+  .arrow {
+    height: 20px;
+  }
 }

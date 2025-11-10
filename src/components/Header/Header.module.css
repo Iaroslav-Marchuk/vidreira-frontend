@@ -7,13 +7,13 @@
   border-radius: var(--border-radius);
   user-select: none;
   background-color: var(--color-header-bg);
+  font-size: var(--font-size-sm);
   box-shadow: var(--box-shadow);
 }
 
-.navigation {
-  display: flex;
-  align-items: center;
-  gap: 48px;
+.logo {
+  height: 65px;
+  width: 100px;
 }
 
 .link {
@@ -26,13 +26,24 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.link:hover {
-  background-color: var(--color-btn-hover-bg);
-}
+@media only screen and (min-width: 768px) {
+  .logo {
+    height: 85px;
+    width: 120px;
+  }
 
-.active {
-  background-color: var(--color-btn-hover-bg);
-  font-weight: 700;
-  transform: scale(0.97);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  .burgerBtn {
+    display: none;
+  }
+
+  .link:hover {
+    background-color: var(--color-btn-hover-bg);
+  }
+
+  .active {
+    background-color: var(--color-btn-hover-bg);
+    font-weight: 700;
+    transform: scale(0.97);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
 }

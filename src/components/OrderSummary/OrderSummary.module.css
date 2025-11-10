@@ -1,6 +1,6 @@
 .container {
-  padding: 32px;
-  width: 800px;
+  width: 230px;
+  padding: 10px;
 }
 
 .header,
@@ -47,8 +47,16 @@
   padding: 0 0 8px;
 }
 
-.headerItem:last-child,
-.infoItem:last-child,
-.historyItem:last-child {
-  border-bottom: none;
+@media only screen and (min-width: 768px) {
+  .container {
+    padding: 16px;
+    width: 640px;
+  }
+}
+
+@media only screen and (min-width: 1240px) {
+  .container {
+    padding: 32px;
+    width: 800px;
+  }
 }

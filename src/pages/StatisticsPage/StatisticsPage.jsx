@@ -115,7 +115,8 @@ const StatisticsPage = () => {
 
                   return (
                     <li key={zone} className={css.item}>
-                      {`- ${label}: ${ordersCount} encomendas em curso, ${itemsCount} vidros no total`}
+                      - <b>{label}</b>: {ordersCount} encomendas em curso,{' '}
+                      {itemsCount} vidros no total
                     </li>
                   );
                 })}
