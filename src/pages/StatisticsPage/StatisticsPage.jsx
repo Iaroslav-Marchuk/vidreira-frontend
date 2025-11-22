@@ -137,13 +137,13 @@ const StatisticsPage = () => {
               <p className={css.text}>
                 {`${t('STATS_TEXT_9')} ${createdOrdersToday.length} ${
                   createdOrdersToday.length === 1
-                    ? t('STATS_TEXT10')
+                    ? t('STATS_TEXT_10')
                     : t('STATS_TEXT_11')
                 } (${createdItemsToday} ${t('STATS_TEXT_12')} ${
                   completedOrdersToday.length
                 } ${
                   completedOrdersToday.length === 1
-                    ? t('STATS_TEXT10')
+                    ? t('STATS_TEXT_10')
                     : t('STATS_TEXT_11')
                 } (${completedItemsToday} ${t('STATS_TEXT_13')}).`}
               </p>
@@ -153,7 +153,7 @@ const StatisticsPage = () => {
               <p className={css.text}>
                 {`${t('STATS_TEXT_9')} ${createdOrdersYesterday.length} ${
                   createdOrdersYesterday.length === 1
-                    ? t('STATS_TEXT10')
+                    ? t('STATS_TEXT_10')
                     : t('STATS_TEXT_11')
                 } (${createdItemsYesterday} ${t('STATS_TEXT_12')} ${
                   completedOrdersYesterday.length
@@ -169,13 +169,13 @@ const StatisticsPage = () => {
               <p className={css.text}>
                 {`${t('STATS_TEXT_9')} ${createdOrdersThisMonth.length} ${
                   createdOrdersThisMonth.length === 1
-                    ? t('STATS_TEXT10')
+                    ? t('STATS_TEXT_10')
                     : t('STATS_TEXT_11')
                 } (${createdItemsThisMonth} ${t('STATS_TEXT_12')} ${
                   completedOrdersThisMonth.length
                 } ${
                   completedOrdersThisMonth.length === 1
-                    ? t('STATS_TEXT10')
+                    ? t('STATS_TEXT_10')
                     : t('STATS_TEXT_11')
                 } (${completedItemsThisMonth} ${t('STATS_TEXT_13')}).`}
               </p>
@@ -185,13 +185,13 @@ const StatisticsPage = () => {
               <p className={css.text}>
                 {`${t('STATS_TEXT_9')} ${createdOrdersLastMonth.length} ${
                   createdOrdersLastMonth.length === 1
-                    ? t('STATS_TEXT10')
+                    ? t('STATS_TEXT_10')
                     : t('STATS_TEXT_11')
                 } (${createdItemsLastMonth} ${t('STATS_TEXT_12')} ${
                   completedOrdersLastMonth.length
                 } ${
                   completedOrdersLastMonth.length === 1
-                    ? t('STATS_TEXT10')
+                    ? t('STATS_TEXT_10')
                     : t('STATS_TEXT_11')
                 } (${completedItemsLastMonth} ${t('STATS_TEXT_13')}).`}
               </p>
