@@ -2,28 +2,18 @@
   display: none;
 }
 
+.svgExit {
+  align-items: center;
+  width: 20px;
+}
+
 @media only screen and (min-width: 768px) {
   .wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 4px;
     position: relative;
-  }
-
-  .avatar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 48px;
-    width: 48px;
-    font-size: 28px;
-    line-height: 1;
-    box-sizing: border-box;
-    color: var(--color-btn-txt);
-    background-color: var(--color-btn-bg);
-    border: 3px solid var(--color-btn-hover-bg);
-    border-radius: 100%;
   }
 
   .popoverContent {
@@ -64,8 +54,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    font-size: 14px;
+    font-size: 18px;
   }
 
   .text {
@@ -76,6 +65,10 @@
     text-decoration: none;
     transition: text-decoration 0.2s ease;
     margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
 
   .link:hover {
@@ -83,7 +76,10 @@
   }
 
   .btn {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     box-sizing: border-box;
     padding: 8px 16px;
     border: none;
@@ -100,7 +96,7 @@
     background-color: var(--color-btn-hover-bg);
   }
 
-  .svg {
+  .svgUser {
     margin-right: 8px;
   }
 }

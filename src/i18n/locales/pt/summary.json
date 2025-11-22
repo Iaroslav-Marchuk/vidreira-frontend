@@ -1,0 +1,14 @@
+{
+  "SUMMARY_INFO": "Encomenda info",
+  "SUMMARY_CLIENT": "Cliente:",
+  "SUMMARY_ZONE": "Zona:",
+  "SUMMARY_OPERATOR": "Operador:",
+  "SUMMARY_INCOMPLETED": "Vidros em falta:",
+
+  "SUMMARY_PANDING": "- em espera:",
+  "SUMMARY_IN_PROGRESS": "- em produção:",
+  "SUMMARY_FINISHED": "- concluído",
+
+  "SUMMARY_ORDER_HISTORY": "História do pedido",
+  "SUMMARY_ITEM_HISTORY": "História do vidro"
+}

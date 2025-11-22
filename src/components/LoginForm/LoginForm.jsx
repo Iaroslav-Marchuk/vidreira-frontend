@@ -1,34 +1,35 @@
 import { Field, Form, Formik, ErrorMessage } from 'formik';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { UserRound, KeyRound } from 'lucide-react';
 
 import Button from '../Button/Button.jsx';
+import Loader from '../Loader/Loader.jsx';
 
 import { login } from '../../redux/auth/operations.js';
 import { selectIsUserLoading } from '../../redux/auth/selectors.js';
 
 import css from './LoginForm.module.css';
-import Loader from '../Loader/Loader.jsx';
-
-import { UserRound, KeyRound } from 'lucide-react';
 
 const LoginForm = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const isUserLoading = useSelector(selectIsUserLoading);
 
   const handleSubmit = async (values, actions) => {
     if (!values.name || !values.password) {
-      toast.error('Fill all fields, please');
+      toast.error(t('FILL_FIELDS'));
       actions.setSubmitting(false);
       return;
     }
 
     try {
       await dispatch(login(values)).unwrap();
-      toast.success('Logged in successfully!');
+      toast.success(t('LOGIN_SUCCESS'));
       actions.resetForm();
     } catch (error) {
-      toast.error('Failed to log in. ' + error);
+      toast.error(t('LOGIN_ERROR') + error);
     }
   };
 
@@ -48,9 +49,10 @@ const LoginForm = () => {
                 name="name"
                 id="name"
                 placeholder=" "
+                autoComplete="username"
               />
               <label className={css.formLabel} htmlFor="name">
-                Nome
+                {t('NAME')}
               </label>
               <UserRound className={css.inputIcon} />
             </div>
@@ -66,9 +68,10 @@ const LoginForm = () => {
                 name="password"
                 id="password"
                 placeholder=" "
+                autoComplete="current-password"
               />
               <label className={css.formLabel} htmlFor="password">
-                Palvra passe
+                {t('PASSWORD')}
               </label>
               <KeyRound className={css.inputIcon} />
             </div>
@@ -79,7 +82,7 @@ const LoginForm = () => {
             />
           </div>
 
-          <Button type="submit">Entrar</Button>
+          <Button type="submit">{t('ENTER')}</Button>
         </Form>
       </Formik>
     </>

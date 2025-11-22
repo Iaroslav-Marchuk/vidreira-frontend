@@ -1,0 +1,8 @@
+{
+  "PROFILE": "User's profile",
+  "PROFILE_NAME": "User's name:",
+  "PROFILE_ROLE": "User's role:",
+  "PROFILE_ON_PLATFORM": "On the platform since:",
+  "PROFILE_ACTIVITY": "Last activity",
+  "PROFILE_NO_DATA": "No user activity data."
+}

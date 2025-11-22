@@ -14,13 +14,15 @@ import {
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { Pencil, Trash2, NotepadText } from 'lucide-react';
-
+import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
 import OrderRow from '../OrderRow/OrderRow.jsx';
 import ConfirmDelete from '../ConfirmDelete/ConfirmDelete.jsx';
 import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
+import OrderSummary from '../OrderSummary/OrderSummary.jsx';
+import EditOrder from '../EditOrder/EditOrder.jsx';
 
 import {
   deleteOrder,
@@ -31,8 +33,6 @@ import {
 } from '../../redux/orders/operations.js';
 import { clearCurrentOrder } from '../../redux/orders/slice.js';
 
-import css from './OrderCollapse.module.css';
-import OrderSummary from '../OrderSummary/OrderSummary.jsx';
 import {
   selectAllOrders,
   selectCurrentPage,
@@ -41,10 +41,12 @@ import {
   selectSortBy,
   selectSortOrder,
 } from '../../redux/orders/selectors.js';
-import EditOrder from '../EditOrder/EditOrder.jsx';
 import { selectRole, selectUser } from '../../redux/auth/selectors.js';
-import { roleCanDo } from '../../utils/roleCanDo.js';
 import { selectRolesList } from '../../redux/roles/selectors.js';
+
+import { roleCanDo } from '../../utils/roleCanDo.js';
+
+import css from './OrderCollapse.module.css';
 
 const OrderCollapse = ({
   order,
@@ -53,6 +55,7 @@ const OrderCollapse = ({
   toggleCollapse,
   isArchive,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const allOrders = useSelector(selectAllOrders);
@@ -68,7 +71,7 @@ const OrderCollapse = ({
   const user = useSelector(selectUser);
   const userId = user._id;
 
-  const isEditableStatus = order.status === 'Criado';
+  const isEditableStatus = order.status === 'CREATED';
   const canEdit =
     isEditableStatus &&
     roleCanDo(rolesList, role, 'edit') &&
@@ -106,13 +109,12 @@ const OrderCollapse = ({
       const order = await dispatch(getOrderById(orderId)).unwrap();
       await dispatch(getOrderHistory(orderId)).unwrap();
       if (!order) {
-        toast.error('Order not found!');
+        toast.error(t('ORDER_NOT_FOUND'));
         return;
       }
       openModal();
     } catch (error) {
-      console.error('Failed to fetch order:', error);
-      toast.error('Failed to load order');
+      toast.error(t('ORDER_NO_LOAD'), error);
     }
   };
 
@@ -138,7 +140,9 @@ const OrderCollapse = ({
 
     if (duplicateEPInSameZone) {
       toast.error(
-        `Order with EP ${values.EP} already exists in zone ${values.local.zona}!`
+        `${t('ORDER_DUPLICATE_1')} ${values.EP} ${t('ORDER_DUPLICATE_2')} ${
+          values.local.zona
+        }!`
       );
       return;
     }
@@ -152,7 +156,9 @@ const OrderCollapse = ({
 
     if (differentClientForSameEP) {
       toast.error(
-        `Order with EP ${values.EP} already exists with a different client: "${differentClientForSameEP.client.name}".`
+        `${t('ORDER_DUPLICATE_1')}P ${values.EP} ${t('ORDER_DUPLICATE_3')}: "${
+          differentClientForSameEP.client.name
+        }".`
       );
       return;
     }
@@ -166,7 +172,7 @@ const OrderCollapse = ({
       !hasNewItems;
 
     if (isUnchanged) {
-      toast.error('Order unchanged.');
+      toast.error(t('ORDER_UNCHANGED'));
       return;
     }
 
@@ -188,10 +194,10 @@ const OrderCollapse = ({
 
     try {
       await dispatch(updateOrder({ orderId, values: payload })).unwrap();
-      toast.success('Order updated successfully!');
+      toast.success(t('ORDER_UPDATE_SUCCESS'));
       closeEdit();
     } catch (error) {
-      toast.error('Failed to update order: ' + error);
+      toast.error(t('ORDER_UPDATE_FAILED') + error);
     }
   };
 
@@ -199,7 +205,7 @@ const OrderCollapse = ({
     dispatch(deleteOrder(orderId))
       .unwrap()
       .then(() => {
-        toast.success('Order deleted successfully!');
+        toast.success(t('ORDER_DELETED_SUCCESS'));
 
         dispatch(
           getAllOrders({
@@ -212,7 +218,7 @@ const OrderCollapse = ({
         );
       })
       .catch(() => {
-        toast.error('Failed to delete order.');
+        toast.error(t('ORDER_DELETED_FAILED'));
       })
       .finally(() => {
         closeConfirm();
@@ -234,7 +240,7 @@ const OrderCollapse = ({
           '@media (min-width: 1240px)': {
             '& .MuiTableCell-root': {
               fontSize: '16px',
-              padding: '16px',
+              padding: '8px',
             },
           },
         }}
@@ -249,13 +255,13 @@ const OrderCollapse = ({
         {!isArchive && (
           <TableCell>
             {order.items
-              .filter(item => item.status !== 'Concluído')
+              .filter(item => item.status !== 'FINISHED')
               .reduce((total, item) => total + item.quantity, 0)}
           </TableCell>
         )}
 
-        <TableCell>{order.status}</TableCell>
-        <TableCell>{order.local.zona}</TableCell>
+        <TableCell>{t(`STATUS_${order.status}`)}</TableCell>
+        <TableCell>{t(`LOCAL_${order.local.zona}`)}</TableCell>
         <TableCell>
           {isArchive
             ? new Date(order.updatedAt).toLocaleDateString('pt-PT')
@@ -326,15 +332,17 @@ const OrderCollapse = ({
                       },
                     }}
                   >
-                    <TableCell>Tipo de vidro</TableCell>
-                    <TableCell>Dimensão</TableCell>
-                    <TableCell>Quant.</TableCell>
-                    <TableCell>Estado</TableCell>
+                    <TableCell>{t('TABLE_HEAD_TYPE')}</TableCell>
+                    <TableCell>{t('TABLE_HEAD_SIZE')}</TableCell>
+                    <TableCell>{t('TABLE_HEAD_QUANTITY')}</TableCell>
+                    <TableCell>{t('TABLE_HEAD_STATUS')}</TableCell>
                     <TableCell>
-                      {isArchive ? 'Data de Conclusão' : 'Data de Criação'}
+                      {isArchive
+                        ? t('TABLE_HEAD_FINISH_DATA')
+                        : t('TABLE_HEAD_CREATE_DATA')}
                     </TableCell>
-                    <TableCell>Motivo</TableCell>
-                    <TableCell>Ações</TableCell>
+                    <TableCell>{t('TABLE_HEAD_REASON')}</TableCell>
+                    <TableCell>{t('TABLE_HEAD_ACTIONS')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -363,7 +371,7 @@ const OrderCollapse = ({
         <ConfirmDelete
           onDelete={handleDelete}
           onClose={closeConfirm}
-          text={'Tem a certeza de que deseja eliminar esta encomenda?'}
+          text={t('ORDER_CONFIRM')}
         />
       </ModalOverlay>
 

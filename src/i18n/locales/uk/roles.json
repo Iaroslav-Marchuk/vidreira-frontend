@@ -1,0 +1,8 @@
+{
+  "ROLE_PRODUCTION": "Виробнича ліня",
+  "ROLE_CUTTING": "Нарізка скла",
+  "ROLE_TEMPERING": "Термообробка",
+  "ROLE_LOGISTIC": "Логістика",
+  "ROLE_QUALITY": "Відділ якості",
+  "ROLE_GUEST": "Гість"
+}

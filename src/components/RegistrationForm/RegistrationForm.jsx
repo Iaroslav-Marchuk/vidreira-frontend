@@ -2,6 +2,7 @@ import { Field, Form, Formik, ErrorMessage } from 'formik';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserRound, KeyRound } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import Button from '../Button/Button.jsx';
 import Loader from '../Loader/Loader.jsx';
@@ -12,22 +13,23 @@ import { selectIsUserLoading } from '../../redux/auth/selectors.js';
 import css from './RegistrationForm.module.css';
 
 const RegistrationForm = ({ rolesList }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const isUserLoading = useSelector(selectIsUserLoading);
 
   const handleSubmit = async (values, actions) => {
     if (!values.name) {
-      toast.error('Fill all fields, please');
+      toast.error(t('FILL_FIELDS'));
       actions.setSubmitting(false);
       return;
     }
 
     try {
       await dispatch(register(values)).unwrap();
-      toast.success('Registered successfully!');
+      toast.success(t('REGISTER_SUCCESS'));
       actions.resetForm();
     } catch (error) {
-      toast.error('Failed to register.' + error);
+      toast.error(t('REGISTER_ERROR') + error);
     }
   };
 
@@ -47,9 +49,10 @@ const RegistrationForm = ({ rolesList }) => {
                 name="name"
                 id="name"
                 placeholder=" "
+                autoComplete="username"
               />
               <label className={css.formLabel} htmlFor="name">
-                Nome
+                {t('NAME')}
               </label>
               <UserRound className={css.inputIcon} />
             </div>
@@ -60,11 +63,11 @@ const RegistrationForm = ({ rolesList }) => {
           <div className={css.formGroup}>
             <Field className={css.formInput} as="select" name="role">
               <option value="" disabled>
-                Escolha o seu cargo
+                {t('SELECT_ROLE')}
               </option>
               {rolesList.map(r => (
                 <option key={r.value} value={r.value}>
-                  {r.label}
+                  {t(`ROLE_${r.value}`)}
                 </option>
               ))}
             </Field>
@@ -78,9 +81,10 @@ const RegistrationForm = ({ rolesList }) => {
                 name="password"
                 id="password"
                 placeholder=" "
+                autoComplete="new-password"
               />
               <label className={css.formLabel} htmlFor="password">
-                Palvra passe
+                {t('PASSWORD')}
               </label>
               <KeyRound className={css.inputIcon} />
             </div>
@@ -92,7 +96,7 @@ const RegistrationForm = ({ rolesList }) => {
             />
           </div>
 
-          <Button type="submit">Registar</Button>
+          <Button type="submit">{t('REGISTER')}</Button>
         </Form>
       </Formik>
     </>

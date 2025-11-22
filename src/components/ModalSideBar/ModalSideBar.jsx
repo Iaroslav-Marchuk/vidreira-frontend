@@ -1,5 +1,4 @@
 import Modal from 'react-modal';
-
 import { CircleX } from 'lucide-react';
 
 import css from './ModalSideBar.module.css';

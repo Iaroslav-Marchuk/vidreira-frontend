@@ -1,0 +1,22 @@
+{
+  "FORM_GLASS": "Vidro",
+  "FORM_LEGEND_LOCAL": "Local Info",
+  "FORM_LABEL_LOCAL": "Local",
+  "FORM_LABEL_OPERATOR": "Operador",
+  "FORM_LEGEND_ORDER": "Encomenda",
+  "FORM_LABEL_CLIENT": "Cliente",
+  "FORM_LOAD_CLIENT": "Loading clients...",
+  "FORM_PLACEHOLDER_CLIENT": "Digite ou selecione um cliente...",
+
+  "FORM_CATEGORY": "Categoria",
+  "FORM_TYPE": "Tipo",
+  "FORM_THIKNESS": "Espressura",
+  "FORM_SIZE": "Dimensão",
+  "FORM_TERM": "Temper.",
+  "FORM_QUANTITY": "Quant.",
+  "FORM_REASON": "Motivo",
+
+  "STATUS_CREATED": "Criado",
+  "STATUS_IN_PROGRESS": "Em produção",
+  "STATUS_FINISHED": "Concluído"
+}

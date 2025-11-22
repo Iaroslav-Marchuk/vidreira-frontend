@@ -1,19 +1,20 @@
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Menu } from 'lucide-react';
+import { Menu, UserRoundX } from 'lucide-react';
 import clsx from 'clsx';
+import { useState } from 'react';
 
 import logo from '../../assets/logo.png';
 
 import Navigation from '../Navigation/Navigation.jsx';
 import UserMenu from '../UserMenu/UserMenu.jsx';
+import MobileMenu from '../MobileMenu/MobileMenu.jsx';
+import ModalSideBar from '../ModalSideBar/ModalSideBar.jsx';
+import LangSwitcher from '../LangSwitcher/LangSwitcher.jsx';
 
 import { selectIsLoggedIn } from '../../redux/auth/selectors.js';
 
 import css from './Header.module.css';
-import MobileMenu from '../MobileMenu/MobileMenu.jsx';
-import { useState } from 'react';
-import ModalSideBar from '../ModalSideBar/ModalSideBar.jsx';
 
 const Header = ({ className }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -34,21 +35,22 @@ const Header = ({ className }) => {
         <img src={logo} alt="logo" className={css.logo} />
       </NavLink>
       {isLoggedIn && (
-        <>
+        <div className={css.wrapper}>
           <Navigation />
           <UserMenu />
           <button className={css.burgerBtn} onClick={handleClick}>
             <Menu size={32} color={'#163259'} strokeWidth={2} />
           </button>
-        </>
+          <LangSwitcher />
+        </div>
       )}
       {!isLoggedIn && (
-        <NavLink
-          to="/auth"
-          className={({ isActive }) => clsx(css.link, isActive && css.active)}
-        >
-          Sign Up
-        </NavLink>
+        <div className={css.wrapper}>
+          <NavLink to="/auth">
+            <UserRoundX size={28} color="#0d7fc4" strokeWidth={2} />
+          </NavLink>
+          <LangSwitcher />
+        </div>
       )}
 
       <ModalSideBar isOpen={mobileMenuIsOpen} onClose={closeMobileMenu}>

@@ -1,0 +1,41 @@
+{
+  "ORDER_ADDED": "Order added successfully!",
+  "ORDER_FAILED": "Failed to add new order: ",
+  "ORDER_EXIST": "Order with this EP and client already exists",
+  "ORDER_NOT_FOUND": "Order not found!",
+  "ORDER_NO_LOAD": "Failed to load order",
+  "ORDER_DUPLICATE_1": "Order with EP",
+  "ORDER_DUPLICATE_2": "already exists in zone",
+  "ORDER_DUPLICATE_3": "already exists with a different client",
+  "ORDER_UNCHANGED": "Order unchanged.",
+  "ORDER_UPDATE_SUCCESS": "Order updated successfully!",
+  "ORDER_UPDATE_FAILED": "Failed to update order: ",
+  "ORDER_DELETED_SUCCESS": "Order deleted successfully!",
+  "ORDER_DELETED_FAILED": "Failed to delete order.",
+
+  "FILL_FIELDS": "Please, fill all fields!",
+  "LOGIN_SUCCESS": "Logged in successfully!",
+  "LOGIN_ERROR": "Failed to log in.",
+
+  "REGISTER_SUCCESS": "Registered successfully!",
+  "REGISTER_ERROR": "Failed to register.",
+
+  "LOGOUT_SUCCESS": "Logged out successfully!",
+  "LOGOUT_ERROR": "Failed to log out. ",
+
+  "STATUS_CHANGED": "Status updated to ",
+  "STATUS_TO_ARCHIVE": "Order moved to archive!",
+  "STATUS_FAILED": "Failed to update status",
+
+  "STATUS_TEXT_1": "Update status to ",
+  "STATUS_TEXT_2": "Status final",
+
+  "HISTORY_FAILED": "Failed to load history",
+
+  "ITEM_DUPLICATE": "Item with the same data already exists!",
+  "ITEM_UNCHANGED": "Item unchanged.",
+  "ITEM_UPDATE_SUCCESS": "Item updated successfully!",
+  "ITEM_UPDATE_FAILED": "Failed to update item: ",
+  "ITEM_DELETED_SUCCESS": "Order item deleted successfully!",
+  "ITEM_DELETED_FAILED": "Failed to delete order item!"
+}

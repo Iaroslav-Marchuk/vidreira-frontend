@@ -1,0 +1,14 @@
+{
+  "SUMMARY_INFO": "Order info",
+  "SUMMARY_CLIENT": "Client:",
+  "SUMMARY_ZONE": "Zone:",
+  "SUMMARY_OPERATOR": "Operator:",
+  "SUMMARY_INCOMPLETED": "Missing glass:",
+
+  "SUMMARY_PANDING": "- pending:",
+  "SUMMARY_IN_PROGRESS": "- in production:",
+  "SUMMARY_FINISHED": "- finished",
+
+  "SUMMARY_ORDER_HISTORY": "Order history",
+  "SUMMARY_ITEM_HISTORY": "Glass history"
+}

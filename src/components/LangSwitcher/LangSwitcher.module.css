@@ -1,3 +1,21 @@
-.container {
-  display: flex;
+.select {
+  display: inline-flex;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 16px;
+  background-color: var(--color-btn-bg);
+  color: var(--color-btn-txt);
+  font-weight: 600;
+  cursor: pointer;
+  appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.select:hover {
+  border-color: #163259;
+  outline: none;
+}
+
+.select:focus {
+  outline: none;
 }

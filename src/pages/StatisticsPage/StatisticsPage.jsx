@@ -1,14 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux';
-import css from './StatisticsPage.module.css';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+
+import Loader from '../../components/Loader/Loader.jsx';
+
 import {
   selectAllStats,
   selectIsStatsLoading,
 } from '../../redux/stats/selectors.js';
-import { useEffect } from 'react';
 import { getStats } from '../../redux/stats/operations.js';
-import Loader from '../../components/Loader/Loader.jsx';
+
+import css from './StatisticsPage.module.css';
 
 const StatisticsPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const allStats = useSelector(selectAllStats);
@@ -48,11 +53,12 @@ const StatisticsPage = () => {
   }, [dispatch]);
 
   const zoneLabels = {
-    L1: 'Linha 1',
-    L2: 'Linha 2',
-    L3: 'Linha 3',
-    Forno: 'Forno',
-    Logística: 'Logística',
+    LINE_1: t('LOCAL_LINE_1'),
+    LINE_2: t('LOCAL_LINE_2'),
+    LINE_3: t('LOCAL_LINE_3'),
+    FURNACE: t('LOCAL_FURNACE'),
+    LOGISTIC: t('LOCAL_LOGISTIC'),
+    QUALITY: t('LOCAL_QUALITY'),
   };
 
   let maxZoneLabel = '';
@@ -76,7 +82,7 @@ const StatisticsPage = () => {
     return (
       <div className={css.wrapper}>
         {isStatsLoading && <Loader />}
-        <p className={css.noResults}>A estatística não está disponível!</p>
+        <p className={css.noResults}>{t('STATS_NO_DATA')}</p>
       </div>
     );
   }
@@ -86,25 +92,25 @@ const StatisticsPage = () => {
       {isStatsLoading && <Loader />}
 
       <div className={css.wrapper}>
-        <h1 className={css.title}>
-          A estatística do registo de produtos não conformes
-        </h1>
+        <h1 className={css.title}>{t('STATS_TITLE')}</h1>
 
         <div className={css.section}>
-          <h2 className={css.sectionTitle}>Informação geral</h2>
+          <h2 className={css.sectionTitle}>{t('STATS_GENERAL')}</h2>
           <p className={css.text}>
-            {`Neste momento, na fábrica Vidreira Algarvia, encontram-se
+            {`${t('STATS_TEXT_1')}
             ${noCompletedOrdersTotal}
-            encomendas por finalizar, correspondendo a um total de
-            ${noCompletedItemsTotal} vidros ainda em produção.`}
+            ${t('STATS_TEXT_2')}
+            ${noCompletedItemsTotal} ${t('STATS_TEXT_3')}.`}
           </p>
           <p className={css.text}>
-            {`O maior número de encomendas por concluir encontra-se na ${maxZoneLabel} (${maxOrdersCount} encomendas).`}
+            {`${t('STATS_TEXT_4')} ${maxZoneLabel} (${maxOrdersCount} ${t(
+              'STATS_TEXT_5'
+            )}).`}
           </p>
         </div>
 
         <div className={css.section}>
-          <h2 className={css.sectionTitle}>Estatístca pela zona:</h2>
+          <h2 className={css.sectionTitle}>{t('STATS_ZONE')}</h2>
           <ul className={css.list}>
             {activeOrdersByZone &&
               Object.entries(activeOrdersByZone)
@@ -115,8 +121,8 @@ const StatisticsPage = () => {
 
                   return (
                     <li key={zone} className={css.item}>
-                      - <b>{label}</b>: {ordersCount} encomendas em curso,{' '}
-                      {itemsCount} vidros no total
+                      - <b>{label}</b>: {ordersCount} {t('STATS_TEXT_6')},{' '}
+                      {itemsCount} {t('STATS_TEXT_7')}
                     </li>
                   );
                 })}
@@ -124,74 +130,78 @@ const StatisticsPage = () => {
         </div>
 
         <div className={css.section}>
-          <h2 className={css.sectionTitle}>
-            Estatísticas por período de tempo:
-          </h2>
+          <h2 className={css.sectionTitle}>{t('STATS_TIME')}</h2>
           <ul className={css.list}>
             <li className={css.item}>
-              <h3 className={css.subtitle}>Hoje</h3>
+              <h3 className={css.subtitle}>{t('STATS_TEXT_8')}</h3>
               <p className={css.text}>
-                {`Foram adicionadas ${createdOrdersToday.length} ${
-                  createdOrdersToday.length === 1 ? 'encomenda' : 'encomendas'
-                } (${createdItemsToday} vidros) e concluídas ${
+                {`${t('STATS_TEXT_9')} ${createdOrdersToday.length} ${
+                  createdOrdersToday.length === 1
+                    ? t('STATS_TEXT10')
+                    : t('STATS_TEXT_11')
+                } (${createdItemsToday} ${t('STATS_TEXT_12')} ${
                   completedOrdersToday.length
                 } ${
-                  completedOrdersToday.length === 1 ? 'encomenda' : 'encomendas'
-                } (${completedItemsToday} vidros).`}
+                  completedOrdersToday.length === 1
+                    ? t('STATS_TEXT10')
+                    : t('STATS_TEXT_11')
+                } (${completedItemsToday} ${t('STATS_TEXT_13')}).`}
               </p>
             </li>
             <li className={css.item}>
-              <h3 className={css.subtitle}>Ontem</h3>
+              <h3 className={css.subtitle}>{t('STATS_TEXT_14')}</h3>
               <p className={css.text}>
-                {`Foram adicionadas ${createdOrdersYesterday.length} ${
+                {`${t('STATS_TEXT_9')} ${createdOrdersYesterday.length} ${
                   createdOrdersYesterday.length === 1
-                    ? 'encomenda'
-                    : 'encomendas'
-                } (${createdItemsYesterday} vidros) e concluídas ${
+                    ? t('STATS_TEXT10')
+                    : t('STATS_TEXT_11')
+                } (${createdItemsYesterday} ${t('STATS_TEXT_12')} ${
                   completedOrdersYesterday.length
                 } ${
                   completedOrdersYesterday.length === 1
-                    ? 'encomenda'
-                    : 'encomendas'
-                } (${completedItemsYesterday} vidros).`}
+                    ? t('STATS_TEXT10')
+                    : t('STATS_TEXT_11')
+                } (${completedItemsYesterday} ${t('STATS_TEXT_13')}).`}
               </p>
             </li>
             <li className={css.item}>
-              <h3 className={css.subtitle}>Este mês</h3>
+              <h3 className={css.subtitle}>{t('STATS_TEXT_15')}</h3>
               <p className={css.text}>
-                {`Foram adicionadas ${createdOrdersThisMonth.length} ${
+                {`${t('STATS_TEXT_9')} ${createdOrdersThisMonth.length} ${
                   createdOrdersThisMonth.length === 1
-                    ? 'encomenda'
-                    : 'encomendas'
-                } (${createdItemsThisMonth} vidros) e concluídas ${
+                    ? t('STATS_TEXT10')
+                    : t('STATS_TEXT_11')
+                } (${createdItemsThisMonth} ${t('STATS_TEXT_12')} ${
                   completedOrdersThisMonth.length
                 } ${
                   completedOrdersThisMonth.length === 1
-                    ? 'encomenda'
-                    : 'encomendas'
-                } (${completedItemsThisMonth} vidros).`}
+                    ? t('STATS_TEXT10')
+                    : t('STATS_TEXT_11')
+                } (${completedItemsThisMonth} ${t('STATS_TEXT_13')}).`}
               </p>
             </li>
             <li className={css.item}>
-              <h3 className={css.subtitle}>Mês passado</h3>
+              <h3 className={css.subtitle}>{t('STATS_TEXT_16')}</h3>
               <p className={css.text}>
-                {`Foram adicionadas ${createdOrdersLastMonth.length} ${
+                {`${t('STATS_TEXT_9')} ${createdOrdersLastMonth.length} ${
                   createdOrdersLastMonth.length === 1
-                    ? 'encomenda'
-                    : 'encomendas'
-                } (${createdItemsLastMonth} vidros) e concluídas ${
+                    ? t('STATS_TEXT10')
+                    : t('STATS_TEXT_11')
+                } (${createdItemsLastMonth} ${t('STATS_TEXT_12')} ${
                   completedOrdersLastMonth.length
                 } ${
                   completedOrdersLastMonth.length === 1
-                    ? 'encomenda'
-                    : 'encomendas'
-                } (${completedItemsLastMonth} vidros).`}
+                    ? t('STATS_TEXT10')
+                    : t('STATS_TEXT_11')
+                } (${completedItemsLastMonth} ${t('STATS_TEXT_13')}).`}
               </p>
             </li>
             <li className={css.item}>
-              <h3 className={css.subtitle}>Tempo médio de execução</h3>
+              <h3 className={css.subtitle}>{t('STATS_PROCESS_TIME')}</h3>
               <p className={css.text}>
-                {`Em média, cada vidro demora ${averageItemExecutionTime.hours} horas (${averageItemExecutionTime.days} dias) para ser concluído.`}
+                {`${t('STATS_TEXT_17')} ${averageItemExecutionTime.hours} ${t(
+                  'STATS_TEXT_18'
+                )} (${averageItemExecutionTime.days} ${t('STATS_TEXT_19')}`}
               </p>
             </li>
           </ul>

@@ -1,20 +1,20 @@
 import clsx from 'clsx';
-
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import LoginForm from '../../components/LoginForm/LoginForm.jsx';
 import RegisterForm from '../../components/RegistrationForm/RegistrationForm.jsx';
-
-import css from './AuthPage.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 
 import {
   selectIsRolesLoading,
   selectRolesList,
 } from '../../redux/roles/selectors.js';
 import { getAllRoles } from '../../redux/roles/operations.js';
+import css from './AuthPage.module.css';
 
 const AuthPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [formType, setFormType] = useState('login');
@@ -39,7 +39,7 @@ const AuthPage = () => {
             formType === 'login' ? css.activeTab : css.passiveTab
           )}
         >
-          Login
+          {t('LOGIN')}
         </button>
         <button
           onClick={handleRegisterForm}
@@ -47,7 +47,7 @@ const AuthPage = () => {
             formType === 'register' ? css.activeTab : css.passiveTab
           )}
         >
-          Register
+          {t('REGISTRATION')}
         </button>
       </div>
 

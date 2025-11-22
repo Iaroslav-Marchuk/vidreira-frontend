@@ -1,0 +1,8 @@
+{
+  "ROLE_PRODUCTION": "Production line",
+  "ROLE_CUTTING": "Glass cutting",
+  "ROLE_TEMPERING": "Heat treatment",
+  "ROLE_LOGISTIC": "Logistics",
+  "ROLE_QUALITY": "Quality department",
+  "ROLE_GUEST": "Guest"
+}

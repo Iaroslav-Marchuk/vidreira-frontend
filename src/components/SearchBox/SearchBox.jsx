@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { Search, CircleX } from 'lucide-react';
-import css from './SearchBox.module.css';
+import { useTranslation } from 'react-i18next';
+
 import Button from '../Button/Button.jsx';
 
+import css from './SearchBox.module.css';
+
 const SearchBox = ({ onSearch }) => {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
 
   const handleSearch = () => {
@@ -30,7 +34,7 @@ const SearchBox = ({ onSearch }) => {
         <input
           className={css.input}
           type="text"
-          placeholder="Digite número EP ou nome do cliente..."
+          placeholder={t('SEARCH_INPUT')}
           value={query}
           onChange={handleInputChange}
           onKeyDown={e => e.key === 'Enter' && handleSearch()}
@@ -43,7 +47,7 @@ const SearchBox = ({ onSearch }) => {
         )}
       </div>
       <Button className={css.search} onClick={handleSearch}>
-        Procurar
+        {t('FIND')}
       </Button>
     </div>
   );

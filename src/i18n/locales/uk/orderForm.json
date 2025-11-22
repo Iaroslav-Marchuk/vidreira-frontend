@@ -1,0 +1,22 @@
+{
+  "FORM_GLASS": "Скловиріб",
+  "FORM_LEGEND_LOCAL": "Інформація про локацію",
+  "FORM_LABEL_LOCAL": "Локація",
+  "FORM_LABEL_OPERATOR": "Оператор",
+  "FORM_LEGEND_ORDER": "Замовлення",
+  "FORM_LABEL_CLIENT": "Клієнт",
+  "FORM_LOAD_CLIENT": "Завантаження клієнтів...",
+  "FORM_PLACEHOLDER_CLIENT": "Введіть або виберіть клієнта...",
+
+  "FORM_CATEGORY": "Категорія",
+  "FORM_TYPE": "Тип",
+  "FORM_THIKNESS": "Товщина",
+  "FORM_SIZE": "Розмір",
+  "FORM_TERM": "Термообробка",
+  "FORM_QUANTITY": "К-сть",
+  "FORM_REASON": "Причина",
+
+  "STATUS_CREATED": "Створено",
+  "STATUS_IN_PROGRESS": "У виробництві",
+  "STATUS_FINISHED": "Виконано"
+}

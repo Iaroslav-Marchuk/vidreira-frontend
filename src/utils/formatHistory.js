@@ -1,4 +1,4 @@
-export function formatHistoryEntry(history, options = {}) {
+export function formatHistoryEntry(history, options = {}, t) {
   const { simplified = false, glassOptions, actualX, actualY } = options;
 
   const date = new Date(history.changedAt).toLocaleString('pt-PT', {
@@ -19,45 +19,47 @@ export function formatHistoryEntry(history, options = {}) {
   const getCategoryLabel = category => {
     const key =
       typeof category === 'string' ? category : category?.old ?? category?.new;
-    return glassOptions[key]?.label ?? key ?? 'Desconhecido';
+    return glassOptions[key]?.label ?? key;
   };
 
   const getTypeLabel = (category, type) => {
     const categoryKey =
       typeof category === 'string' ? category : category?.old ?? category?.new;
     const typeKey = typeof type === 'string' ? type : type?.old ?? type?.new;
-    return (
-      glassOptions[categoryKey]?.types?.[typeKey]?.label ??
-      typeKey ??
-      'Desconhecido'
-    );
+    return glassOptions[categoryKey]?.types?.[typeKey]?.label ?? typeKey;
   };
 
   switch (action) {
-    case 'criou pedido':
+    case 'ORDER_CREATED':
       if (simplified) {
-        lines.push(`${date} — ${user} criou o pedido EP-${displayEP}.`);
+        lines.push(`${date} — ${user} ${t('HISTORY_TEXT_1')} EP-${displayEP}.`);
       } else {
         lines.push(
-          `${date} — ${user} criou o pedido com ${changes.itemsCount} posição(ões) (${changes.unitsCount} vidro(s)).`
+          `${date} — ${user} ${t('HISTORY_TEXT_2')} ${changes.itemsCount} ${t(
+            'HISTORY_TEXT_3'
+          )} (${changes.unitsCount} ${t('HISTORY_TEXT_4')}).`
         );
       }
       break;
 
-    case 'corrigiu pedido': {
+    case 'ORDER_EDITED': {
       if (simplified) {
         lines.push(
-          `${date} — ${user} alterou os dados do pedido EP-${changes.displayEP}.`
+          `${date} — ${user} ${t('HISTORY_TEXT_5')} EP-${changes.displayEP}.`
         );
       } else {
         if (changes.EP && changes.EP.old !== changes.EP.new) {
           lines.push(
-            `${date} — ${user} alterou o número de EP de ${changes.EP.old} para ${changes.EP.new}.`
+            `${date} — ${user} ${t('HISTORY_TEXT_6')} ${changes.EP.old} ${t(
+              'HISTORY_TEXT_7'
+            )} ${changes.EP.new}.`
           );
         }
         if (changes.client && changes.client.old !== changes.client.new) {
           lines.push(
-            `${date} — ${user} alterou o cliente de "${changes.client.old}" para "${changes.client.new}".`
+            `${date} — ${user} ${t('HISTORY_TEXT_8')} "${
+              changes.client.old
+            }" ${t('HISTORY_TEXT_7')} "${changes.client.new}".`
           );
         }
         if (
@@ -65,7 +67,11 @@ export function formatHistoryEntry(history, options = {}) {
           changes.local.old.zona !== changes.local.new.zona
         ) {
           lines.push(
-            `${date} — ${user} alterou a zona de ${changes.local.old.zona} para ${changes.local.new.zona}.`
+            `${date} — ${user} ${t(
+              'HISTORY_TEXT_9'
+            )} ${`LINE_${changes.local.old.zona}`} ${t('HISTORY_TEXT_7')} ${
+              changes.local.new.zona
+            }.`
           );
         }
         if (changes.addedItemsCount && changes.addedItemsCount > 0) {
@@ -74,62 +80,74 @@ export function formatHistoryEntry(history, options = {}) {
             0
           );
           lines.push(
-            `${date} — ${user} adicionou ${changes.addedItemsCount} artigo(s) (${addedUnitsCount} vidro(s)).`
+            `${date} — ${user} ${t('HISTORY_TEXT_10')} ${
+              changes.addedItemsCount
+            } ${t('HISTORY_TEXT_11')} (${addedUnitsCount} ${t(
+              'HISTORY_TEXT_4'
+            )}).`
           );
         }
         if (lines.length === 0) {
-          lines.push(`${date} — ${user} corrigiu o pedido.`);
+          lines.push(`${date} — ${user} ${t('HISTORY_TEXT_12')}.`);
         }
       }
       break;
     }
-    case 'eliminou pedido':
-      lines.push(`${date} — ${user} eliminou o pedido EP-${displayEP}`);
+    case 'ORDER_DELETED':
+      lines.push(`${date} — ${user} ${t('HISTORY_TEXT_13')} EP-${displayEP}`);
       break;
 
-    case 'mudou estado do pedido':
+    case 'STATUS_OF_ORDER_CHANGED':
       if (simplified) {
         lines.push(
-          `${date} — ${user} mudou o estado da encomenda EP-${displayEP} de "${changes.status.old}" para "${changes.status.new}".`
+          `${date} — ${user} ${t('HISTORY_TEXT_14')} EP-${displayEP} ${t(
+            'HISTORY_TEXT_15'
+          )} "${t(`STATUS_${changes.status.old}`)}" ${t('HISTORY_TEXT_7')} "${t(
+            `STATUS_${changes.status.new}`
+          )}".`
         );
       } else {
         lines.push(
-          `${date} — ${user} mudou o estado do pedido de "${changes.status.old}" para "${changes.status.new}".`
+          `${date} — ${user} ${t('HISTORY_TEXT_16')} "${t(
+            `STATUS_${changes.status.old}`
+          )}" ${t('HISTORY_TEXT_7')} "${t(`STATUS_${changes.status.new}`)}".`
         );
       }
 
       break;
 
-    case 'eliminou artigo':
+    case 'ITEM_DELETED':
       if (simplified) {
-        lines.push(
-          `${date} — ${user} eliminou um artigo da encomenda EP-${displayEP}`
-        );
+        lines.push(`${date} — ${user} ${t('HISTORY_TEXT_17')} EP-${displayEP}`);
       } else {
         const deletedTypeLabel = getTypeLabel(
           changes.deletedItem?.category,
           changes.deletedItem?.type
         );
         lines.push(
-          `${date} — ${user} eliminou um artigo: ${deletedTypeLabel} ${changes.deletedItem?.sizeX}x${changes.deletedItem?.sizeY} ${changes.deletedItem?.sizeZ}, ${changes.deletedItem.quantity} vidro(s).`
+          `${date} — ${user} ${t('HISTORY_TEXT_18')}: ${deletedTypeLabel} ${
+            changes.deletedItem?.sizeX
+          }x${changes.deletedItem?.sizeY} ${changes.deletedItem?.sizeZ}, ${
+            changes.deletedItem.quantity
+          } ${t('HISTORY_TEXT_4')}.`
         );
       }
       break;
 
-    case 'adicionou artigo no pedido':
+    case 'ITEM_ADDED_TO_ORDER':
       if (simplified) {
         lines.push(
-          `2${date} — ${user} criou artigo na encomenda EP-${displayEP}.`
+          `${date} — ${user} ${t('HISTORY_TEXT_19')} EP-${displayEP}.`
         );
       } else {
-        lines.push(`${date} — ${user} adicionou artigo.`);
+        lines.push(`${date} — ${user} ${t('HISTORY_TEXT_20')}.`);
       }
       break;
 
-    case 'corrigiu artigo': {
+    case 'ITEM_EDITED': {
       if (simplified) {
         lines.push(
-          `${date} — ${user} alterou os dados do vidro de encomenda EP-${displayEP}.`
+          `${date} — ${user} ${t('HISTORY_TEXT_21')} EP-${displayEP}.`
         );
       } else {
         const oldCategoryLabel = getCategoryLabel(
@@ -153,15 +171,17 @@ export function formatHistoryEntry(history, options = {}) {
           oldTypeLabel !== newTypeLabel
         ) {
           lines.push(
-            `${date} — ${user} alterou o tipo de vidro de "${oldTypeLabel}" para "${newTypeLabel}".`
+            `${date} — ${user} ${t('HISTORY_TEXT_21')} "${oldTypeLabel}" ${t(
+              'HISTORY_TEXT_7'
+            )} "${newTypeLabel}".`
           );
         }
 
         if (changes.sizeZ?.old !== changes.sizeZ?.new) {
           lines.push(
-            `${date} — ${user} alterou a espessura do vidro de "${
+            `${date} — ${user} ${t('HISTORY_TEXT_23')} "${
               changes.sizeZ?.old ?? ''
-            }" para "${changes.sizeZ?.new}".`
+            }" ${t('HISTORY_TEXT_7')} "${changes.sizeZ?.new}".`
           );
         }
         if (
@@ -174,7 +194,9 @@ export function formatHistoryEntry(history, options = {}) {
           const newY = changes.sizeY?.new ?? changes.sizeY?.old ?? actualY;
 
           lines.push(
-            `${date} — ${user} alterou a medida de "${oldX}x${oldY}" para "${newX}x${newY}".`
+            `${date} — ${user} ${t('HISTORY_TEXT_24')} "${oldX}x${oldY}" ${t(
+              'HISTORY_TEXT_7'
+            )} "${newX}x${newY}".`
           );
         }
 
@@ -183,47 +205,51 @@ export function formatHistoryEntry(history, options = {}) {
           changes.temper?.old !== changes.temper?.new
         ) {
           const oldValue = changes.temper?.old
-            ? 'vidro temperado'
-            : 'vidro normal';
+            ? t('HISTORY_TEXT_25')
+            : t('HISTORY_TEXT_26');
           const newValue = changes.temper?.new
-            ? 'vidro temperado'
-            : 'vidro normal';
+            ? t('HISTORY_TEXT_25')
+            : t('HISTORY_TEXT_26');
           lines.push(
-            `${date} — ${user} alterou o tipo do vidro de "${oldValue}" para "${newValue}".`
+            `${date} — ${user} ${t('HISTORY_TEXT_22')} "${oldValue}" ${t(
+              'HISTORY_TEXT_7'
+            )} "${newValue}".`
           );
         }
 
         if (changes.quantity?.old !== changes.quantity?.new) {
           lines.push(
-            `${date} — ${user} alterou a quantidade de vidro de "${
+            `${date} — ${user} ${t('HISTORY_TEXT_27')} "${
               changes.quantity?.old ?? ''
-            }" para "${changes.quantity?.new ?? ''}".`
+            }" ${t('HISTORY_TEXT_7')} "${changes.quantity?.new}".`
           );
         }
 
         if (changes.reason?.old !== changes.reason?.new) {
           lines.push(
-            `${date} — ${user} alterou o motivo do pedido de vidro de "${
+            `${date} — ${user} ${t('HISTORY_TEXT_28')} "${
               changes.reason?.old ?? ''
-            }" para "${changes.reason?.new ?? ''}".`
+            }" ${t('HISTORY_TEXT_7')} "${changes.reason?.new}".`
           );
         }
       }
       break;
     }
 
-    case 'mudou estado do artigo':
+    case 'STATUS_OF_ITEM_CHANGED':
       if (simplified) {
         lines.push(
-          `${date} — ${user} mudou o estado do artigo da encomenda EP-${displayEP} de "${
-            changes.status?.old ?? ''
-          }" para "${changes.status?.new ?? ''}".`
+          `${date} — ${user} ${t('HISTORY_TEXT_29')} EP-${displayEP} ${t(
+            'HISTORY_TEXT_15'
+          )} "${t(`STATUS_${changes.status?.old}`)}" ${t(
+            'HISTORY_TEXT_7'
+          )} "${t(`STATUS_${changes.status?.new}`)}".`
         );
       } else {
         lines.push(
-          `${date} — ${user} mudou o estado do artigo de "${
-            changes.status?.old ?? ''
-          }" para "${changes.status?.new ?? ''}".`
+          `${date} — ${user} ${t('HISTORY_TEXT_30')} "${t(
+            `STATUS_${changes.status?.old}`
+          )}" ${t('HISTORY_TEXT_7')} "${t(`STATUS_${changes.status?.new}`)}".`
         );
       }
 

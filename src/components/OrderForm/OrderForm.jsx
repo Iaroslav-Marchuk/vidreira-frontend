@@ -1,12 +1,14 @@
 import { Field, ErrorMessage, useFormikContext } from 'formik';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { selectUser } from '../../redux/auth/selectors.js';
 
 import css from './OrderForm.module.css';
 
 const OrderForm = ({ clientsList, isClientsLoading }) => {
+  const { t } = useTranslation();
   const { values, setFieldValue } = useFormikContext();
   const user = useSelector(selectUser);
   const [searchTerm, setSearchTerm] = useState('');
@@ -45,18 +47,19 @@ const OrderForm = ({ clientsList, isClientsLoading }) => {
   return (
     <div className={css.wrapper}>
       <fieldset className={css.fieldset}>
-        <legend className={css.legend}>Local Info</legend>
+        <legend className={css.legend}>{t('FORM_LEGEND_LOCAL')}</legend>
         <label className={css.label}>
-          Local
+          {t('FORM_LABEL_LOCAL')}
           <Field className={css.selectLocal} as="select" name="local.zona">
             <option value="" disabled>
               --
             </option>
-            <option value="L1">L1</option>
-            <option value="L2">L2</option>
-            <option value="L3">L3</option>
-            <option value="Forno">Forno</option>
-            <option value="Logística">Logística</option>
+            <option value="LINE_1">{t('LOCAL_LINE_1')}</option>
+            <option value="LINE_2">{t('LOCAL_LINE_2')}</option>
+            <option value="LINE_3">{t('LOCAL_LINE_3')}</option>
+            <option value="FURNACE">{t('LOCAL_FURNACE')}</option>
+            <option value="LOGISTIC">{t('LOCAL_LOGISTIC')}</option>
+            <option value="QUALITY">{t('LOCAL_QUALITY')}</option>
           </Field>
           <ErrorMessage
             className={css.error}
@@ -66,7 +69,7 @@ const OrderForm = ({ clientsList, isClientsLoading }) => {
         </label>
 
         <label className={css.label}>
-          Operador
+          {t('FORM_LABEL_OPERATOR')}
           <input
             className={css.inputLocalOperator}
             value={user.name}
@@ -76,7 +79,7 @@ const OrderForm = ({ clientsList, isClientsLoading }) => {
       </fieldset>
 
       <fieldset className={css.fieldset}>
-        <legend className={css.legend}>Encomenda</legend>
+        <legend className={css.legend}>{t('FORM_LEGEND_ORDER')}</legend>
         <label className={css.label}>
           EP
           <Field className={css.inputEncomenda} type="text" name="EP" />
@@ -84,10 +87,10 @@ const OrderForm = ({ clientsList, isClientsLoading }) => {
         </label>
 
         <label className={css.label}>
-          Cliente
+          {t('FORM_LABEL_CLIENT')}
           <div ref={inputRef}>
             {isClientsLoading ? (
-              <div className={css.loading}>Loading clients...</div>
+              <div className={css.loading}>{t('FORM_LOAD_CLIENT')}</div>
             ) : (
               <>
                 <Field
@@ -100,7 +103,7 @@ const OrderForm = ({ clientsList, isClientsLoading }) => {
                     setFieldValue('client', e.target.value);
                   }}
                   onFocus={() => setIsDropdownOpen(true)}
-                  placeholder="Digite ou selecione um cliente..."
+                  placeholder={t('FORM_PLACEHOLDER_CLIENT')}
                   autoComplete="off"
                 />
 

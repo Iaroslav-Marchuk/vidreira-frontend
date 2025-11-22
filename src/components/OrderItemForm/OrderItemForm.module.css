@@ -61,10 +61,9 @@ label {
   color: var(--color-error);
   font-size: 12px;
   margin: 2px 0 0 0;
-  padding-left: 4px;
   font-weight: 500;
   display: block;
-  max-width: 70px;
+  max-width: 75px;
   word-wrap: break-word;
   white-space: normal;
   display: block;

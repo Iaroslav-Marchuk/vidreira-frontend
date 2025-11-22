@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import Modal from 'react-modal';
 
+import './i18n';
+
 import { store } from './redux/store.js';
 
 import App from '../src/components/App/App.jsx';

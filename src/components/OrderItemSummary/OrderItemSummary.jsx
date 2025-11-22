@@ -1,14 +1,21 @@
 import { useSelector } from 'react-redux';
-import css from './OrderItemSummary.module.css';
+import { useTranslation } from 'react-i18next';
+
+import Loader from '../Loader/Loader.jsx';
+
 import {
   selectHistory,
   selectIsHistoryLoading,
 } from '../../redux/orders/selectors.js';
-import Loader from '../Loader/Loader.jsx';
+
 import { selectGlassOptions } from '../../redux/glass/selectors.js';
+
 import { formatHistoryEntry } from '../../utils/formatHistory.js';
 
+import css from './OrderItemSummary.module.css';
+
 const OrderItemSummary = ({ item, itemId }) => {
+  const { t } = useTranslation();
   const history = useSelector(selectHistory);
   const isHistoryLoading = useSelector(selectIsHistoryLoading);
   const glassOptions = useSelector(selectGlassOptions);
@@ -18,7 +25,7 @@ const OrderItemSummary = ({ item, itemId }) => {
   return (
     <div className={css.container}>
       <div className={css.history}>
-        <h2 className={css.title}>História do vidro</h2>
+        <h2 className={css.title}>{t('SUMMARY_ITEM_HISTORY')}</h2>
         {isHistoryLoading ? (
           <Loader loadingstate={isHistoryLoading} />
         ) : (
@@ -26,18 +33,22 @@ const OrderItemSummary = ({ item, itemId }) => {
             {itemHistory
               .filter(h =>
                 [
-                  'adicionou artigo no pedido',
-                  'adicionou artigo',
-                  'corrigiu artigo',
-                  'mudou estado do artigo',
+                  'ITEM_ADDED_TO_ORDER',
+                  'ITEM_ADDED',
+                  'ITEM_EDITED',
+                  'STATUS_OF_ITEM_CHANGED',
                 ].includes(h.action)
               )
               .map((h, index) =>
-                formatHistoryEntry(h, {
-                  glassOptions,
-                  actualX: item.sizeX,
-                  actualY: item.sizeY,
-                }).map((line, i) => (
+                formatHistoryEntry(
+                  h,
+                  {
+                    glassOptions,
+                    actualX: item.sizeX,
+                    actualY: item.sizeY,
+                  },
+                  t
+                ).map((line, i) => (
                   <li key={`${index}-${i}`} className={css.historyItem}>
                     {line}
                   </li>

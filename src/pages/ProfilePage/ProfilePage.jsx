@@ -1,21 +1,24 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { LogOut } from 'lucide-react';
 
-import { IoExitOutline } from 'react-icons/io5';
+import Loader from '../../components/Loader/Loader.jsx';
 
 import { selectUser } from '../../redux/auth/selectors.js';
 import { logout } from '../../redux/auth/operations.js';
-
-import css from './ProfilePage.module.css';
-import { useEffect } from 'react';
 import {
   selectIsHistoryLoading,
   selectUserHistory,
 } from '../../redux/orders/selectors.js';
 import { getUserHistory } from '../../redux/orders/operations.js';
+
 import { formatHistoryEntry } from '../../utils/formatHistory.js';
-import Loader from '../../components/Loader/Loader.jsx';
+
+import css from './ProfilePage.module.css';
 
 const ProfilePage = () => {
+  const { t } = useTranslation();
   const user = useSelector(selectUser);
   const userHistory = useSelector(selectUserHistory);
   const isHistoryLoading = useSelector(selectIsHistoryLoading);
@@ -35,13 +38,14 @@ const ProfilePage = () => {
         <p className={css.avatar}>{user.name[0]}</p>
         <ul className={css.list}>
           <li className={css.item}>
-            <span className={css.span}>Nome do utilizador:</span> {user.name}
+            <span className={css.span}>{t('PROFILE_NAME')}</span> {user.name}
           </li>
           <li className={css.item}>
-            <span className={css.span}>Role do utilizador:</span> {user.role}
+            <span className={css.span}>{t('PROFILE_ROLE')}</span>{' '}
+            {t(`ROLE_${user.role}`)}
           </li>
           <li className={css.item}>
-            <span className={css.span}>Na plataforma desde:</span>{' '}
+            <span className={css.span}>{t('PROFILE_ON_PLATFORM')}</span>{' '}
             {new Date(user.createdAt).toLocaleDateString('pt-PT', {
               day: '2-digit',
               month: '2-digit',
@@ -50,21 +54,20 @@ const ProfilePage = () => {
           </li>
         </ul>
         <button className={css.btn} type="submit" onClick={handleLogout}>
-          <IoExitOutline className={css.svg} />
-          Sair
+          {t('EXIT')} <LogOut />
         </button>
       </div>
 
       <div className={css.activityWrapper}>
-        <h2 className={css.title}>Última atividade</h2>
+        <h2 className={css.title}>{t('PROFILE_ACTIVITY')}</h2>
         {isHistoryLoading ? (
           <Loader loadingstate={isHistoryLoading} />
         ) : userHistory.length === 0 ? (
-          <p className={css.noHistory}>Sem dados de atividade do utilizador.</p>
+          <p className={css.noHistory}>{t('PROFILE_NO_DATA')}</p>
         ) : (
           <ul className={css.historyList}>
             {userHistory.map((h, index) => {
-              return formatHistoryEntry(h, { simplified: true }).map(
+              return formatHistoryEntry(h, { simplified: true }, t).map(
                 (line, i) => (
                   <li key={`${index}-${i}`} className={css.historyItem}>
                     {line}

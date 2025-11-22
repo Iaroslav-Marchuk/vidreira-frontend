@@ -46,3 +46,9 @@
     margin-top: 24px;
   }
 }
+
+@media only screen and (min-width: 1240px) {
+  .wrapper {
+    padding: 24px 32px;
+  }
+}

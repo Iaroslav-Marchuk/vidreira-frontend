@@ -1,0 +1,41 @@
+{
+  "ORDER_ADDED": "Замовлення успішно додано!",
+  "ORDER_FAILED": "Не вдалося додати нове замовлення: ",
+  "ORDER_EXIST": "Замовлення з таким EP і клієнтом вже існує!",
+  "ORDER_NOT_FOUND": "Замовлення не існує!",
+  "ORDER_NO_LOAD": "Помилка при завантаженні замовлення",
+  "ORDER_DUPLICATE_1": "Замовлення з EP",
+  "ORDER_DUPLICATE_2": "вже існує на",
+  "ORDER_DUPLICATE_3": "вже існує з іншим іменем клієнта",
+  "ORDER_UNCHANGED": "Замовлення без змін",
+  "ORDER_UPDATE_SUCCESS": "Замовлення успішно оновлено!",
+  "ORDER_UPDATE_FAILED": "Помилка при оновленні замовлення: ",
+  "ORDER_DELETED_SUCCESS": "Замовлення видалено успішно!",
+  "ORDER_DELETED_FAILED": "Помилка при видаленні замовлення",
+
+  "FILL_FIELDS": "Будь ласка, заповніть всі поля!",
+  "LOGIN_SUCCESS": "Успішний вхід в систему",
+  "LOGIN_ERROR": "Помилка при вході ",
+
+  "REGISTER_SUCCESS": "Реєстрація успішна",
+  "REGISTER_ERROR": "Помилка при реєстрації. ",
+
+  "LOGOUT_SUCCESS": "Успішний вихід!",
+  "LOGOUT_ERROR": "Помилка при виході. ",
+
+  "STATUS_CHANGED": "Статус змінено на",
+  "STATUS_TO_ARCHIVE": "Замовлення перенесено в архів!",
+  "STATUS_FAILED": "Помилка при зміні статусу",
+
+  "STATUS_TEXT_1": "Змінити статус на ",
+  "STATUS_TEXT_2": "Фінальний статус",
+
+  "HISTORY_FAILED": "Помилка при завантаженні історії",
+
+  "ITEM_DUPLICATE": "Елемент з такими даними вже існує!",
+  "ITEM_UNCHANGED": "Елемент без змін.",
+  "ITEM_UPDATE_SUCCESS": "Елемент успішно оновлено!",
+  "ITEM_UPDATE_FAILED": "Не вдалося оновити елемент:",
+  "ITEM_DELETED_SUCCESS": "Елемент успішно видалено!",
+  "ITEM_DELETED_FAILED": "Не вдалося видалити елемент!"
+}

@@ -2,19 +2,22 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import OrderForm from '../OrderForm/OrderForm.jsx';
 import OrderItemForm from '../OrderItemForm/OrderItemForm.jsx';
 import Button from '../Button/Button.jsx';
 
-import css from './EditOrder.module.css';
 import {
   selectClientsList,
   selectisClientsLoading,
 } from '../../redux/clients/selectors.js';
 import { selectGlassOptions } from '../../redux/glass/selectors.js';
 
+import css from './EditOrder.module.css';
+
 const EditOrder = ({ order, onSubmit }) => {
+  const { t } = useTranslation();
   const clientsList = useSelector(selectClientsList);
   const isClientsLoading = useSelector(selectisClientsLoading);
 
@@ -34,25 +37,44 @@ const EditOrder = ({ order, onSubmit }) => {
   const [newItem, setNewItem] = useState(initialNewItem);
 
   const OrderSchema = Yup.object().shape({
-    EP: Yup.number().positive().integer().required('Campo obrigatório'),
+    EP: Yup.number()
+      .typeError(t('NUMBER_ERROR'))
+      .positive(t('POSITIVE_NUMBER'))
+      .integer(t('INTEGER_NUMBER'))
+      .required(t('REQUIRED')),
     client: Yup.string()
       .oneOf(clientsList.map(c => c.name))
-      .required('Campo obrigatório'),
+      .required(t('SELECT_OPTION')),
     local: Yup.object().shape({
-      zona: Yup.string().required('Escolha uma opção.'),
+      zona: Yup.string().required(t('SELECT_OPTION')),
     }),
     items: Yup.array().of(
       Yup.object().shape({
-        category: Yup.string().required('Escolha uma opção.'),
-        type: Yup.string().required('Escolha uma opção.'),
-        sizeX: Yup.number().positive().integer().required('Campo obrigatório'),
-        sizeY: Yup.number().positive().integer().required('Campo obrigatório'),
-        sizeZ: Yup.string().min(1).max(20).required('Escolha uma opção.'),
+        category: Yup.string().required(t('SELECT_OPTION')),
+        type: Yup.string().required(t('SELECT_OPTION')),
+        sizeX: Yup.number()
+          .typeError(t('NUMBER_ERROR'))
+          .positive(t('POSITIVE_NUMBER'))
+          .integer(t('INTEGER_NUMBER'))
+          .required(t('REQUIRED')),
+        sizeY: Yup.number()
+          .typeError(t('NUMBER_ERROR'))
+          .positive(t('POSITIVE_NUMBER'))
+          .integer(t('INTEGER_NUMBER'))
+          .required(t('REQUIRED')),
+        sizeZ: Yup.string()
+          .required(t('SELECT_OPTION'))
+          .min(1, t('MIN_1'))
+          .max(20, t('MAX_20')),
         quantity: Yup.number()
-          .positive()
-          .integer()
-          .required('Campo obrigatório'),
-        reason: Yup.string().min(3).max(40).required('Campo obrigatório'),
+          .typeError(t('NUMBER_ERROR'))
+          .positive(t('POSITIVE_NUMBER'))
+          .integer(t('INTEGER_NUMBER'))
+          .required(t('REQUIRED')),
+        reason: Yup.string()
+          .min(3, t('MIN_3'))
+          .max(40, t('MAX_40'))
+          .required(t('REQUIRED')),
         temper: Yup.boolean(),
       })
     ),
@@ -100,7 +122,7 @@ const EditOrder = ({ order, onSubmit }) => {
           />
 
           <Button className={css.button} type="submit">
-            Update
+            {t('UPDATE')}
           </Button>
         </Form>
       )}

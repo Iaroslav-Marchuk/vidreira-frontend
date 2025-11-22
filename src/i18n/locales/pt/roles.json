@@ -1,0 +1,8 @@
+{
+  "ROLE_PRODUCTION": "Linha de produção",
+  "ROLE_CUTTING": "Corte de vidro",
+  "ROLE_TEMPERING": "Tratamento térmico",
+  "ROLE_LOGISTIC": "Logística",
+  "ROLE_QUALITY": "Departamento de qualidade",
+  "ROLE_GUEST": "Convidado"
+}

@@ -1,14 +1,16 @@
 import { Field, FieldArray, ErrorMessage, useFormikContext } from 'formik';
 import { Trash2, CirclePlus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import css from './OrderItemForm.module.css';
 
 const OrderItemForm = ({ glassOptions, isEditItemMode = false }) => {
+  const { t } = useTranslation();
   const { values, setFieldValue } = useFormikContext();
 
   return (
     <fieldset className={css.fieldsetArray}>
-      <legend className={css.legend}>Vidro</legend>
+      <legend className={css.legend}>{t('FORM_GLASS')}</legend>
       <FieldArray name="items">
         {({ remove, push }) => {
           return (
@@ -16,7 +18,7 @@ const OrderItemForm = ({ glassOptions, isEditItemMode = false }) => {
               {values.items.map((item, index) => (
                 <div className={css.row} key={index}>
                   <label className={css.label}>
-                    Categoria
+                    {t('FORM_CATEGORY')}
                     <Field
                       className={css.selectUnit}
                       as="select"
@@ -80,7 +82,7 @@ const OrderItemForm = ({ glassOptions, isEditItemMode = false }) => {
                   </label>
 
                   <label className={css.label}>
-                    Tipo
+                    {t('FORM_TYPE')}
                     <Field
                       className={css.selectUnit}
                       as="select"
@@ -124,7 +126,7 @@ const OrderItemForm = ({ glassOptions, isEditItemMode = false }) => {
                   </label>
 
                   <label className={css.label}>
-                    Espressura
+                    {t('FORM_THIKNESS')}
                     <Field
                       className={css.selectSizeZ}
                       as="select"
@@ -152,7 +154,7 @@ const OrderItemForm = ({ glassOptions, isEditItemMode = false }) => {
                   </label>
 
                   <label className={css.label}>
-                    Dimensão
+                    {t('FORM_SIZE')}
                     <div className={css.inlineInputs}>
                       <div className={css.inputWrapper}>
                         <Field
@@ -184,7 +186,7 @@ const OrderItemForm = ({ glassOptions, isEditItemMode = false }) => {
                   </label>
 
                   <label className={css.label} htmlFor={`temper-${index}`}>
-                    Temper.
+                    {t('FORM_TERM')}
                     <Field
                       className={css.checkbox}
                       id={`temper-${index}`}
@@ -208,7 +210,7 @@ const OrderItemForm = ({ glassOptions, isEditItemMode = false }) => {
                   </label>
 
                   <label className={css.label}>
-                    Quant.
+                    {t('FORM_QUANTITY')}
                     <Field
                       className={css.inputQuantity}
                       type="text"
@@ -222,7 +224,7 @@ const OrderItemForm = ({ glassOptions, isEditItemMode = false }) => {
                   </label>
 
                   <label className={css.label}>
-                    Motivo
+                    {t('FORM_REASON')}
                     <Field
                       className={css.textarea}
                       type="text"

@@ -1,0 +1,14 @@
+{
+  "SUMMARY_INFO": "Інформація про замовлення",
+  "SUMMARY_CLIENT": "Клієнт:",
+  "SUMMARY_ZONE": "Зона:",
+  "SUMMARY_OPERATOR": "Оператор:",
+  "SUMMARY_INCOMPLETED": "Бракує скловиробів:",
+
+  "SUMMARY_PANDING": "- в очікуванні:",
+  "SUMMARY_IN_PROGRESS": "- у виробництві:",
+  "SUMMARY_FINISHED": "- виконано",
+
+  "SUMMARY_ORDER_HISTORY": "Історія замовлення",
+  "SUMMARY_ITEM_HISTORY": "Історія скловиробу"
+}

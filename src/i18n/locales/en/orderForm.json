@@ -1,0 +1,22 @@
+{
+  "FORM_GLASS": "Glass",
+  "FORM_LEGEND_LOCAL": "Local Info",
+  "FORM_LABEL_LOCAL": "Location",
+  "FORM_LABEL_OPERATOR": "Operator",
+  "FORM_LEGEND_ORDER": "Order",
+  "FORM_LABEL_CLIENT": "Client",
+  "FORM_LOAD_CLIENT": "Loading clients...",
+  "FORM_PLACEHOLDER_CLIENT": "Type or select a client...",
+
+  "FORM_CATEGORY": "Category",
+  "FORM_TYPE": "Type",
+  "FORM_THIKNESS": "Thickness",
+  "FORM_SIZE": "Size",
+  "FORM_TERM": "Tempered",
+  "FORM_QUANTITY": "Quant.",
+  "FORM_REASON": "Reason",
+
+  "STATUS_CREATED": "Created",
+  "STATUS_IN_PROGRESS": "In production",
+  "STATUS_FINISHED": "Finished"
+}

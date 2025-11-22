@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Button from '../../components/Button/Button.jsx';
 import OrdersTable from '../../components/OrdersTable/OrdersTable.jsx';
@@ -17,7 +18,6 @@ import {
 } from '../../redux/orders/selectors.js';
 import { getArchive } from '../../redux/orders/operations.js';
 
-import css from './ArchivePage.module.css';
 import {
   setCurrentPage,
   setSearchQuery,
@@ -26,13 +26,15 @@ import {
 import SearchBox from '../../components/SearchBox/SearchBox.jsx';
 import { selectRolesList } from '../../redux/roles/selectors.js';
 import { getAllRoles } from '../../redux/roles/operations.js';
+import { selectGlassOptions } from '../../redux/glass/selectors.js';
+import { getGlassOptions } from '../../redux/glass/operations.js';
 import { getAllClients } from '../../redux/clients/operations.js';
-import {
-  selectClientsList,
-  selectisClientsLoading,
-} from '../../redux/clients/selectors.js';
+import { selectClientsList } from '../../redux/clients/selectors.js';
+
+import css from './ArchivePage.module.css';
 
 const ArchivePage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [openCollapses, setOpenCollapses] = useState([]);
@@ -43,7 +45,8 @@ const ArchivePage = () => {
   const rolesList = useSelector(selectRolesList);
 
   const clientsList = useSelector(selectClientsList);
-  const isClientsLoading = useSelector(selectisClientsLoading);
+
+  const glassOptions = useSelector(selectGlassOptions);
 
   const currentPage = useSelector(selectCurrentPage);
   const totalPages = useSelector(selectTotalPages);
@@ -66,16 +69,16 @@ const ArchivePage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!clientsList.length && !isClientsLoading) {
+    if (!clientsList.length) {
       dispatch(getAllClients());
     }
-  }, [dispatch, clientsList.length, isClientsLoading]);
-
-  useEffect(() => {
     if (!rolesList.length) {
       dispatch(getAllRoles());
     }
-  }, [dispatch, rolesList.length]);
+    if (Object.keys(glassOptions).length === 0) {
+      dispatch(getGlassOptions());
+    }
+  }, [dispatch, clientsList.length, rolesList.length, glassOptions]);
 
   useEffect(() => {
     let filter = {};
@@ -128,7 +131,7 @@ const ArchivePage = () => {
 
   return (
     <div className={css.wrapper}>
-      <h1 className={css.title}>Pedidos concluídos</h1>
+      <h1 className={css.title}>{t('ARCHIVE_TITLE')}</h1>
       <SearchBox onSearch={handleSearch} />
 
       {isArchiveLoading && <Loader loadingState={isArchiveLoading} />}
@@ -141,11 +144,11 @@ const ArchivePage = () => {
         />
       )}
       {!isArchiveLoading && archive.length === 0 && (
-        <p className={css.noResults}>Não existe nenhum pedido em archivo!</p>
+        <p className={css.noResults}>{t('ARCHIVE_NO_EXIST')}</p>
       )}
       {hasArchive && !isArchiveLoading && isNotLastPage && (
         <Button className={css.loadMoreBtn} onClick={handleLoadMore}>
-          Mais...
+          {t('MORE')}
         </Button>
       )}
     </div>

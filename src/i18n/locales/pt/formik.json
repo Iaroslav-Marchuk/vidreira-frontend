@@ -1,0 +1,11 @@
+{
+  "SELECT_OPTION": "Escolha uma opção!",
+  "POSITIVE_NUMBER": "Deve ser um número positivo.",
+  "INTEGER_NUMBER": "Deve ser um número inteiro.",
+  "REQUIRED": "Campo obrigatório",
+  "NUMBER_ERROR": "Deve ser um número",
+  "MIN_1": "Mínimo 1 caractere",
+  "MAX_20": "Máximo 20 caracteres",
+  "MIN_3": "Mínimo 3 caracteres",
+  "MAX_40": "Máximo de 40 caracteres"
+}

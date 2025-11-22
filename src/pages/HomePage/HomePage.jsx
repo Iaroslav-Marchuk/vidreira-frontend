@@ -1,19 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+
+import StatsList from '../../components/StatsList/StatsList.jsx';
+import Loader from '../../components/Loader/Loader.jsx';
 
 import { selectIsLoggedIn, selectUser } from '../../redux/auth/selectors.js';
-
-import css from './HomePage.module.css';
-import { useEffect } from 'react';
 import { getStats } from '../../redux/stats/operations.js';
 import {
   selectAllStats,
   selectIsStatsLoading,
 } from '../../redux/stats/selectors.js';
-import StatsList from '../../components/StatsList/StatsList.jsx';
-import Loader from '../../components/Loader/Loader.jsx';
+
+import css from './HomePage.module.css';
 
 const HomePage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -32,8 +35,8 @@ const HomePage = () => {
     order.items.reduce((sum, item) => sum + item.quantity, 0)
   );
 
-  const overduesList = allStats.overdues ?? [];
-  const overduesItemsList = overduesList.map(order =>
+  const delayedList = allStats.delayed ?? [];
+  const delayedItemsList = delayedList.map(order =>
     order.items.reduce((sum, item) => sum + item.quantity, 0)
   );
 
@@ -47,37 +50,24 @@ const HomePage = () => {
     <>
       {!isLoggedIn && (
         <div className={css.container}>
-          <h1 className={css.title}>Bem-vindo à nossa aplicação!</h1>
-          <p className={css.text}>
-            Esta é a sua ferramenta ideal para gerir pedidos de produção de
-            forma rápida, simples e organizada.
-          </p>
-          <p className={css.text}>Com a nossa aplicação, você pode:</p>
+          <h1 className={css.title}>{t('WELCOME_TITLE')}</h1>
+          <p className={css.text}>{t('WELCOME_TEXT_1')}</p>
+          <p className={css.text}>{t('WELCOME_LIST')}</p>
           <ul className={css.list}>
-            <li className={css.item}>🧾 Criar e gerir pedidos de produção</li>
-            <li className={css.item}>
-              👥 Acompanhar o responsável e o estado de cada pedido
-            </li>
-            <li className={css.item}>
-              📊 Ver estatísticas em tempo real por linha de produção
-            </li>
-            <li className={css.item}>
-              🔐 Manter os seus dados seguros e acessíveis apenas a utilizadores
-              autorizados
-            </li>
+            <li className={css.item}>{t('CREATE')}</li>
+            <li className={css.item}>{t('TRACK')}</li>
+            <li className={css.item}>{t('STATS')}</li>
+            <li className={css.item}>{t('SECURE')}</li>
           </ul>
 
           <p className={css.text}>
-            Para começar, por favor
+            {t('WELCOME_TEXT_2')}
             <Link to="/auth" className={css.linkBtn}>
-              Inicie sessão
+              {t('WELCOME_LOGIN')}
             </Link>
             .
           </p>
-          <p className={css.text}>
-            Após autenticação, terá acesso total a todas as funcionalidades da
-            aplicação.
-          </p>
+          <p className={css.text}>{t('WELCOME_TEXT_3')}</p>
         </div>
       )}
 
@@ -85,10 +75,12 @@ const HomePage = () => {
 
       {isLoggedIn && (
         <div className={css.dashboard}>
-          <h1 className={css.welcome}>Olá, {user.name}!</h1>
+          <h1 className={css.welcome}>{`${t('DASHBOARD_WELCOME')} ${
+            user.name
+          }!`}</h1>
           <div className={css.stats}>
             <div className={css.statCard}>
-              <h3 className={css.listTitle}>📦 Adicionados hoje:</h3>
+              <h3 className={css.listTitle}>{t('DASHBOARD_ADDED_TITLE')}</h3>
               {createdOrdersTodayList.length > 0 ? (
                 <StatsList
                   orderList={createdOrdersTodayList}
@@ -96,11 +88,11 @@ const HomePage = () => {
                   type="created"
                 />
               ) : (
-                <p>A lista está vazia</p>
+                <p className={css.noResults}>{t('DASHBOARD_EMPTY')}</p>
               )}
             </div>
             <div className={css.statCard}>
-              <h3 className={css.listTitle}>✅ Concluídos hoje:</h3>
+              <h3 className={css.listTitle}>{t('DASHBOARD_FINISHED_TITLE')}</h3>
               {completedOrdersTodayList.length > 0 ? (
                 <>
                   <StatsList
@@ -111,19 +103,20 @@ const HomePage = () => {
                   <StatsList orderList={pendingList} type="pending" />
                 </>
               ) : (
-                <p>A lista está vazia</p>
+                <p className={css.noResults}>{t('DASHBOARD_EMPTY')}</p>
               )}
             </div>
             <div className={css.statCard}>
-              <h3 className={css.listTitle}>⏳ Atrasados:</h3>
-              {overduesList.length > 0 ? (
+              <h3 className={css.listTitle}>{t('DASHBOARD_DELAYED_TITLE')}</h3>
+
+              {delayedList.length > 0 ? (
                 <StatsList
-                  orderList={overduesList}
-                  itemList={overduesItemsList}
-                  type="overdues"
+                  orderList={delayedList}
+                  itemList={delayedItemsList}
+                  type="delayed"
                 />
               ) : (
-                <p>A lista está vazia</p>
+                <p className={css.noResults}>{t('DASHBOARD_EMPTY')}</p>
               )}
             </div>
           </div>

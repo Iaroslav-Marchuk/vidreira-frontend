@@ -1,10 +1,16 @@
-import { FaAngleDown, FaUser } from 'react-icons/fa';
-import { IoExitOutline } from 'react-icons/io5';
 import { Popover } from 'radix-ui';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import {
+  UserRoundCheck,
+  LogOut,
+  UserRoundCog,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react';
 
 import Loader from '../Loader/Loader.jsx';
 
@@ -14,6 +20,7 @@ import { selectIsUserLoading, selectUser } from '../../redux/auth/selectors.js';
 import css from './UserMenu.module.css';
 
 const UserMenu = () => {
+  const { t } = useTranslation();
   const user = useSelector(selectUser);
   const isUserLoading = useSelector(selectIsUserLoading);
 
@@ -24,9 +31,9 @@ const UserMenu = () => {
     try {
       setOpen(false);
       await dispatch(logout()).unwrap();
-      toast.success('Logged out successfully!');
+      toast.success(t('LOGOUT_SUCCESS'));
     } catch (error) {
-      toast.error('Failed to log out. ' + error);
+      toast.error(t('LOGOUT_ERROR') + error);
     }
   };
 
@@ -34,10 +41,15 @@ const UserMenu = () => {
     <>
       <div className={css.wrapper}>
         {isUserLoading && <Loader loadingState={true} />}
-        <p className={css.avatar}>{user.name[0]}</p>
+        <UserRoundCheck size={28} color="#0d7fc4" strokeWidth={2} />
+
         <Popover.Root open={open} onOpenChange={setOpen}>
           <Popover.Trigger>
-            <FaAngleDown />
+            {open ? (
+              <ChevronUp size={16} strokeWidth={3} />
+            ) : (
+              <ChevronDown size={16} strokeWidth={3} />
+            )}
           </Popover.Trigger>
           <Popover.Portal>
             <Popover.Content
@@ -57,16 +69,15 @@ const UserMenu = () => {
                   to="/profile"
                   onClick={handleClose}
                 >
-                  <FaUser className={css.svg} />
-                  Perfil do utilizador
+                  <UserRoundCog className={css.svgUser} />
+                  {t('PROFILE')}
                 </NavLink>
                 <button
                   className={css.btn}
                   type="submit"
                   onClick={handleLogout}
                 >
-                  <IoExitOutline className={css.svg} />
-                  Sair
+                  {t('EXIT')} <LogOut className={css.svgExit} />
                 </button>
               </div>
             </Popover.Content>

@@ -1,0 +1,41 @@
+{
+  "ORDER_ADDED": "Pedido adicionado com sucesso!",
+  "ORDER_FAILED": "Falha ao adicionar novo pedido: ",
+  "ORDER_EXIST": "Já existe um pedido com este EP e cliente",
+  "ORDER_NOT_FOUND": "Encomenda não encontrada!",
+  "ORDER_NO_LOAD": "Falha ao carregar a encomenda",
+  "ORDER_DUPLICATE_1": "Encomenda com EP",
+  "ORDER_DUPLICATE_2": "já existe na zona",
+  "ORDER_DUPLICATE_3": "já existe com um cliente diferente",
+  "ORDER_UNCHANGED": "A encomenda não foi alterada.",
+  "ORDER_UPDATE_SUCCESS": "Encomenda atualizada com sucesso!",
+  "ORDER_UPDATE_FAILED": "Falha ao atualizar a encomenda: ",
+  "ORDER_DELETED_SUCCESS": "Encomenda eliminada com sucesso!",
+  "ORDER_DELETED_FAILED": "Falha ao eliminar a encomenda.",
+
+  "FILL_FIELDS": "Por favor, preencha todos os campos!",
+  "LOGIN_SUCCESS": "Login efetuado com sucesso!",
+  "LOGIN_ERROR": "Falha ao iniciar sessão.",
+
+  "REGISTER_SUCCESS": "Registado com sucesso!",
+  "REGISTER_ERROR": "Falha no registo.",
+
+  "LOGOUT_SUCCESS": "Sessão terminada com sucesso!",
+  "LOGOUT_ERROR": "Falha ao terminar a sessão. ",
+
+  "STATUS_CHANGED": "Status atualizado para",
+  "STATUS_TO_ARCHIVE": "Pedido movido para o arquivo!",
+  "STATUS_FAILED": "Falha ao atualizar o status",
+
+  "STATUS_TEXT_1": "Alterar estado para",
+  "STATUS_TEXT_2": "Estado final",
+
+  "HISTORY_FAILED": "Falha ao carregar a história",
+
+  "ITEM_DUPLICATE": "Um item com os mesmos dados já existe!",
+  "ITEM_UNCHANGED": "O item não foi alterado",
+  "ITEM_UPDATE_SUCCESS": "Item atualizado com sucesso!",
+  "ITEM_UPDATE_FAILED": "Falha ao atualizar o item: ",
+  "ITEM_DELETED_SUCCESS": "Item da encomenda eliminado com sucesso!",
+  "ITEM_DELETED_FAILED": "Falha ao eliminar o item da encomenda!"
+}

@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Button from '../../components/Button/Button.jsx';
 import OrdersTable from '../../components/OrdersTable/OrdersTable.jsx';
 import CreateOrderForm from '../../components/CreateOrderForm/CreateOrderForm.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
+import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
+import SearchBox from '../../components/SearchBox/SearchBox.jsx';
 
 import { selectRole } from '../../redux/auth/selectors.js';
 import {
@@ -18,16 +21,11 @@ import {
   selectTotalPages,
 } from '../../redux/orders/selectors.js';
 import { getAllOrders } from '../../redux/orders/operations.js';
-
-import css from './OrdersPage.module.css';
-import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
 import {
   setCurrentPage,
   setSearchQuery,
   setSorting,
 } from '../../redux/orders/slice.js';
-import SearchBox from '../../components/SearchBox/SearchBox.jsx';
-import { roleCanDo } from '../../utils/roleCanDo.js';
 import {
   selectGlassOptions,
   selectIsGlassLoading,
@@ -38,7 +36,12 @@ import { selectRolesList } from '../../redux/roles/selectors.js';
 import { getAllClients } from '../../redux/clients/operations.js';
 import { selectClientsList } from '../../redux/clients/selectors.js';
 
+import { roleCanDo } from '../../utils/roleCanDo.js';
+
+import css from './OrdersPage.module.css';
+
 const OrdersPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -141,12 +144,12 @@ const OrdersPage = () => {
 
   return (
     <div className={css.wrapper}>
-      <h1 className={css.title}>Pedidos em curso</h1>
+      <h1 className={css.title}>{t('ORDERS_TITLE')}</h1>
       <SearchBox onSearch={handleSearch} />
 
       {roleCanDo(rolesList, role, 'create') && (
         <Button className={css.btn} onClick={openModal}>
-          ➕ Novo Pedido
+          ➕ {t('NEW_ORDER')}
         </Button>
       )}
 
@@ -170,11 +173,11 @@ const OrdersPage = () => {
         />
       )}
       {!isOrdersLoading && allOrders.length === 0 && (
-        <p className={css.noResults}>Não existe nenhum pedido activo!</p>
+        <p className={css.noResults}>{t('ORDERS_NO_EXIST')}</p>
       )}
       {hasOrders && !isOrdersLoading && isNotLastPage && (
         <Button className={css.loadMoreBtn} onClick={handleLoadMore}>
-          Mais...
+          {t('MORE')}
         </Button>
       )}
     </div>

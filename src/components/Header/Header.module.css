@@ -1,7 +1,6 @@
 .header {
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 12px 24px;
   border-radius: var(--border-radius);
@@ -9,6 +8,19 @@
   background-color: var(--color-header-bg);
   font-size: var(--font-size-sm);
   box-shadow: var(--box-shadow);
+}
+
+.burgerBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  display: flex;
+  gap: 20px;
+  margin-left: auto;
+  align-items: center;
 }
 
 .logo {

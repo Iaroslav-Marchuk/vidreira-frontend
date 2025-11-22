@@ -1,0 +1,27 @@
+{
+  "WELCOME_TITLE": "Bem-vindo à nossa aplicação!",
+  "WELCOME_TEXT_1": "Esta é a sua ferramenta ideal para gerir pedidos de produção de forma rápida, simples e organizada.",
+  "WELCOME_LIST": "Com a nossa aplicação, você pode:",
+  "CREATE": "🧾 Criar e gerir pedidos de produção",
+  "TRACK": "👥 Acompanhar o responsável e o estado de cada pedido",
+  "STATS": "📊 Ver estatísticas em tempo real por linha de produção",
+  "SECURE": "🔐 Manter os seus dados seguros e acessíveis apenas a utilizadores autorizados",
+  "WELCOME_TEXT_2": "Para começar, por favor",
+  "WELCOME_LOGIN": "inicie sessão",
+  "WELCOME_TEXT_3": "Após autenticação, terá acesso total a todas as funcionalidades da aplicação.",
+
+  "DASHBOARD_WELCOME": "Olá,",
+  "DASHBOARD_ADDED_TITLE": "📦 Adicionados hoje:",
+  "DASHBOARD_FINISHED_TITLE": "✅ Concluídos hoje:",
+  "DASHBOARD_DELAYED_TITLE": "⏳ Atrasados:",
+  "DASHBOARD_EMPTY": "A lista está vazia",
+
+  "DASHBOARD_LIST_TEXT_1": "vidros",
+  "DASHBOARD_LIST_TEXT_2": " vidros, encomenda completa",
+  "DASHBOARD_LIST_TEXT_3": "fechado",
+  "DASHBOARD_LIST_TEXT_4": "falta",
+  "DASHBOARD_LIST_TEXT_5": "para concluir",
+  "DASHBOARD_LIST_TEXT_6": "Desde",
+
+  "SEARCH_INPUT": "Digite número EP ou nome do cliente..."
+}

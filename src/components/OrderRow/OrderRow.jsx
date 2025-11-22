@@ -3,15 +3,13 @@ import { TableCell, TableRow } from '@mui/material';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Pencil, Trash2, NotepadText } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
 import ConfirmDelete from '../ConfirmDelete/ConfirmDelete.jsx';
 import OrderItemSummary from '../OrderItemSummary/OrderItemSummary.jsx';
 import EditItem from '../EditItem/EditItem.jsx';
 import StatusButton from '../StatusButton/StatusButton.jsx';
-
-import { roleCanDo } from '../../utils/roleCanDo.js';
-import { formatText } from '../../utils/formatText.js';
 
 import { selectRole, selectUser } from '../../redux/auth/selectors.js';
 
@@ -37,9 +35,13 @@ import {
 import { selectGlassOptions } from '../../redux/glass/selectors.js';
 import { selectRolesList } from '../../redux/roles/selectors.js';
 
+import { roleCanDo } from '../../utils/roleCanDo.js';
+import { formatText } from '../../utils/formatText.js';
+
 import css from './OrderRow.module.css';
 
 const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const glassOptions = useSelector(selectGlassOptions);
   const currentPage = useSelector(selectCurrentPage);
@@ -59,11 +61,11 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
   const canEdit =
     roleCanDo(rolesList, role, 'edit') &&
     ownerId === userId &&
-    item.status === 'Criado';
+    item.status === 'CREATED';
   const canDelete =
     roleCanDo(rolesList, role, 'delete') &&
     ownerId === userId &&
-    item.status === 'Criado';
+    item.status === 'CREATED';
 
   const [itemStatus, setItemStatus] = useState(item.status);
 
@@ -74,7 +76,7 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
       await dispatch(getOrderHistory(orderId)).unwrap();
       setHistoryIsOpen(true);
     } catch (error) {
-      toast.error('Failed to load history ' + error);
+      toast.error(t('HISTORY_FAILED') + error);
     }
   };
 
@@ -125,7 +127,7 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
     );
 
     if (duplicate) {
-      toast.error(`Item with the same data already exists!`);
+      toast.error(t('ITEM_DUPLICATE'));
       return;
     }
 
@@ -140,7 +142,7 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
       values.reason === currentItemData.reason;
 
     if (isUnchanged) {
-      toast.error('Item unchanged.');
+      toast.error(t('ITEM_UNCHANGED'));
       return;
     }
 
@@ -159,10 +161,10 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
       await dispatch(
         updateOrderItem({ orderId, itemId, values: payload })
       ).unwrap();
-      toast.success('Item updated successfully!');
+      toast.success(t('ITEM_UPDATE_SUCCESS'));
       closeEdit();
     } catch (error) {
-      toast.error('Failed to update Item: ' + error);
+      toast.error(t('ITEM_UPDATE_FAILED') + error);
     }
   };
 
@@ -171,22 +173,22 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
       .unwrap()
       .then(response => {
         if (!response.updatedOrder) {
-          toast.success('Order deleted successfully!');
+          toast.success(t('ORDER_DELETED_SUCCESS'));
           dispatch(getAllOrders({ page: currentPage, perPage: 10 }));
         } else {
-          toast.success('Order item deleted successfully!');
+          toast.success(t('ITEM_DELETED_SUCCESS'));
         }
         closeConfirm();
       })
       .catch(() => {
-        toast.error('Failed to delete order item!');
+        toast.error(t('ITEM_DELETED_FAILED'));
       });
   };
 
   const handleStatusChange = newStatus => {
     setItemStatus(newStatus);
 
-    if (newStatus === 'Concluído') {
+    if (newStatus === 'FINISHED') {
       let filter = {};
       if (searchQuery) {
         if (!isNaN(Number(searchQuery))) {
@@ -232,7 +234,7 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
         <TableCell>{formatText(item, glassOptions)}</TableCell>
         <TableCell>{`${item.sizeX}x${item.sizeY}`}</TableCell>
         <TableCell>{item.quantity}</TableCell>
-        <TableCell>{itemStatus}</TableCell>
+        <TableCell>{t(`STATUS_${itemStatus}`)}</TableCell>
         <TableCell>
           {new Date(isArchive ? item.updatedAt : item.createdAt).toLocaleString(
             'pt-PT',
@@ -293,7 +295,7 @@ const OrderRow = ({ item, orderId, itemId, ownerId, isArchive }) => {
         <ConfirmDelete
           onDelete={handleDelete}
           onClose={closeConfirm}
-          text={'Tem a certeza de que deseja eliminar este artigo?'}
+          text={t('ITEM_CONFIRM')}
         />
       </ModalOverlay>
 

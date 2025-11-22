@@ -1,0 +1,27 @@
+{
+  "WELCOME_TITLE": "Welcome to our application!",
+  "WELCOME_TEXT_1": "This is your ideal tool to manage production orders quickly, easily, and in an organized way.",
+  "WELCOME_LIST": "With our application, you can:",
+  "CREATE": "🧾 Create and manage production orders",
+  "TRACK": "👥 Track the responsible person and the status of each order",
+  "STATS": "📊 View real-time statistics by production line",
+  "SECURE": "🔐 Keep your data secure and accessible only to authorized users",
+  "WELCOME_TEXT_2": "To get started, please",
+  "WELCOME_LOGIN": "sign in",
+  "WELCOME_TEXT_3": "After authentication, you will have full access to all application features.",
+
+  "DASHBOARD_WELCOME": "Hello,",
+  "DASHBOARD_ADDED_TITLE": "📦 Added today:",
+  "DASHBOARD_FINISHED_TITLE": "✅ Finished today:",
+  "DASHBOARD_DELAYED_TITLE": "⏳ Delayed:",
+  "DASHBOARD_EMPTY": "Empty list",
+
+  "DASHBOARD_LIST_TEXT_1": "glass",
+  "DASHBOARD_LIST_TEXT_2": " glass, order completed",
+  "DASHBOARD_LIST_TEXT_3": "closed",
+  "DASHBOARD_LIST_TEXT_4": "missing",
+  "DASHBOARD_LIST_TEXT_5": "to complete",
+  "DASHBOARD_LIST_TEXT_6": "Since",
+
+  "SEARCH_INPUT": "Type EP number or name of the client..."
+}

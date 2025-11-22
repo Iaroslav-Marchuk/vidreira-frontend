@@ -1,0 +1,20 @@
+{
+  "ORDERS_TITLE": "Активні замовлення",
+  "ORDERS_NO_EXIST": "Немає жодного активного замовлення!",
+
+  "TABLE_HEAD_TYPE": "Тип скла",
+  "TABLE_HEAD_SIZE": "Розмір",
+  "TABLE_HEAD_QUANTITY": "К-сть",
+  "TABLE_HEAD_STATUS": "Статус",
+  "TABLE_HEAD_CREATE_DATA": "Дата створення",
+  "TABLE_HEAD_FINISH_DATA": "Дата завершення",
+  "TABLE_HEAD_REASON": "Причина",
+  "TABLE_HEAD_ACTIONS": "Дії",
+
+  "TABLE_HEAD_CLIENT": "Клієнт",
+  "TABLE_HEAD_INCOMLETE": "Бракує",
+  "TABLE_HEAD_ZONE": "Зона",
+
+  "ORDER_CONFIRM": "Ви впевнені, що хочете видалити це замовлення?",
+  "ITEM_CONFIRM": "Ви впевнені, що хочете видалити цей елемент?"
+}

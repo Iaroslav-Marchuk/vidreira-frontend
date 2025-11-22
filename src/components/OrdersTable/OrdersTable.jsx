@@ -8,22 +8,22 @@ import {
   Table,
   Paper,
 } from '@mui/material';
-
 import {
   ArrowUpDown,
   ArrowUpNarrowWide,
   ArrowDownWideNarrow,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import OrderCollapse from '../OrderCollapse/OrderCollapse.jsx';
 
 import { selectSortBy, selectSortOrder } from '../../redux/orders/selectors.js';
-
 import { setSorting } from '../../redux/orders/slice.js';
 
 import css from './OrdersTable.module.css';
 
 const OrdersTable = ({ orders, openCollapses, toggleCollapse, isArchive }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const sortBy = useSelector(selectSortBy);
@@ -93,7 +93,7 @@ const OrdersTable = ({ orders, openCollapses, toggleCollapse, isArchive }) => {
                 >
                   {getSortIcon('client')}
                 </button>
-                <span className={css.text}>Cliente</span>
+                <span className={css.text}>{t('TABLE_HEAD_CLIENT')}</span>
               </div>
             </TableCell>
             {!isArchive && (
@@ -105,7 +105,7 @@ const OrdersTable = ({ orders, openCollapses, toggleCollapse, isArchive }) => {
                   >
                     {getSortIcon('falta')}
                   </button>
-                  <span className={css.text}>Em falta</span>
+                  <span className={css.text}>{t('TABLE_HEAD_INCOMLETE')}</span>
                 </div>
               </TableCell>
             )}
@@ -117,7 +117,7 @@ const OrdersTable = ({ orders, openCollapses, toggleCollapse, isArchive }) => {
                 >
                   {getSortIcon('status')}
                 </button>
-                <span className={css.text}>Estado</span>
+                <span className={css.text}>{t('TABLE_HEAD_STATUS')}</span>
               </div>
             </TableCell>
             <TableCell>
@@ -128,7 +128,7 @@ const OrdersTable = ({ orders, openCollapses, toggleCollapse, isArchive }) => {
                 >
                   {getSortIcon('local.zona')}
                 </button>
-                <span className={css.text}>Zona</span>
+                <span className={css.text}>{t('TABLE_HEAD_ZONE')}</span>
               </div>
             </TableCell>
             <TableCell>
@@ -142,11 +142,13 @@ const OrdersTable = ({ orders, openCollapses, toggleCollapse, isArchive }) => {
                   {getSortIcon(isArchive ? 'updatedAt' : 'createdAt')}
                 </button>
                 <span className={css.text}>
-                  {isArchive ? 'Data de Conclusão' : 'Data de Criação'}
+                  {isArchive
+                    ? t('TABLE_HEAD_FINISH_DATA')
+                    : t('TABLE_HEAD_CREATE_DATA')}
                 </span>
               </div>
             </TableCell>
-            <TableCell>Ações</TableCell>
+            <TableCell>{t('TABLE_HEAD_ACTIONS')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
