@@ -143,44 +143,58 @@ import HttpBackend from 'i18next-http-backend';
 
 const savedLang = localStorage.getItem('lang') || 'pt';
 
+// i18n
+//   .use(HttpBackend)
+//   .use(initReactI18next)
+//   .init({
+//     lng: savedLang,
+//     fallbackLng: 'pt',
+//     backend: {
+//       loadPath: '/locales/{{lng}}/{{ns}}.json',
+//     },
+
+//     ns: [
+//       'navigation',
+//       'buttons',
+//       'tosts',
+//       'local',
+//       'roles',
+//       'formik',
+//       'summary',
+//       'history',
+//       'orderForm',
+//       'authPage',
+//       'homePage',
+//       'notFoudPage',
+//       'ordersPage',
+//       'archivePage',
+//       'profilePage',
+//       'statsPage',
+//     ],
+//     defaultNS: 'navigation',
+
+//     react: {
+//       useSuspense: false,
+//     },
+
+//     initImmediate: false,
+//     interpolation: {
+//       escapeValue: false,
+//     },
+//   });
+
 i18n
   .use(HttpBackend)
   .use(initReactI18next)
   .init({
     lng: savedLang,
     fallbackLng: 'pt',
+
     backend: {
-      loadPath: '/locales/{{lng}}/{{ns}}.json',
+      loadPath: '/locales/{{lng}}/*.json',
     },
 
-    ns: [
-      'navigation',
-      'buttons',
-      'tosts',
-      'local',
-      'roles',
-      'formik',
-      'summary',
-      'history',
-      'orderForm',
-      'authPage',
-      'homePage',
-      'notFoudPage',
-      'ordersPage',
-      'archivePage',
-      'profilePage',
-      'statsPage',
-    ],
-    defaultNS: 'navigation',
-
-    react: {
-      useSuspense: false,
-    },
-
-    initImmediate: false,
-    interpolation: {
-      escapeValue: false,
-    },
+    interpolation: { escapeValue: false },
   });
 
 export default i18n;
