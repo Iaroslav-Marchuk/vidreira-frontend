@@ -150,7 +150,7 @@ i18n
     lng: savedLang,
     fallbackLng: 'pt',
     backend: {
-      loadPath: '/i18n/locales/{{lng}}/{{ns}}.json',
+      loadPath: '/src/i18n/locales/{{lng}}/{{ns}}.json',
     },
 
     ns: [
